@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.model.mapper.TeacheResourcesMapper" >
+	<sql id="columns">
+		id AS "id",
+		front_cover AS "frontCover",
+		title AS "title",
+		classify AS "classify",
+		checkup AS "checkup",
+		status AS "status",
+		browsers AS "browsers",
+		collect AS "collect",
+		summary AS "summary",
+		resources AS "resources",
+		description AS "description",
+		create_user AS "createUser",
+		create_date AS "createDate",
+		update_user AS "updateUser",
+		update_date AS "updateDate"
+	</sql>
+	<select id="findOne" parameterType="TeacheResources" resultType="TeacheResources">
+		select 
+			<include refid="columns"/>
+		from tb_teacher_resources
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="TeacheResources" resultType="TeacheResources">
+		select 
+			 <include refid="columns"/>
+		from tb_teacher_resources
+		<where>
+				<if test="id != null and id != ''">
+					 AND id=#{id}
+				</if>
+				<if test="frontCover != null and frontCover != ''">
+					 AND front_cover=#{frontCover}
+				</if>
+				<if test="title != null and title != ''">
+					 AND title=#{title}
+				</if>
+				<if test="classify != null and classify != ''">
+					 AND classify=#{classify}
+				</if>
+				<if test="checkup != null and checkup != ''">
+					 AND checkup=#{checkup}
+				</if>
+				<if test="status != null and status != ''">
+					 AND status=#{status}
+				</if>
+				<if test="browsers != null and browsers != ''">
+					 AND browsers=#{browsers}
+				</if>
+				<if test="collect != null and collect != ''">
+					 AND collect=#{collect}
+				</if>
+				<if test="summary != null and summary != ''">
+					 AND summary=#{summary}
+				</if>
+				<if test="resources != null and resources != ''">
+					 AND resources=#{resources}
+				</if>
+				<if test="description != null and description != ''">
+					 AND description=#{description}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					 AND create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					 AND create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					 AND update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					 update_date=#{updateDate}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="TeacheResources">
+		insert into 
+		tb_teacher_resources(
+			id,
+			front_cover,
+			title,
+			classify,
+			checkup,
+			status,
+			browsers,
+			collect,
+			summary,
+			resources,
+			description,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{frontCover},
+			#{title},
+			#{classify},
+			#{checkup},
+			#{status},
+			#{browsers},
+			#{collect},
+			#{summary},
+			#{resources},
+			#{description},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="TeacheResources">
+		update 
+			tb_teacher_resources 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="frontCover !=null">
+			front_cover=#{frontCover},
+		</if>
+		<if test="title !=null and title !=''">
+			title=#{title},
+		</if>
+		<if test="classify !=null and classify !=''">
+			classify=#{classify},
+		</if>
+		<if test="checkup !=null and checkup !=''">
+			checkup=#{checkup},
+		</if>
+		<if test="status !=null and status !=''">
+			status=#{status},
+		</if>
+		<if test="browsers !=null and browsers !=''">
+			browsers=#{browsers},
+		</if>
+		<if test="collect !=null and collect !=''">
+			collect=#{collect},
+		</if>
+		<if test="summary !=null and summary !=''">
+			summary=#{summary},
+		</if>
+		<if test="resources !=null">
+			resources=#{resources},
+		</if>
+		<if test="description !=null and description !=''">
+			description=#{description},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="TeacheResources">
+		delete from tb_teacher_resources where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="TeacheResources">
+		delete from tb_teacher_resources 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

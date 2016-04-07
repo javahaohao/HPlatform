@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.NewsMapper" >
+	<sql id="newsColumn"> 
+		id,title,summary,content,news_type as "newsType",
+		clicks,source,top,hightlight,checkup,check_user as "checkUser",check_opinion as "checkOpinion",check_date as "checkDate",
+		create_user as "createUser",update_user as "updateUser",
+		create_date as "createDate",update_date as "updateDate"
+	</sql>
+	<sql id="newsColumnWithComment">
+		new.id,new.title,new.summary,new.content,new.news_type as newsType,
+		new.clicks,new.source,new.top,new.hightlight,new.checkup,new.check_user as checkUser,
+		new.check_opinion as checkOpinion,new.check_date as checkDate,
+		new.create_user as createUser,new.update_user as updateUser,
+		new.create_date as createDate,new.update_date as updateDate,
+		com.id as comid, com.supper_id as supperId,com.content as comcontent,
+		com.parent_id as parentId, com.parent_ids as parentIds, 
+		com.create_user as comcreateUser,com.update_user as comupdateUser,
+		com.create_date as comcreateDate,com.update_date as comupdateDate,
+		user.nick as nick,user.head_pic as headPic
+	</sql>
+	<resultMap type="News" id="newsMap">
+		<result column="id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="summary" property="summary"/>
+		<result column="content" property="content"/>
+		<result column="newsType" property="newsType"/>
+		<result column="clicks" property="clicks"/>
+		<result column="source" property="source"/>
+		<result column="top" property="top"/>
+		<result column="hightlight" property="hightlight"/>
+		<result column="checkup" property="checkup"/>
+		<result column="checkUser" property="checkUser"/>
+		<result column="checkOpinion" property="checkOpinion"/>
+		<result column="checkDate" property="checkDate"/>
+		<result column="createUser" property="createUser"/>
+		<result column="updateUser" property="updateUser"/>
+		<result column="createDate" property="createDate"/>
+		<result column="updateUser" property="updateUser"/>
+		<collection property="commentList" column="supperId"
+			javaType="ArrayList" ofType="Comment">
+			<result column="comid" property="id"/>
+			<result column="supperId" property="supperId"/>
+			<result column="comcontent" property="content"/>
+			<result column="parentId" property="parentId"/>
+			<result column="parentIds" property="parentIds"/>
+			<result column="comcreateUser" property="createUser"/>
+			<result column="comupdateUser" property="updateUser"/>
+			<result column="comcreateDate" property="createDate"/>
+			<result column="comupdateDate" property="updateDate"/>
+			<result column="nick" property="user.nick"/>
+			<result column="headPic" property="user.headPic"/>
+		</collection>
+	</resultMap>
+	<select id="findAll" parameterType="News" resultType="News">
+		SELECT 
+			<include refid="newsColumn"/>
+		FROM sys_news
+		<where>
+			<if test="id != null and id != ''">
+				id = #{id}
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				and create_user=#{createUser}
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				and update_user=#{updateUser}
+			</if>
+			<if test="createDate !=null and createDate !=''">
+				and create_date=#{createDate}
+			</if>
+			<if test="updateDate !=null and updateDate !=''">
+				and update_date=#{updateDate}
+			</if>
+		</where>
+	</select>
+	<select id="findOne" parameterType="News" resultType="News">
+		SELECT 
+			<include refid="newsColumn"/>
+		FROM sys_news
+		<where>
+			<if test="id != null and id != ''">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+	<select id="findNewsWithComment" parameterType="News" resultMap="newsMap">
+		SELECT 
+			<include refid="newsColumnWithComment"/>
+		FROM sys_news new
+		LEFT JOIN sys_comment com ON com.supper_id = new.id
+		LEFT JOIN sys_user user ON user.id = com.create_user
+		<where>
+			<if test="id != null and id != ''">
+				com.supper_id = #{id}
+			</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="News">
+		INSERT INTO 
+			sys_news 
+		VALUES(
+			#{id},
+			#{title},
+			#{summary},
+			#{content},
+			#{newsType},
+			#{clicks},
+			#{source},
+			#{top},
+			#{hightlight},
+			#{checkup},
+			#{checkUser},
+			#{checkOpinion},
+			#{checkDate},
+			#{createDate},
+			#{updateDate},
+			#{createUser},
+			#{updateUser}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="News">
+		UPDATE 
+			sys_news 
+		<set>
+			<if test="title != null and title != ''">
+				title = #{title},
+			</if>
+			<if test="summary != null and summary != ''">
+				summary = #{summary},
+			</if>
+			<if test="content != null and content != ''">
+				content = #{content},
+			</if>
+			<if test="newsType != null and newsType != ''">
+				news_type = #{newsType},
+			</if>
+			<if test="clicks != null and clicks != ''">
+				clicks = #{clicks},
+			</if>
+			<if test="source != null and source != ''">
+				source = #{source},
+			</if>
+			<if test="top != null">
+				top = #{top},
+			</if>
+			<if test="hightlight != null">
+				hightlight = #{hightlight},
+			</if>
+			<if test="checkup != null">
+				checkup = #{checkup},
+			</if>
+			<if test="checkUser != null and checkUser != ''">
+				check_user = #{checkUser},
+			</if>
+			<if test="checkOpinion != null and checkOpinion != ''">
+				check_opinion = #{checkOpinion},
+			</if>
+			<if test="checkDate != null and checkDate != ''">
+				check_date = #{checkDate},
+			</if>
+			<if test="createDate != null and createDate != ''">
+				create_Date = #{createDate},
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				update_Date = #{updateDate},
+			</if>
+			<if test="createUser !=null and createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser != null and updateUser != ''">
+				update_user = #{updateUser}
+			</if>
+		</set>
+		WHERE 	
+		id = #{id}
+	</update>
+	<delete id="deleteEntity" parameterType="News">
+		DELETE FROM sys_news
+		WHERE id =#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="News">
+		DELETE FROM sys_news
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</delete>
+	<!-- 批量重置新闻状态 -->
+	<update id="updateBatchStatus" parameterType="News">
+		UPDATE 
+			sys_news
+		<set>
+			<if test="top != null">
+				top = #{top},
+			</if>
+			<if test="hightlight != null">
+				hightlight = #{hightlight},
+			</if>
+			<if test="checkup != null">
+				checkup = #{checkup},
+			</if>
+			<if test="checkUser != null and checkUser != ''">
+				check_user = #{checkUser},
+			</if>
+			<if test="checkOpinion != null and checkOpinion != ''">
+				check_opinion = #{checkOpinion},
+			</if>
+			<if test="checkDate != null and checkDate != ''">
+				check_date = #{checkDate},
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				update_Date = #{updateDate},
+			</if>
+			<if test="updateUser !=null and updateUser != null and updateUser != ''">
+				update_user = #{updateUser}
+			</if>
+		</set>
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</update>
+</mapper>

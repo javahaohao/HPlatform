@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.MessageMapper" >
+	<sql id="columns">
+		m.id AS "id",
+		m.msg AS "msg",
+		m.group_id AS "group.id",
+		m.msg_type AS "msgType",
+		m.msg_status AS "msgStatus",
+		m.create_user AS "createUser",
+		m.create_date AS "createDate",
+		m.update_user AS "updateUser",
+		m.update_date AS "updateDate",
+		s.id AS "sender.id",
+		s.nick AS "sender.nick",
+		s.head_pic AS "sender.headPic",
+		r.id AS "receiver.id",
+		r.nick AS "receiver.nick",
+		r.head_pic AS "receiver.headPic",
+		g.group_name AS "group.group",
+		g.pic AS "group.pic"
+	</sql>
+	<sql id="leftjoin">
+		LEFT JOIN sys_user s ON s.id=m.sender_id
+		LEFT JOIN sys_user r ON r.id=m.receiver_id
+		LEFT JOIN sys_msg_group g ON g.id=m.group_id
+	</sql>
+	<select id="findOne" parameterType="Message" resultType="Message">
+		select 
+			<include refid="columns"/>
+		from sys_msg m
+		<include refid="leftjoin"/>
+		<where>
+			<if test="id != null and id != ''">
+				m.id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Message" resultType="Message">
+		select 
+			 <include refid="columns"/>
+		from sys_msg m
+		<include refid="leftjoin"/>
+		<where>
+				<if test="id != null and id != ''">
+					 AND m.id=#{id}
+				</if>
+				<if test="msg != null and msg != ''">
+					 AND m.msg=#{msg}
+				</if>
+				<if test="sender != null and sender.id != null and sender.id != ''">
+					 AND m.sender_id=#{sender.id}
+				</if>
+				<if test="receiver != null and receiver.id != null and receiver.id != ''">
+					 AND m.receiver_id=#{receiver.id}
+				</if>
+				<if test="msgStatus != null and msgStatus != ''">
+					 AND m.msg_status=#{msgStatus}
+				</if>
+				<if test="group != null and group.id != null and group.id != ''">
+					 AND m.group_id=#{group.id}
+				</if>
+				<if test="msgType != null and msgType != ''">
+					 AND m.msg_type=#{msgType}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					 AND m.create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					 AND m.create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					 AND m.update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					 AND m.update_date=#{updateDate}
+				</if>
+				<if test="idList != null">
+					AND m.id IN 
+					<foreach item="idList" collection="idList"
+					open="(" separator="," close=")">
+					#{idList}
+					</foreach>
+				</if>
+				<if test="sendIds != null">
+					AND m.sender_id IN 
+					<foreach item="sendIds" collection="sendIds"
+					open="(" separator="," close=")">
+					#{sendIds}
+					</foreach>
+				</if>
+		</where>
+		ORDER BY m.create_date
+	</select>
+	<insert id="addEntity" parameterType="Message">
+		insert into 
+		sys_msg(
+			id,
+			msg,
+			sender_id,
+			receiver_id,
+			msg_status,
+			group_id,
+			msg_type,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{msg},
+			#{sender.id},
+			#{receiver.id},
+			#{msgStatus},
+			#{group.id},
+			#{msgType},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Message">
+		update 
+			sys_msg 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="msg !=null and msg !=''">
+			msg=#{msg},
+		</if>
+		<if test="sender != null and sender.id != null and sender.id != ''">
+			sender_id=#{sender.id},
+		</if>
+		<if test="receiver != null and receiver.id != null and receiver.id != ''">
+			receiver_id=#{receiver.id},
+		</if>
+		<if test="group != null and group.id != null and group.id != ''">
+			 group_id=#{group.id},
+		</if>
+		<if test="msgType !=null and msgType !=''">
+			msg_type=#{msgType},
+		</if>
+		<if test="msgStatus !=null and msgStatus !=''">
+			msg_status=#{msgStatus},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Message">
+		delete from sys_msg where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Message">
+		delete from sys_msg 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

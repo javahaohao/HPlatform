@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.AreaMapper" >
+	<sql id="columns">
+		id, name,code,parentcode as "parentCode",
+		parent_id as "parentId",parent_ids as "parentIds",
+		level,ch_name as "chName",first_letter as "firstLetter",zx_flag as "zxFlag"
+	</sql>
+	<insert id="addEntity"></insert>
+	<update id="updateEntity" parameterType="Area">
+		update sys_area_street set
+		id=#{id},name=#{name},parentcode=#{parentCode},
+		parent_id=#{parentId},parent_ids=#{parentIds},
+		level=#{level},ch_name=#{chName},first_letter=#{firstLetter}
+		where code=#{code}
+	</update>
+	<delete id="deleteEntity"></delete>
+	<delete id="deleteBatchEntity"></delete>
+	<select id="findOne" parameterType="Area" resultType="Area">
+		select 
+			<include refid="columns"/>
+		from sys_area_street 
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+			<if test="code != null and code != ''">
+				and code=#{code}
+			</if>
+			<if test="level != null and level != ''">
+				and level=#{level}
+			</if>
+		</where>
+	</select>
+	<select id="findChildAreaById" parameterType="String" resultType="Area">
+		select 
+			<include refid="columns"/>
+		from sys_area_street 
+		<where>
+			<if test="_parameter != null and _parameter != ''">
+				parent_id=#{_parameter}
+			</if>
+		</where>
+	</select>
+	<select id="findAllCity" parameterType="Area" resultType="Area">
+		select 
+			<include refid="columns"/>
+		from sys_area_street 
+		where
+		level = 2
+		or zx_flag = 1
+		order by first_letter;
+	</select>
+	<!-- 查询出省下面的区域 -->
+	<select id="findBrotherArea" parameterType="list" resultType="Area">
+		select 
+			a.id, a.name,a.code,a.parentcode as "parentCode",
+			a.parent_id as "parentId",a.parent_ids as "parentIds",
+			a.level,a.ch_name as "chName",a.first_letter as "firstLetter",a.zx_flag as "zxFlag"
+		from sys_area_street a 
+		left join sys_area_street b on a.parent_id =b.parent_id
+		where b.id in
+		<foreach item="idList" collection="list"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</select>
+	<select id="findAll" parameterType="Area" resultType="Area">
+		select 
+			<include refid="columns"/>
+		from sys_area_street 
+		<where>
+			<if test="level != null and level != ''">
+				level = #{level}
+			</if>
+			<if test="parentId != null and parentId != ''">
+				and parent_id = #{parentId}
+			</if>
+			<if test="zxFlag != null and zxFlag != ''">
+				and zx_flag = #{zxFlag}
+			</if>
+		</where>
+		order by code,LENGTH(name);
+	</select>
+</mapper>

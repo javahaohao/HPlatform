@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/cache 
+       http://www.springframework.org/schema/cache/spring-cache.xsd">
+       <!-- quartz配置  动态配置所以我们将 Factory 作为一个service一样的接口 QuartzJobFactory.java-->
+	    <!-- 调度工厂 -->
+	    <bean id="quartzManager" class="com.hplatform.core.common.util.QuartzManager" init-method="initJobs"></bean>
+</beans>

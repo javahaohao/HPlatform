@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.AttachmentMapper" >
+	
+	<sql id="attachmentColumns"> 
+		atta.id,
+		atta.title,
+		atta.name,
+		atta.sha1,
+		atta.md5,
+		atta.path,
+		atta.ext,
+		atta.type,
+		atta.superId,
+		atta.lastModifiedDate,
+		atta.update_date as "updateDate",
+		atta.create_date as "createDate",
+		atta.update_user AS "createUser",
+		atta.create_user AS "updateUser",
+		atta.realName,
+		atta.size
+	</sql>
+	
+	<sql id="orderBy">
+		ORDER BY atta.create_date DESC, atta.name ASC
+	</sql>
+	
+	<!-- 根据id查询文件信息 -->
+	<select id="findOne" parameterType="Attachment" resultType="Attachment">
+		SELECT 
+		<include refid="attachmentColumns"/>
+		FROM sys_attachment atta 
+		WHERE	atta.id = #{id}
+		<include refid="orderBy"/>
+	</select>	
+	
+	<!-- 查询文件信息 -->
+	<select id="findAll" parameterType="Attachment" resultType="Attachment">
+		SELECT 
+		<include refid="attachmentColumns"/>
+		FROM sys_attachment atta 
+		<where>
+			<if test="title != null and title != ''">
+				title LIKE #{title}"%"
+			</if>
+			<if test="name != null and name != ''">
+				AND name LIKE #{name}"%"
+			</if>
+			<if test="sha1 != null and sha1 != ''">
+				AND sha1 = #{sha1}
+			</if>
+			<if test="md5 != null and md5 != ''">
+				AND md5 = #{md5}
+			</if>
+			<if test="path != null and path != ''">
+				AND path = #{path}
+			</if>
+			<if test="ext != null and ext != ''">
+				AND ext = #{ext}
+			</if>
+			<if test="superId != null and superId != ''">
+				AND superId = #{superId}
+			</if>
+			<if test="type != null and type != ''">
+				AND type = #{type}
+			</if>
+		</where>
+		<include refid="orderBy"/>
+	</select>	
+	
+	
+	<!-- 保存文件 -->
+	<insert id="addEntity" parameterType="Attachment">
+		INSERT INTO sys_attachment (
+			id,
+			title,
+			name,
+			sha1,
+			md5,
+			path,
+			ext,
+			type,
+			superId,
+			lastModifiedDate,
+			update_date,
+			create_date,
+			update_user,
+			create_user,
+			realName,
+			size
+		)
+		VALUES (
+			#{id},
+			#{title},
+			#{name},
+			#{sha1},
+			#{md5},
+			#{path},
+			#{ext},
+			#{type},
+			#{superId},
+			#{lastModifiedDate},
+			#{updateDate},
+			#{createDate},
+			#{updateUser},
+			#{createUser},
+			#{realName},
+			#{size}
+		)
+	</insert>
+	
+	<!-- 删除文件信息 -->
+	<delete id="deleteBatchEntity" parameterType="Attachment">
+		DELETE FROM sys_attachment WHERE id IN
+		<foreach collection="idList" open="(" close=")" separator="," item="idList">
+			#{idList}
+		</foreach>
+	</delete>
+	
+	
+</mapper>

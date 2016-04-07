@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.model.mapper.ResumeMapper" >
+	<sql id="columns">
+		teache_status AS "teacheStatus",
+		expert AS "expert",
+		called AS "called",
+		update_user AS "updateUser",
+		phone AS "phone",
+		payroll AS "payroll",
+		teache_age AS "teacheAge",
+		service_type AS "serviceType",
+		teache_time AS "teacheTime",
+		teache_experience AS "teacheExperience",
+		id AS "id",
+		user_id AS "userId",
+		request_expert AS "requestExpert",
+		classes AS "classes",
+		learning AS "learning",
+		other_remark AS "otherRemark",
+		school AS "school",
+		update_date AS "updateDate",
+		address AS "address",
+		teache_diploma AS "teacheDiploma",
+		create_date AS "createDate",
+		service_place AS "servicePlace",
+		request_sex AS "requestSex",
+		create_user AS "createUser",
+		special AS "special",
+		request_diploma AS "requestDiploma",
+		introduction AS "introduction"
+	</sql>
+	<select id="findOne" parameterType="Resume" resultType="Resume">
+		select 
+			<include refid="columns"/>
+		from tb_resume
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND user_id=#{userId}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Resume" resultType="Resume">
+		select 
+			 <include refid="columns"/>
+		from tb_resume
+		<where>
+				<if test="expert != null and expert != ''">
+					expert=#{expert} AND
+				</if>
+				<if test="called != null and called != ''">
+					called=#{called} AND
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					update_user=#{updateUser} AND
+				</if>
+				<if test="phone != null and phone != ''">
+					phone=#{phone} AND
+				</if>
+				<if test="payroll != null and payroll != ''">
+					payroll=#{payroll} AND
+				</if>
+				<if test="teacheAge != null and teacheAge != ''">
+					teache_age=#{teacheAge} AND
+				</if>
+				<if test="serviceType != null and serviceType != ''">
+					service_type=#{serviceType} AND
+				</if>
+				<if test="teacheTime != null and teacheTime != ''">
+					teache_time=#{teacheTime} AND
+				</if>
+				<if test="teacheExperience != null and teacheExperience != ''">
+					teache_experience=#{teacheExperience} AND
+				</if>
+				<if test="id != null and id != ''">
+					id=#{id} AND
+				</if>
+				<if test="userId != null and userId != ''">
+					user_id=#{userId} AND
+				</if>
+				<if test="requestExpert != null and requestExpert != ''">
+					request_expert=#{requestExpert} AND
+				</if>
+				<if test="classes != null and classes != ''">
+					classes=#{classes} AND
+				</if>
+				<if test="learning != null and learning != ''">
+					learning=#{learning} AND
+				</if>
+				<if test="otherRemark != null and otherRemark != ''">
+					other_remark=#{otherRemark} AND
+				</if>
+				<if test="school != null and school != ''">
+					school=#{school} AND
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					update_date=#{updateDate} AND
+				</if>
+				<if test="address != null and address != ''">
+					address=#{address} AND
+				</if>
+				<if test="teacheDiploma != null and teacheDiploma != ''">
+					teache_diploma=#{teacheDiploma} AND
+				</if>
+				<if test="createDate != null and createDate != ''">
+					create_date=#{createDate} AND
+				</if>
+				<if test="servicePlace != null and servicePlace != ''">
+					service_place=#{servicePlace} AND
+				</if>
+				<if test="requestSex != null and requestSex != ''">
+					request_sex=#{requestSex} AND
+				</if>
+				<if test="createUser != null and createUser != ''">
+					create_user=#{createUser} AND
+				</if>
+				<if test="special != null and special != ''">
+					special=#{special} AND
+				</if>
+				<if test="requestDiploma != null and requestDiploma != ''">
+					request_diploma=#{requestDiploma} AND
+				</if>
+				<if test="introduction != null and introduction != ''">
+					introduction=#{introduction}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="Resume">
+		insert into 
+		tb_resume(
+			expert,
+			called,
+			update_user,
+			phone,
+			payroll,
+			teache_age,
+			service_type,
+			teache_time,
+			teache_experience,
+			id,
+			user_id,
+			request_expert,
+			classes,
+			learning,
+			other_remark,
+			school,
+			update_date,
+			address,
+			teache_diploma,
+			create_date,
+			service_place,
+			request_sex,
+			create_user,
+			special,
+			request_diploma,
+			introduction
+		) 
+		values(
+			#{expert},
+			#{called},
+			#{updateUser},
+			#{phone},
+			#{payroll},
+			#{teacheAge},
+			#{serviceType},
+			#{teacheTime},
+			#{teacheExperience},
+			#{id},
+			#{userId},
+			#{requestExpert},
+			#{classes},
+			#{learning},
+			#{otherRemark},
+			#{school},
+			#{updateDate},
+			#{address},
+			#{teacheDiploma},
+			#{createDate},
+			#{servicePlace},
+			#{requestSex},
+			#{createUser},
+			#{special},
+			#{requestDiploma},
+			#{introduction}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Resume">
+		update 
+		tb_resume 
+		<set>
+		<if test="expert !=null and expert !=''">
+		expert=#{expert},
+		</if>
+		<if test="called !=null and called !=''">
+		called=#{called},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+		update_user=#{updateUser},
+		</if>
+		<if test="phone !=null and phone !=''">
+		phone=#{phone},
+		</if>
+		<if test="payroll !=null and payroll !=''">
+		payroll=#{payroll},
+		</if>
+		<if test="teacheAge !=null and teacheAge !=''">
+		teache_age=#{teacheAge},
+		</if>
+		<if test="serviceType !=null and serviceType !=''">
+		service_type=#{serviceType},
+		</if>
+		<if test="teacheTime !=null and teacheTime !=''">
+		teache_time=#{teacheTime},
+		</if>
+		<if test="teacheExperience !=null and teacheExperience !=''">
+		teache_experience=#{teacheExperience},
+		</if>
+		<if test="id !=null and id !=''">
+		id=#{id},
+		</if>
+		<if test="userId !=null and userId !=''">
+		user_id=#{userId},
+		</if>
+		<if test="requestExpert !=null and requestExpert !=''">
+		request_expert=#{requestExpert},
+		</if>
+		<if test="classes !=null and classes !=''">
+		classes=#{classes},
+		</if>
+		<if test="learning !=null and learning !=''">
+		learning=#{learning},
+		</if>
+		<if test="otherRemark !=null and otherRemark !=''">
+		other_remark=#{otherRemark},
+		</if>
+		<if test="school !=null and school !=''">
+		school=#{school},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+		update_date=#{updateDate},
+		</if>
+		<if test="address !=null and address !=''">
+		address=#{address},
+		</if>
+		<if test="teacheDiploma !=null and teacheDiploma !=''">
+		teache_diploma=#{teacheDiploma},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+		create_date=#{createDate},
+		</if>
+		<if test="servicePlace !=null and servicePlace !=''">
+		service_place=#{servicePlace},
+		</if>
+		<if test="requestSex !=null and requestSex !=''">
+		request_sex=#{requestSex},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+		create_user=#{createUser},
+		</if>
+		<if test="special !=null and special !=''">
+		special=#{special},
+		</if>
+		<if test="requestDiploma !=null and requestDiploma !=''">
+		request_diploma=#{requestDiploma},
+		</if>
+		<if test="introduction !=null and introduction !=''">
+		introduction=#{introduction}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Resume">
+		delete from tb_resume where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Resume">
+		delete from tb_resume 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

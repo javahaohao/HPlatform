@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.MessageGroupUserMapper" >
+	<sql id="columns">
+		gu.id AS "id",
+		gu.group_id AS "group.id",
+		gu.user_id AS "user.id",
+		gu.sequence AS "sequence",
+		gu.create_user AS "createUser",
+		gu.create_date AS "createDate",
+		gu.update_user AS "updateUser",
+		gu.update_date AS "updateDate",
+		g.group_name AS "group.group",
+		g.group_remark AS "group.groupRemark",
+		g.pic AS "group.pic",
+		u.nick AS "user.nick",
+		u.head_pic AS "user.headPic"
+	</sql>
+	<sql id="leftjoin">
+		LEFT JOIN sys_msg_group g ON g.id=gu.group_id
+		LEFT JOIN sys_user u ON u.id=gu.user_id
+	</sql>
+	<select id="findOne" parameterType="MessageGroupUser" resultType="MessageGroupUser">
+		select 
+			<include refid="columns"/>
+		from sys_msg_group_user gu
+		<include refid="leftjoin"/>
+		<where>
+			<if test="id != null and id != ''">
+				gu.id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="MessageGroupUser" resultType="MessageGroupUser">
+		select 
+			 <include refid="columns"/>
+		from sys_msg_group_user gu
+		<include refid="leftjoin"/>
+		<where>
+				<if test="id != null and id != ''">
+					 AND gu.id=#{id}
+				</if>
+				<if test="group != null and group.id != null and group.id != ''">
+					 AND gu.group_id=#{group.id}
+				</if>
+				<if test="user != null and user.id != null and user.id != ''">
+					 AND gu.user_id=#{user.id}
+				</if>
+				<if test="sequence != null and sequence != ''">
+					 AND gu.sequence=#{sequence}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					 AND gu.create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					 AND gu.create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					 AND gu.update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					 AND gu.update_date=#{updateDate}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="MessageGroupUser">
+		insert into 
+		sys_msg_group_user(
+			id,
+			group_id,
+			user_id,
+			sequence,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{group.id},
+			#{user.id},
+			#{sequence},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="MessageGroupUser">
+		update 
+			sys_msg_group_user 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="group !=null and group.id !=null and group.id !=''">
+			group_id=#{group.id},
+		</if>
+		<if test="user != null and user.id != null and user.id != ''">
+			user_id=#{user.id},
+		</if>
+		<if test="sequence !=null and sequence !=''">
+			sequence=#{sequence},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="MessageGroupUser">
+		delete from sys_msg_group_user where id=#{id}
+	</delete>
+	<delete id="deleteByGroup" parameterType="MessageGroupUser">
+		delete from sys_msg_group_user where group_id=#{group.id}
+		<if test="user != null and user.id != null and user.id != ''">
+			AND user_id=#{user.id}
+		</if>
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="MessageGroupUser">
+		delete from sys_msg_group_user 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

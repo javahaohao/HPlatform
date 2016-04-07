@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.MessageGroupMapper" >
+	<sql id="columns">
+		id AS "id",
+		pic AS "pic",
+		group_name AS "group",
+		group_remark AS "groupRemark",
+		create_user AS "createUser",
+		create_date AS "createDate",
+		update_user AS "updateUser",
+		update_date AS "updateDate"
+	</sql>
+	<select id="findOne" parameterType="MessageGroup" resultType="MessageGroup">
+		select 
+			<include refid="columns"/>
+		from sys_msg_group
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="MessageGroup" resultType="MessageGroup">
+		select 
+			 <include refid="columns"/>
+		from sys_msg_group
+		<where>
+				<if test="id != null and id != ''">
+					 AND id=#{id}
+				</if>
+				<if test="group != null and group != ''">
+					 AND group_name=#{group}
+				</if>
+				<if test="groupRemark != null and groupRemark != ''">
+					 AND group_remark=#{groupRemark}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					 AND create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					 AND create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					 AND update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					 AND update_date=#{updateDate}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="MessageGroup">
+		insert into 
+		sys_msg_group(
+			id,
+			pic,
+			group_name,
+			group_remark,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{pic},
+			#{group},
+			#{groupRemark},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="MessageGroup">
+		update 
+			sys_msg_group 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="pic !=null and pic !=''">
+			pic=#{pic},
+		</if>
+		<if test="group !=null and group !=''">
+			group_name=#{group},
+		</if>
+		<if test="groupRemark !=null and groupRemark !=''">
+			group_remark=#{groupRemark},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="MessageGroup">
+		delete from sys_msg_group where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="MessageGroup">
+		delete from sys_msg_group 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

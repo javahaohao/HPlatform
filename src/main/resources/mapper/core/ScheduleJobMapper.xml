@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.ScheduleJobMapper" >
+	<sql id="columns">
+		id AS "id",
+		job_id AS "jobId",
+		job_name AS "jobName",
+		job_group AS "jobGroup",
+		job_impl AS "jobImpl",
+		job_status AS "jobStatus",
+		cronExpression AS "cronExpression",
+		description AS "desc",
+		create_date AS "createDate",
+		update_date AS "updateDate",
+		create_user AS "createUser",
+		update_user AS "updateUser"
+	</sql>
+	<select id="findOne" parameterType="ScheduleJob" resultType="ScheduleJob">
+		select 
+			<include refid="columns"/>
+		from sys_job
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="ScheduleJob" resultType="ScheduleJob">
+		select 
+			 <include refid="columns"/>
+		from sys_job
+		<where>
+				<if test="id != null and id != ''">
+					AND id=#{id}
+				</if>
+				<if test="jobId != null and jobId != ''">
+					AND job_id=#{jobId}
+				</if>
+				<if test="jobName != null and jobName != ''">
+					AND job_name=#{jobName}
+				</if>
+				<if test="jobGroup != null and jobGroup != ''">
+					AND job_group=#{jobGroup}
+				</if>
+				<if test="jobImpl != null and jobImpl != ''">
+					AND job_impl=#{jobImpl}
+				</if>
+				<if test="jobStatus != null and jobStatus != ''">
+					AND job_status=#{jobStatus}
+				</if>
+				<if test="cronExpression != null and cronExpression != ''">
+					AND cronExpression=#{cronExpression}
+				</if>
+				<if test="desc != null and desc != ''">
+					AND description=#{desc}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND create_date=#{createDate}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND update_date=#{updateDate}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND create_user=#{createUser}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND update_user=#{updateUser}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="ScheduleJob">
+		insert into 
+		sys_job(
+			id,
+			job_id,
+			job_name,
+			job_group,
+			job_impl,
+			job_status,
+			cronExpression,
+			description,
+			create_date,
+			update_date,
+			create_user,
+			update_user
+		) 
+		values(
+			#{id},
+			#{jobId},
+			#{jobName},
+			#{jobGroup},
+			#{jobImpl},
+			#{jobStatus},
+			#{cronExpression},
+			#{desc},
+			#{createDate},
+			#{updateDate},
+			#{createUser},
+			#{updateUser}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="ScheduleJob">
+		update 
+			sys_job 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="jobId !=null and jobId !=''">
+			job_id=#{jobId},
+		</if>
+		<if test="jobName !=null and jobName !=''">
+			job_name=#{jobName},
+		</if>
+		<if test="jobGroup !=null and jobGroup !=''">
+			job_group=#{jobGroup},
+		</if>
+		<if test="jobImpl !=null and jobImpl !=''">
+			job_impl=#{jobImpl},
+		</if>
+		<if test="jobStatus !=null and jobStatus !=''">
+			job_status=#{jobStatus},
+		</if>
+		<if test="cronExpression !=null and cronExpression !=''">
+			cronExpression=#{cronExpression},
+		</if>
+		<if test="desc !=null and desc !=''">
+			description=#{desc},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="ScheduleJob">
+		delete from sys_job where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="ScheduleJob">
+		delete from sys_job 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

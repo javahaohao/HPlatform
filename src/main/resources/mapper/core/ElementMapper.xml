@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.ElementMapper" >
+	<sql id="columns">
+		id AS "id",
+		tag_id AS "tagId",
+		element_name AS "elementName",
+		required AS "required",
+		remark AS "remark",
+		description AS "description",
+		default_val AS "defaultVal",
+		sequence AS "sequence",
+		create_user AS "createUser",
+		create_date AS "createDate",
+		update_user AS "updateUser",
+		update_date AS "updateDate"
+	</sql>
+	<select id="findOne" parameterType="Element" resultType="Element">
+		select 
+			<include refid="columns"/>
+		from gen_element
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Element" resultType="Element">
+		select 
+			 <include refid="columns"/>
+		from gen_element
+		<where>
+				<if test="id != null and id != ''">
+					 AND id=#{id}
+				</if>
+				<if test="tagId != null and tagId != ''">
+					 AND tag_id=#{tagId}
+				</if>
+				<if test="elementName != null and elementName != ''">
+					 AND element_name=#{elementName}
+				</if>
+				<if test="required != null and required != ''">
+					 AND required=#{required}
+				</if>
+				<if test="remark != null and remark != ''">
+					 AND remark=#{remark}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					 AND create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					 AND create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					 AND update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					 update_date=#{updateDate}
+				</if>
+		</where>
+		order by sequence
+	</select>
+	<insert id="addEntity" parameterType="Element">
+		insert into 
+		gen_element(
+			id,
+			tag_id,
+			element_name,
+			required,
+			remark,
+			description,
+			default_val,
+			sequence,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{tagId},
+			#{elementName},
+			#{required},
+			#{remark},
+			#{description},
+			#{defaultVal},
+			#{sequence},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Element">
+		update 
+			gen_element 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="tagId !=null and tagId !=''">
+			tag_id=#{tagId},
+		</if>
+		<if test="elementName !=null and elementName !=''">
+			element_name=#{elementName},
+		</if>
+		<if test="required !=null and required !=''">
+			required=#{required},
+		</if>
+		<if test="remark !=null and remark !=''">
+			remark=#{remark},
+		</if>
+		<if test="description !=null and description !=''">
+			description=#{description},
+		</if>
+		<if test="defaultVal !=null and defaultVal !=''">
+			default_val=#{defaultVal},
+		</if>
+		<if test="sequence !=null and sequence !=''">
+			sequence=#{sequence},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Element">
+		delete from gen_element where id=#{id}
+	</delete>
+	<delete id="deleteEntityByTagId" parameterType="string">
+		delete from gen_element where tag_id=#{_parameter}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Element">
+		delete from gen_element 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+	
+	<select id="findColumnElements" resultType="ColumnElement" parameterType="ColumnElement">
+		select 
+			id AS "id",
+			column_id AS "columnId",
+			element_id AS "elementId",
+			element_value AS "elementValue",
+			create_user AS "createUser",
+			create_date AS "createDate",
+			update_user AS "updateUser",
+			update_date AS "updateDate"
+		from 
+		gen_column_element
+		<where>
+			<if test="columnId != null and columnId != ''">
+				column_id = #{columnId}
+			</if>
+			<if test="elementId != null and elementId != ''">
+				AND element_id = #{elementId}
+			</if>
+			<if test="elementValue != null and elementValue != ''">
+				AND element_value = #{elementValue}
+			</if>
+		</where>
+	</select>
+	<delete id="deleteColumnElements" parameterType="string">
+		delete from gen_column_element
+		where column_id = #{_parameter}
+	</delete>
+	<insert id="saveColumnElements" parameterType="ColumnElement">
+		insert into 
+		gen_column_element(
+			id,
+			column_id,
+			element_id,
+			element_value,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{columnId},
+			#{elementId},
+			#{elementValue},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+</mapper>

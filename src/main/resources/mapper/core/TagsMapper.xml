@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.TagsMapper" >
+	<sql id="columns">
+		id AS "id",
+		tag_name AS "tagName",
+		remark AS "remark",
+		status AS "status",
+		sequence AS "sequence",
+		create_user AS "createUser",
+		create_date AS "createDate",
+		update_user AS "updateUser",
+		update_date AS "updateDate"
+	</sql>
+	<select id="findOne" parameterType="Tags" resultType="Tags">
+		select 
+			<include refid="columns"/>
+		from gen_tags
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Tags" resultType="Tags">
+		select 
+			 <include refid="columns"/>
+		from gen_tags
+		<where>
+				<if test="id != null and id != ''">
+					 AND id=#{id}
+				</if>
+				<if test="tagName != null and tagName != ''">
+					 AND tag_name=#{tagName}
+				</if>
+				<if test="remark != null and remark != ''">
+					 AND remark=#{remark}
+				</if>
+				<if test="status != null and status != ''">
+					 AND status=#{status}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					 AND create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					 AND create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					 AND update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					 update_date=#{updateDate}
+				</if>
+		</where>
+		order by sequence asc
+	</select>
+	<insert id="addEntity" parameterType="Tags">
+		insert into 
+		gen_tags(
+			id,
+			tag_name,
+			remark,
+			status,
+			sequence,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{tagName},
+			#{remark},
+			#{status},
+			#{sequence},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Tags">
+		update 
+			gen_tags 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="tagName !=null and tagName !=''">
+			tag_name=#{tagName},
+		</if>
+		<if test="remark !=null and remark !=''">
+			remark=#{remark},
+		</if>
+		<if test="status !=null and status !=''">
+			status=#{status},
+		</if>
+		<if test="sequence !=null and sequence !=''">
+			sequence=#{sequence},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Tags">
+		delete from gen_tags where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Tags">
+		delete from gen_tags 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

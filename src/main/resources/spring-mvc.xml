@@ -1,0 +1,108 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:property-placeholder location="classpath:resources.properties"/>
+
+    <!-- 开启controller注解支持 -->
+    <!-- 注意事项请参考：http://jinnianshilongnian.iteye.com/blog/1762632 -->
+    <context:component-scan base-package="com.hplatform.*.**.web.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+	<mvc:interceptors>
+		<bean class="com.hplatform.core.web.interceptor.AuthorityInterceptor" />  
+	</mvc:interceptors>
+
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <bean class="com.hplatform.core.common.method.CurrentUserMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
+        <mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+		    	<constructor-arg value="UTF-8" />
+			</bean>
+			<!-- 将Jackson2HttpMessageConverter的默认格式化输出为false -->
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="prettyPrint" value="false"/>
+            </bean>
+		</mvc:message-converters>
+    </mvc:annotation-driven> 
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> 
+		线程安全的访问session
+		<property name="synchronizeOnSession" value="true"/> 
+		<property name="customArgumentResolvers">
+			<list>
+			   <bean class="com.hplatform.core.common.method.CurrentUserMethodArgumentResolver"/>
+			</list>
+		</property>
+	</bean>  
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		日期类型的转换
+		<property name="webBindingInitializer">  
+			<bean class="com.hplatform.core.common.dateconvert.MyWebBindingInitializer"/>  
+		</property>
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">  
+					解决ajax返回中文字符串乱码的问题
+					<property name="supportedMediaTypes">  
+						<list>  
+							<value>text/plain;charset=UTF-8</value>  
+						</list>  
+					</property>  
+				 </bean>  
+				<bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	 </bean>
+	 <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/> -->
+	
+    <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
+    <mvc:default-servlet-handler/>
+
+	<!-- 定义无Controller的path<->view直接映射 -->
+	<mvc:view-controller path="/" view-name="redirect:${sitePath}/"/>
+	<mvc:view-controller path="/${adminPath}" view-name="redirect:${adminPath}/"/>
+
+    <!-- 静态资源映射 -->
+    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
+
+    <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
+    <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:order="1">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 控制器异常处理 -->
+    <bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+    </bean>
+
+	<!-- 上传文件拦截，设置最大上传文件大小   10G=10*1024*1024*1024(B)=1073741824 bytes -->  
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+		<property name="maxUploadSize" value="${maxUploadSize}" />  
+	</bean>
+
+    <bean class="com.hplatform.core.exception.DefaultExceptionHandler"/>
+
+    <import resource="spring-mvc-shiro.xml"/>
+
+</beans>

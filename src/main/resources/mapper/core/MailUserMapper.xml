@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.MailUserMapper" >
+	<sql id="mailUserColumn"> 
+		mu.id,
+		mu.userid AS "user.id",
+		mu.mail_typeid AS "mailDict.id",
+		mu.mail_account AS "mailAccount",
+		mu.mail_password AS "mailPassword",
+		mu.backupFlag AS "backupFlag",
+		mu.useable AS "useAble",
+		mu.create_Date AS "createDate",
+		mu.update_Date AS "updateDate",
+		mu.create_user AS "createUser",
+		mu.update_user AS "updateUser",
+		u.real_name AS "user.realName",
+		md.type AS "mailDict.type",
+		md.smtp AS "mailDict.smtp",
+		md.smtp_port AS "mailDict.smtpPort",
+		md.pop3 AS "mailDict.pop3",
+		md.pop3_port AS "mailDict.pop3Port",
+		md.imap AS "mailDict.imap",
+		md.imap_port AS "mailDict.imapPort"
+	</sql>
+	<select id="findAll" parameterType="mailUser" resultType="mailUser">
+		SELECT 
+			<include refid="mailUserColumn"/>
+		FROM sys_mail_user mu
+		LEFT JOIN sys_user u ON u.id=mu.userid
+		LEFT JOIN sys_mail_dict md ON md.id=mu.mail_typeid
+		<where>
+			<if test="id != null and id != ''">
+				mu.id = #{id}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND u.id = #{user.id}
+			</if>
+			<if test="useAble != null and useAble != ''">
+				AND mu.useAble = #{useAble}
+			</if>
+		</where>
+	</select>
+	<select id="findOne" parameterType="mailUser" resultType="mailUser">
+		SELECT 
+			<include refid="mailUserColumn"/>
+		FROM sys_mail_user mu
+		LEFT JOIN sys_user u ON u.id=mu.userid
+		LEFT JOIN sys_mail_dict md ON md.id=mu.mail_typeid
+		<where>
+			<if test="id != null and id != ''">
+				mu.id = #{id}
+			</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="mailUser">
+		INSERT INTO 
+			sys_mail_user 
+		VALUES(
+			#{id},
+			#{user.id},
+			#{mailDict.id},
+			#{mailAccount},
+			#{mailPassword},
+			#{backupFlag},
+			#{useAble},
+			#{createDate},
+			#{updateDate},
+			#{createUser},
+			#{updateUser}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="mailUser">
+		UPDATE 
+			sys_mail_user 
+		<set>
+			<if test="user !=null and user.id != null and user.id != ''">
+				userid = #{user.id},
+			</if>
+			<if test="mailDict !=null and mailDict.id != null and mailDict.id != ''">
+				mail_typeid = #{mailDict.id},
+			</if>
+			<if test="mailAccount != null and mailAccount != ''">
+				mail_Account = #{mailAccount},
+			</if>
+			<if test="mailPassword != null and mailPassword != ''">
+				mail_Password = #{mailPassword},
+			</if>
+			<if test="backupFlag != null and backupFlag != ''">
+				backupFlag = #{backupFlag},
+			</if>
+			<if test="useAble != null and useAble != ''">
+				useAble = #{useAble},
+			</if>
+			<if test="createDate != null and createDate != ''">
+				create_Date = #{createDate},
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				update_Date = #{updateDate},
+			</if>
+			<if test="createUser !=null and createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser != null and updateUser != ''">
+				updateUser = #{updateUser}
+			</if>
+		</set>
+		WHERE 	
+		id = #{id}
+	</update>
+	<delete id="deleteEntity" parameterType="mailUser">
+		DELETE FROM sys_mail_user
+		WHERE id =#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="mailUser">
+		DELETE FROM sys_mail_user
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</delete>
+</mapper>

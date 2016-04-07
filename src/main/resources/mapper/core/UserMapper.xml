@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.UserMapper" >
+	<sql id="columns">
+		id, organization_id as organizationId, username, password, 
+		salt, role_ids as roleIdsStr, locked,activation,nick,
+		real_name as "realName",user_type as "userType",sex,id_card as "idCard",
+		other_card as "otherCard",birthday,mobilephone as "mobilePhone",
+		phone,qq,msn,email,website,address,comment,pic,head_pic as "headPic",
+		last_login as "lastLogin",login_ip as "loginIp",score,money,
+		create_user as "createUser",update_user as "updateUser",
+		create_date as "createDate",update_date as "updateDate"
+	</sql>
+	<insert id="addEntity" parameterType="User">
+		insert into 
+		sys_user(
+		id,organization_id, username, password, nick,
+		real_name,user_type,sex,id_card,other_card,birthday,mobilephone,
+		phone,qq,msn,email,website,address,comment,pic,head_pic,
+		last_login,login_ip,score,money,
+		salt, role_ids, locked,activation,
+		create_user,update_user,create_date,update_date) 
+		values(#{id},#{organizationId},#{username},#{password},#{nick},
+		#{realName},#{userType},#{sex},#{idCard},#{otherCard},#{birthday},#{mobilePhone},
+		#{phone},#{qq},#{msn},#{email},#{website},#{address},#{comment},#{pic},#{headPic},
+		#{lastLogin},#{loginIp},#{score},#{money},
+		#{salt},#{roleIdsStr},#{locked},#{activation},
+		#{createUser},#{updateUser},#{createDate},#{updateDate})
+	</insert>
+	<update id="updateEntity" parameterType="User">
+		update 
+			sys_user 
+		<set>
+			<if test="organizationId !=null and organizationId !=''">
+				organization_id=#{organizationId},
+			</if>
+			<if test="username !=null and username !=''">
+				username=#{username},
+			</if>
+			<if test="password !=null and password !=''">
+				password=#{password},
+			</if>
+			<if test="nick!=null and nick!=''">nick=#{nick},</if>
+			<if test="realName!=null and realName!=''">real_name=#{realName},</if>
+			<if test="userType!=null and userType!=''">user_type=#{userType},</if>
+			<if test="sex!=null and sex!=''">sex=#{sex},</if>
+			<if test="idCard!=null and idCard!=''">id_card=#{idCard},</if>
+			<if test="otherCard!=null and otherCard!=''">other_card=#{otherCard},</if>
+			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
+			<if test="mobilePhone!=null and mobilePhone!=''">mobilephone=#{mobilePhone},</if>
+			<if test="phone!=null and phone!=''">phone=#{phone},</if>
+			<if test="qq!=null and qq!=''">qq=#{qq},</if>
+			<if test="msn!=null and msn!=''">msn=#{msn},</if>
+			<if test="email!=null and email!=''">email=#{email},</if>
+			<if test="website!=null and website!=''">website=#{website},</if>
+			<if test="address!=null and address!=''">address=#{address},</if>
+			<if test="comment!=null and comment!=''">comment=#{comment},</if>
+			<if test="pic!=null and pic!=''">pic=#{pic},</if>
+			<if test="headPic!=null and headPic!=''">head_pic=#{headPic},</if>
+			<if test="lastLogin!=null and lastLogin!=''">last_login=#{lastLogin},</if>
+			<if test="loginIp!=null and loginIp!=''">login_ip=#{loginIp},</if>
+			<if test="score!=null and score!=''">score=#{score},</if>
+			<if test="money!=null and money!=''">money=#{money},</if>
+			<if test="salt !=null and salt !=''">
+				salt=#{salt},
+			</if>
+			<if test="roleIdsStr !=null and roleIdsStr !=''">
+				role_ids=#{roleIdsStr},
+			</if>
+			<if test="locked !=null and locked !=''">
+				locked=#{locked},
+			</if>
+			<if test="activation !=null and activation !=''">
+				activation=#{activation},
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				create_user=#{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				update_user=#{updateUser},
+			</if>
+			<if test="createDate !=null and createDate !=''">
+				create_date=#{createDate},
+			</if>
+			<if test="updateDate !=null and updateDate !=''">
+				update_date=#{updateDate}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<!-- 修改密码 -->
+	<update id="updatePassword" parameterType="User">
+		update sys_user 
+		set 
+			password = #{password},
+			salt = #{salt},
+			update_user=#{updateUser},
+			update_date=#{updateDate}
+		where id=#{id}
+	</update>
+	<!-- 验证原始密码输入正确性 -->
+	<select id="confirmOldPwd" parameterType="User" resultType="User">
+		select <include refid="columns"/> from sys_user where id=#{id} and password=#{password}
+	</select>
+	<delete id="deleteEntity" parameterType="User">
+		delete from sys_user where id=#{id}
+	</delete>
+	<select id="findOne" parameterType="User" resultType="User">
+		select 
+			<include refid="columns"/>
+		from sys_user
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+			<if test="username != null and username != ''">
+				and (username=#{username} or email=#{username} or mobilephone=#{username})
+			</if>
+			<if test="nick != null and nick != ''">
+				and nick=#{nick}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="User" resultType="User">
+		select 
+			<include refid="columns"/>
+		from sys_user
+	</select>
+	<select id="registerCheckInfo" parameterType="User" resultType="User">
+		select 
+			<include refid="columns"/>
+		from sys_user
+		<where>
+			<if test="username!=null and username!=''">
+				(username=#{username} or email=#{username} or mobilephone=#{username})
+			</if>
+			<if test="nick!=null and nick!=''">
+				and nick=#{nick}
+			</if>
+			<if test="idCard!=null and idCard!=''">
+				and idCard=#{idCard}
+			</if>
+		</where>
+	</select>
+	<!-- 锁定或者解锁用户 -->
+	<update id="lockUser" parameterType="User">
+		update sys_user set locked=#{locked} 
+		where 
+		<if test="username!=null and username!=''">
+			username=#{username}
+		</if>
+		<if test="email!=null and email!=''">
+			email=#{email}
+		</if>
+		<if test="mobilePhone!=null and mobilePhone!=''">
+			mobilephone=#{mobilePhone}
+		</if>
+	</update>
+	<!-- 更改用户激活状态 -->
+	<update id="activationUser" parameterType="User">
+		update sys_user set activation=#{activation} 
+		where 
+		<if test="username!=null and username!=''">
+			username=#{username}
+		</if>
+		<if test="email!=null and email!=''">
+			email=#{email}
+		</if>
+		<if test="mobilePhone!=null and mobilePhone!=''">
+			mobilephone=#{mobilePhone}
+		</if>
+		<if test="id!=null and id!=''">
+			id=#{id}
+		</if>
+	</update>
+</mapper>

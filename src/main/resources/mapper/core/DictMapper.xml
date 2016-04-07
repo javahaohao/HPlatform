@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.DictMapper" >
+	<sql id="columns">
+		id, name,value, means, parent_id as "parentId", 
+		parent_ids as "parentIds", available,
+		create_user as "createUser",update_user as "updateUser",
+		create_date as "createDate",update_date as "updateDate"
+	</sql>
+	<insert id="addEntity" parameterType="Dict">
+		insert into 
+			sys_dict(id,name,value, means, parent_id, parent_ids, available,create_user,update_user,create_date,update_date) 
+		values(#{id},#{name},#{value},#{means},#{parentId},#{parentIds},#{available},#{createUser},#{updateUser},#{createDate},#{updateDate})
+	</insert>
+	<update id="updateEntity" parameterType="Dict">
+		update 
+			sys_dict 
+		<set>
+			<if test="name !=null and name !=''">
+				name=#{name},
+			</if>
+			<if test="value !=null and value !=''">
+				value=#{value},
+			</if>
+			<if test="means !=null and means !=''">
+				means=#{means},
+			</if>
+			<if test="parentId !=null and parentId !=''">
+				parent_id=#{parentId},
+			</if>
+			<if test="parentIds !=null and parentIds !=''">
+				parent_ids=#{parentIds},
+			</if>
+			<if test="available !=null and available !=''">
+				available=#{available},
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				create_user=#{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				update_user=#{updateUser},
+			</if>
+			<if test="createDate !=null and createDate !=''">
+				create_date=#{createDate},
+			</if>
+			<if test="updateDate !=null and updateDate !=''">
+				update_date=#{updateDate}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Dict">
+		delete from sys_dict where id=#{id}
+	</delete>
+	<delete id="deleteEntityByParent" parameterType="Dict">
+		delete from sys_dict where parent_ids like CONCAT(#{selfPath},'%')
+	</delete>
+	<select id="findOne" parameterType="Dict" resultType="Dict">
+		select 
+			<include refid="columns"/>
+		from sys_dict 
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findChildDictById" parameterType="String" resultType="Dict">
+		select 
+			<include refid="columns"/>
+		from sys_dict 
+		<where>
+			<if test="_parameter != null and _parameter != ''">
+				parent_id=#{_parameter}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Dict" resultType="Dict">
+		select 
+			<include refid="columns"/>
+		from sys_dict 
+		order by concat(parent_ids, id) asc
+	</select>
+	<update id="move" parameterType="HashMap">
+		update 
+			sys_dict 
+		set parent_ids=concat(#{target}, substring(parent_ids, length(#{source})+1)) 
+		where parent_ids like CONCAT(#{source},'%')
+	</update>
+</mapper>

@@ -1,0 +1,74 @@
+@CHARSET "UTF-8";
+.message-group{
+	border:1px solid #DDE4ED;
+	padding-top: 10px;
+	cursor: pointer;
+}
+.message-group>.body{
+	margin-left: 45px;
+    margin-right: 0px;
+}
+.message-group>.user{
+	left:3px;
+}
+.message-group>.friends{
+	padding-top:5px;
+}
+.message-group>.body>.text{
+	padding-left: 0px;
+}
+.message-group>.body>.text:after{
+	border: 0px;
+}
+.message-group>.body>.tools{
+	bottom:18px;
+}
+.message-group>.body>.time{
+	right: 0px;
+}
+.container-group-left{
+	padding-right:0px;
+}
+.container-group-right{
+	padding-left:0px;
+}
+#talk-tabs li{
+	line-height: 35px;
+}
+#talk-tabs .talk-label{
+	padding-right: 30px;
+}
+#talk-tabs .talk-close{
+	left: -15px;
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
+}
+#talk-tabs .msg-queue{
+	height:350px;
+	overflow: auto;
+	word-wrap: break-word;
+}
+#talk-tabs .group-user{
+	height:350px;
+	overflow: auto;
+	word-wrap: break-word;
+	border-left:1px solid #C5D0DC;
+    text-align: center;
+}
+#talk-tabs .group-user .user-div{
+    padding: 10px 0px 5px 0px;
+    text-align: center;
+}
+#talk-tabs .group-user .user-div img{
+    border-radius: 100%;
+    border: 2px solid #5293C4;
+    max-width: 30px;
+    position: relative;
+}
+#talk-tabs>.msg-content{
+	padding-right:0px;
+}
+#invite-btn{
+	margin-bottom:15px;
+}

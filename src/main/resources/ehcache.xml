@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="es">
+
+    <diskStore path="java.io.tmpdir"/>
+    
+    <defaultCache maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="30" timeToLiveSeconds="30" overflowToDisk="false"/>  
+    <!--   
+        配置自定义缓存  
+        maxElementsInMemory：缓存中允许创建的最大对象数  
+        eternal：缓存中对象是否为永久的，如果是，超时设置将被忽略，对象从不过期。  
+        timeToIdleSeconds：  
+               缓存数据的钝化时间，也就是在一个元素消亡之前， 两次访问时间的最大时间间隔值，  
+               这只能在元素不是永久驻留时有效， 如果该值是 0 就意味着元素可以停顿无穷长的时间。  
+        timeToLiveSeconds：  
+                缓存数据的生存时间，也就是一个元素从构建到消亡的最大时间间隔值，  
+                这只能在元素不是永久驻留时有效，如果该值是0就意味着元素可以停顿无穷长的时间。  
+        overflowToDisk：内存不足时，是否启用磁盘缓存。  
+        memoryStoreEvictionPolicy：缓存满了之后的淘汰算法。  
+    -->  
+    <cache name="pageCaches"   
+        maxElementsInMemory="10000"   
+        eternal="false"  
+        overflowToDisk="true"   
+        timeToIdleSeconds="3600"   
+        timeToLiveSeconds="0"  
+        memoryStoreEvictionPolicy="LFU" />  
+
+    <!-- 登录记录缓存 锁定10分钟 -->
+    <cache name="passwordRetryCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <cache name="authorizationCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <cache name="authenticationCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <cache name="shiro-activeSessionCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="organization"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="role"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="resource"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="user"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+	
+	<cache name="organization_k_v"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="role_k_v"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="resource_k_v"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="user_k_v"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="dict"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="dict_k_v"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    
+    <cache name="dict_parentId"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <!-- 实名认证缓存 -->
+    <cache name="verified_cache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="60"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <!-- 重置密码缓存 -->
+    <cache name="reset_pwd_cache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="86400"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <!-- 区域字典key-value缓存 -->
+    <cache name="area_k_v"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <!-- 区域字典同级及上级缓存 -->
+    <cache name="area_k_brother"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+    <!-- 区域字典省份信息缓存 -->
+    <cache name="area_k_province"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+</ehcache>

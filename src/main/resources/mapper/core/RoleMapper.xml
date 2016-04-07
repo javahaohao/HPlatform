@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.RoleMapper" >
+	<sql id="columns">
+		id, role, description, 
+		resource_ids as resourceIdsStr, available,
+		create_user as "createUser",update_user as "updateUser",
+		create_date as "createDate",update_date as "updateDate"
+	</sql>
+	<insert id="addEntity" parameterType="Role">
+		insert into 
+			sys_role(id,role, description, resource_ids, available,create_user,update_user,create_date,update_date) 
+		values(#{id},#{role},#{description},#{resourceIdsStr},#{available},#{createUser},#{updateUser},#{createDate},#{updateDate})
+	</insert>
+	<update id="updateEntity" parameterType="Role">
+		update 
+			sys_role 
+		<set>
+			<if test="role !=null and role !=''">
+				role=#{role},
+			</if>
+			<if test="description !=null and description !=''">
+				description=#{description},
+			</if>
+			<if test="resourceIdsStr !=null and resourceIdsStr !=''">
+				resource_ids=#{resourceIdsStr},
+			</if>
+			<if test="available !=null and available !=''">
+				available=#{available},
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				create_user=#{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				update_user=#{updateUser},
+			</if>
+			<if test="createDate !=null and createDate !=''">
+				create_date=#{createDate},
+			</if>
+			<if test="updateDate !=null and updateDate !=''">
+				update_date=#{updateDate}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Role">
+		delete from sys_role where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Role">
+		delete from sys_role 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</delete>
+	<select id="findOne" parameterType="Role" resultType="Role">
+		select 
+			<include refid="columns"/>
+		from sys_role
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Role" resultType="Role">
+		select 
+			 <include refid="columns"/>
+		from sys_role
+	</select>
+	
+</mapper>

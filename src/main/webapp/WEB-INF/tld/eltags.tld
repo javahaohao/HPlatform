@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+    <description>functions</description>
+    <tlib-version>3.0</tlib-version>
+    <short-name>fn</short-name>
+    <uri></uri>
+
+	<function>
+        <description>获取平台中支持的JS控件标示</description>
+        <name>getPlugins</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.Map getPlugins()</function-signature>
+    </function>
+
+	<function>
+        <description>获取后台访问路径</description>
+        <name>getAdminPath</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String getAdminPath()</function-signature>
+    </function>
+
+	<function>
+        <description>获取前台访问路径</description>
+        <name>getSitePath</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String getSitePath()</function-signature>
+    </function>
+
+    <function>
+        <description>obj in collection</description>
+        <name>in</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>boolean in(java.lang.Iterable,java.lang.Object)</function-signature>
+    </function>
+
+    <function>
+        <description>根据id显示组织机构名称</description>
+        <name>organizationName</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String organizationName(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>根据id列表显示多个组织机构名称</description>
+        <name>organizationNames</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String organizationNames(java.util.Collection)</function-signature>
+    </function>
+
+    <function>
+        <description>根据id显示角色名称</description>
+        <name>roleName</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String roleName(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>根据id列表显示多个角色名称</description>
+        <name>roleNames</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String roleNames(java.util.Collection)</function-signature>
+    </function>
+
+    <function>
+        <description>根据id显示资源名称</description>
+        <name>resourceName</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String resourceName(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>根据id列表显示多个资源名称</description>
+        <name>resourceNames</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.String resourceNames(java.util.Collection)</function-signature>
+    </function>
+	
+	<function>
+        <description>根据当前登录用户获取所有资源</description>
+        <name>getCurrentUserMenus</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.List getCurrentUserMenus()</function-signature>
+    </function>
+
+	<function>
+        <description>根据用户ID获取User对象</description>
+        <name>getUserById</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.User getUserById(java.lang.String)</function-signature>
+    </function>
+    
+    <function>
+        <description>获取当前User对象</description>
+        <name>getCurrentUser</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.User getCurrentUser()</function-signature>
+    </function>
+    
+    <function>
+        <description>按照字典表的ids批量查询字典数据id,id,id</description>
+        <name>getDictsByIds</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.Dict getDictsByIds(java.lang.String)</function-signature>
+    </function>
+    
+    <function>
+        <description>按照字典的ID获取字典对象</description>
+        <name>getDictById</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.Dict getDictById(java.lang.String)</function-signature>
+    </function>
+
+	<function>
+        <description>按照ID获取所有子字典数据</description>
+        <name>getChildDictById</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.List getChildDictById(java.lang.String)</function-signature>
+    </function>
+    
+    <function>
+        <description>按照PID获取省份城市数据</description>
+        <name>getAreasByPid</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.List getAreasByPid(java.lang.Integer,java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>按照LEVEL获取省份城市数据</description>
+        <name>getAreasByLevel</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.List getAreasByLevel(java.lang.Integer)</function-signature>
+    </function>
+    <function>
+        <description>按照ID获取省份城市数据</description>
+        <name>getAreaById</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.Area getAreaById(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>获取同级数据</description>
+        <name>getBrotherArea</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.Map getBrotherArea(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>判断是否是教员</description>
+        <name>isTeacher</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.Boolean isTeacher()</function-signature>
+    </function>
+    <function>
+        <description>判断是否是学员</description>
+        <name>isStudent</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.lang.Boolean isStudent()</function-signature>
+    </function>
+    <function>
+        <description>按照ID获取文件对象</description>
+        <name>getAttachById</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.Attachment getAttachById(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <description>按照文件id,id批量获取文件信息</description>
+        <name>getAttachList</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>java.util.List getAttachList(java.lang.String)</function-signature>
+    </function>
+    <function>
+       <description>返回JSON对象</description>
+       <name>toJSON</name>
+       <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+       <function-signature>java.lang.String toJSON(java.lang.Object)</function-signature>
+       <example>${elfn:toJSON(object)}</example>
+    </function>
+    <function>
+       <description>获取预制的java类型</description>
+       <name>getJavaTypeList</name>
+       <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+       <function-signature>java.util.List getJavaTypeList()</function-signature>
+       <example>${elfn:getJavaTypeList()}</example>
+    </function>
+    <function>
+       <description>获取可用插件</description>
+       <name>getPluginsList</name>
+       <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+       <function-signature>java.util.List getPluginsList()</function-signature>
+       <example>${elfn:getPluginsList()}</example>
+    </function>
+    <function>
+       <description>返回集合对象中指定字段组成的字符串</description>
+       <name>joinObjColumnValList</name>
+       <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+       <function-signature>java.util.List joinObjColumnValList(java.util.List,java.lang.String,java.lang.String)</function-signature>
+       <example>${elfn:joinObjColumnValList(list,column,split)}</example>
+    </function>
+    <function>
+       <description>获取集合中某列等于某个值的对象</description>
+       <name>getObjFromList</name>
+       <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+       <function-signature>java.lang.Object getObjFromList(java.util.List,java.lang.String,java.lang.String)</function-signature>
+       <example>${elfn:getObjFromList(list,eqColumn,eqStr)}</example>
+    </function>
+</taglib>

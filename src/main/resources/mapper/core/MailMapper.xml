@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.MailMapper" >
+	<sql id="mailColumn"> 
+		mail.id AS "id",
+		mail.mail_user AS "mailUser.id",
+		mail.subject AS "subject",
+		mail.sentdate AS "sentdate",
+		mail.replysign AS "replysign",
+		mail.hasRead AS "hasRead",
+		mail.containAttachment AS "containAttachment",
+		mail.form AS "form",
+		mail.to AS "to",
+		mail.cc AS "cc",
+		mail.bc AS "bc",
+		mail.messageid AS "messageid",
+		mail.content AS "content",
+		mail.contentype AS "contentype",
+		mail.create_date AS "createDate",
+		mail.update_date AS "updateDate",
+		mail.create_user AS "createUser",
+		mail.update_user AS "updateUser",
+		mu.mail_account AS "mailUser.mailAccount",
+		mu.mail_password AS "mailUser.mailPassword",
+		md.imap AS "mailUser.mailDict.imap",
+		md.smtp AS "mailUser.mailDict.smtp",
+		u.name AS "mailUser.user.name"
+	</sql>
+	<sql id="orderBy">
+		ORDER BY mail.create_date DESC
+	</sql>
+	<select id="findOne" parameterType="mail" resultType="mail">
+		SELECT 
+			<include refid="mailColumn"/>
+		FROM sys_mail mail
+		LEFT JOIN sys_mail_user mu ON mu.id=mail.mail_user
+		LEFT JOIN sys_user u ON u.id = mu.userid
+		LEFT JOIN sys_mail_dict md ON md.id = mu.mail_typeid
+		<where>
+			<if test="id != null and id != ''">
+				mail.id = #{id}
+			</if>
+		</where>
+		<include refid="orderBy"/>
+	</select>
+	<select id="findAll" parameterType="mail" resultType="mail">
+		SELECT 
+			<include refid="mailColumn"/>
+		FROM sys_mail mail
+		LEFT JOIN sys_mail_user mu ON mu.id=mail.mail_user
+		LEFT JOIN sys_user u ON u.id = mu.userid
+		LEFT JOIN sys_mail_dict md ON md.id = mu.mail_typeid
+		<where>
+			<if test="id != null and id != ''">
+				mail.id = #{id}
+			</if>
+			<if test="mailUser != null and mailUser.id !=null and mailUser.id != ''">
+				AND mail.mail_user = #{mailUser.id}
+			</if>
+			<if test="mailUser != null and mailUser.useAble != null and mailUser.useAble != ''">
+				AND mu.useAble = #{mailUser.useAble}
+			</if>
+		</where>
+		<include refid="orderBy"/>
+	</select>
+	<select id="findMailMessageIdList" parameterType="mailUser" resultType="String">
+		SELECT 
+			mail.messageid
+		FROM sys_mail mail
+		<where>
+			<if test="id !=null and id != ''">
+				mail.mail_user = #{id}
+			</if>
+		</where>
+		<include refid="orderBy"/>
+	</select>
+	<insert id="addEntity" parameterType="mail">
+		INSERT INTO 
+			sys_mail
+		VALUES(
+			#{id},
+			#{mailUser.id},
+			#{subject},
+			#{sentdate},
+			#{replysign},
+			#{hasRead},
+			#{containAttachment},
+			#{form},
+			#{to},
+			#{cc},
+			#{bc},
+			#{messageid},
+			#{content},
+			#{contentype},
+			#{createDate},
+			#{updateDate},
+			#{createUser},
+			#{updateUser}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="mail">
+		UPDATE 
+			sys_mail
+		<set>
+			<if test="mailUser != null and mailUser.id != null and mailUser.id !=  ''">mail_user=#{mailUser.id},</if>
+			<if test="subject != null and subject !=  ''">subject=#{subject},</if>
+			<if test="sentdate != null and sentdate !=  ''">sentdate=#{sentdate},</if>
+			<if test="replysign != null and replysign !=  ''">replysign=#{replysign},</if>
+			<if test="hasRead != null and hasRead !=  ''">hasRead=#{hasRead},</if>
+			<if test="containAttachment != null and containAttachment !=  ''">containAttachment=#{containAttachment},</if>
+			<if test="form != null and form !=  ''">form=#{form},</if>
+			<if test="to != null and to !=  ''">to=#{to},</if>
+			<if test="cc != null and cc !=  ''">cc=#{cc},</if>
+			<if test="bc != null and bc !=  ''">bc=#{bc},</if>
+			<if test="messageid != null and messageid !=  ''">messageid=#{messageid},</if>
+			<if test="content != null and content !=  ''">content=#{content},</if>
+			<if test="contentype != null and contentype !=  ''">contentype=#{contentype},</if>
+			<if test="createDate != null and createDate !=  ''">create_date=#{createDate},</if>
+			<if test="updateDate != null and updateDate !=  ''">update_date=#{updateDate},</if>
+			<if test="createUser != null and createUser != null and createUser !=  ''">create_user=#{createUser},</if>
+			<if test="updateUser != null and updateUser != null and updateUser !=  ''">update_user=#{updateUser}</if>
+		</set>
+		WHERE 	
+		id = #{id}
+	</update>
+	<delete id="deleteBatchEntity" parameterType="mail">
+		DELETE FROM sys_mail
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</delete>
+	<delete id="deleteEntity" parameterType="mail">
+		DELETE FROM sys_mail
+		WHERE id = #{id}
+	</delete>
+</mapper>

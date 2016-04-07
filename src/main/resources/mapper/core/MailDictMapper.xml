@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.MailDictMapper" >
+	<sql id="mailDictColumn"> 
+		id,
+		type,
+		smtp,
+		smtp_port AS "smtpPort",
+		pop3,
+		pop3_port AS "pop3Port",
+		imap,
+		imap_port AS "imapPort",
+		create_Date AS "createDate",
+		update_Date AS "updateDate",
+		create_user AS "createUser",
+		update_user AS "updateUser"
+	</sql>
+	<select id="findAll" parameterType="mailDict" resultType="mailDict">
+		SELECT 
+			<include refid="mailDictColumn"/>
+		FROM sys_mail_dict
+	</select>
+	<select id="findOne" parameterType="mailDict" resultType="mailDict">
+		SELECT 
+			<include refid="mailDictColumn"/>
+		FROM sys_mail_dict
+		<where>
+			<if test="id != null and id != ''">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="mailDict">
+		INSERT INTO 
+			sys_mail_dict 
+		VALUES(
+			#{id},
+			#{type},
+			#{smtp},
+			#{smtpPort},
+			#{pop3},
+			#{pop3Port},
+			#{imap},
+			#{imapPort},
+			#{createDate},
+			#{updateDate},
+			#{createUser},
+			#{updateUser}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="mailDict">
+		UPDATE 
+			sys_mail_dict 
+		<set>
+			<if test="type != null and type != ''">
+				type = #{type},
+			</if>
+			<if test="smtp != null and smtp != ''">
+				smtp = #{smtp},
+			</if>
+			<if test="smtpPort != null and smtpPort != ''">
+				smtp_Port = #{smtpPort},
+			</if>
+			<if test="pop3 != null and pop3 != ''">
+				pop3 = #{pop3},
+			</if>
+			<if test="pop3Port != null and pop3Port != ''">
+				pop3_Port = #{pop3Port},
+			</if>
+			<if test="imap != null and imap != ''">
+				imap = #{imap},
+			</if>
+			<if test="imapPort != null and imapPort != ''">
+				imap_port = #{imapPort},
+			</if>
+			<if test="createDate != null and createDate != ''">
+				create_Date = #{createDate},
+			</if>
+			<if test="updateDate != null and updateDate != ''">
+				update_Date = #{updateDate},
+			</if>
+			<if test="createUser !=null and createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser != null and updateUser != ''">
+				update_user = #{updateUser}
+			</if>
+		</set>
+		WHERE 	
+		id = #{id}
+	</update>
+	<delete id="deleteEntity" parameterType="mailDict">
+		DELETE FROM sys_mail_dict
+		WHERE id = #{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="mailDict">
+		DELETE FROM sys_mail_dict
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+			open="(" separator="," close=")">
+			#{idList}
+		</foreach>
+	</delete>
+</mapper>

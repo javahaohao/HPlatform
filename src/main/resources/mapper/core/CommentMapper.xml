@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.CommentMapper" >
+	<sql id="columns">
+		id, supper_id as "supperId",content, parent_id as "parentId", parent_ids as "parentIds", 
+		create_user as "createUser",update_user as "updateUser",
+		create_date as "createDate",update_date as "updateDate"
+	</sql>
+	<insert id="addEntity" parameterType="Comment">
+		insert into 
+			sys_comment(id, supper_id,content, parent_id, parent_ids,create_user,update_user,create_date,update_date) 
+		values(#{id},#{supperId},#{content},#{parentId},#{parentIds},#{createUser},#{updateUser},#{createDate},#{updateDate})
+	</insert>
+	<update id="updateEntity" parameterType="Comment">
+		update 
+			sys_comment 
+		<set>
+			<if test="supperId !=null and supperId !=''">
+				supper_id=#{supperId},
+			</if>
+			<if test="content !=null and content !=''">
+				content=#{content},
+			</if>
+			<if test="parentId !=null and parentId !=''">
+				parent_id=#{parentId},
+			</if>
+			<if test="parentIds !=null and parentIds !=''">
+				parent_ids=#{parentIds},
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				create_user=#{createUser},
+			</if>
+			<if test="updateUser !=null and updateUser !=''">
+				update_user=#{updateUser},
+			</if>
+			<if test="createDate !=null and createDate !=''">
+				create_date=#{createDate},
+			</if>
+			<if test="updateDate !=null and updateDate !=''">
+				update_date=#{updateDate}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Comment">
+		delete from sys_comment where id=#{id}
+	</delete>
+	<delete id="deleteEntityByParent" parameterType="Comment">
+		delete from sys_comment where parent_ids like CONCAT(#{selfPath},'%')
+	</delete>
+	<select id="findOne" parameterType="Dict" resultType="Comment">
+		select 
+			<include refid="columns"/>
+		from sys_comment 
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findChildCommentById" parameterType="String" resultType="Comment">
+		select 
+			<include refid="columns"/>
+		from sys_comment 
+		<where>
+			<if test="_parameter != null and _parameter != ''">
+				parent_id=#{_parameter}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Comment" resultType="Comment">
+		select 
+			<include refid="columns"/>
+		from sys_comment 
+		order by concat(parent_ids, id) asc
+	</select>
+</mapper>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.TableMapper" >
+	<sql id="columns">
+		id AS "id",
+		fg_type AS "fgType",
+		update_user AS "updateUser",
+		update_date AS "updateDate",
+		table_name AS "tableName",
+		create_date AS "createDate",
+		pkg AS "pkg",
+		bumodel AS "bumodel",
+		domain_name AS "domainName",
+		create_user AS "createUser",
+		statu AS "statu",
+		comments AS "comments"
+	</sql>
+	<select id="findOne" parameterType="Table" resultType="Table">
+		select 
+			<include refid="columns"/>
+		from gen_table
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Table" resultType="Table">
+		select 
+			 <include refid="columns"/>
+		from gen_table
+		<where>
+				<if test="id != null and id != ''">
+					id=#{id}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND update_date=#{updateDate}
+				</if>
+				<if test="tableName != null and tableName != ''">
+					AND table_name=#{tableName}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND create_date=#{createDate}
+				</if>
+				<if test="pkg != null and pkg != ''">
+					AND pkg=#{pkg}
+				</if>
+				<if test="bumodel != null and bumodel != ''">
+					AND bumodel=#{bumodel} 
+				</if>
+				<if test="domainName != null and domainName != ''">
+					AND domain_name=#{domainName}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND create_user=#{createUser}
+				</if>
+				<if test="statu != null and statu != ''">
+					AND statu=#{statu}
+				</if>
+				<if test="fgType != null and fgType != ''">
+					AND fg_type=#{fgType}
+				</if>
+				<if test="comments != null and comments != ''">
+					AND comments=#{comments}
+				</if>
+		</where>
+		order by create_date desc
+	</select>
+	<insert id="addEntity" parameterType="Table">
+		insert into 
+		gen_table(
+			id,
+			update_user,
+			update_date,
+			table_name,
+			create_date,
+			pkg,
+			bumodel,
+			domain_name,
+			create_user,
+			statu,
+			comments,
+			fg_type
+		) 
+		values(
+			#{id},
+			#{updateUser},
+			#{updateDate},
+			#{tableName},
+			#{createDate},
+			#{pkg},
+			#{bumodel},
+			#{domainName},
+			#{createUser},
+			#{statu},
+			#{comments},
+			#{fgType}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Table">
+		update 
+		gen_table 
+		<set>
+		<if test="id !=null and id !=''">
+		id=#{id},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+		update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+		update_date=#{updateDate},
+		</if>
+		<if test="tableName !=null and tableName !=''">
+		table_name=#{tableName},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+		create_date=#{createDate},
+		</if>
+		<if test="pkg !=null and pkg !=''">
+		pkg=#{pkg},
+		</if>
+		<if test="bumodel !=null and bumodel !=''">
+		bumodel=#{bumodel},
+		</if>
+		<if test="domainName !=null and domainName !=''">
+		domain_name=#{domainName},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+		create_user=#{createUser},
+		</if>
+		<if test="statu !=null and statu !=''">
+		statu=#{statu},
+		</if>
+		<if test="comments !=null and comments !=''">
+		comments=#{comments},
+		</if>
+		<if test="fgType !=null and fgType !=''">
+		fg_type=#{fgType}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Table">
+		delete from gen_table where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Table">
+		delete from gen_table 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

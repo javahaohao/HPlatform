@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.core.mapper.ColumnsMapper" >
+	<sql id="columns">
+		id AS "id",
+		table_id AS "tableId",
+		column_name AS "columnName",
+		column_type AS "columnType",
+		data_type AS "dataType",
+		plugin AS "plugin",
+		properties_name AS "propertiesName",
+		properties_type AS "propertiesType",
+		comments AS "comments",
+		gen_flag AS "genFlag",
+		hide_flag AS "hideFlag",
+		sort_flag AS "sortFlag",
+		sequence AS "sequence",
+		create_user AS "createUser",
+		create_date AS "createDate",
+		update_user AS "updateUser",
+		update_date AS "updateDate"
+	</sql>
+	<sql id="orderby">
+		order by sequence
+	</sql>
+	<resultMap type="Columns" id="columnsMap">
+		<id column="id" property="id"/>
+		<result column="table_id" property="tableId"/>
+		<result column="column_name" property="columnName"/>
+		<result column="column_type" property="columnType"/>
+		<result column="data_type" property="dataType"/>
+		<result column="plugin" property="plugin"/>
+		<result column="properties_name" property="propertiesName"/>
+		<result column="properties_type" property="propertiesType"/>
+		<result column="comments" property="comments"/>
+		<result column="gen_flag" property="genFlag"/>
+		<result column="hide_flag" property="hideFlag"/>
+		<result column="sort_flag" property="sortFlag"/>
+		<result column="sequence" property="sequence"/>
+		<result column="create_user" property="createUser"/>
+		<result column="create_date" property="createDate"/>
+		<result column="update_user" property="updateUser"/>
+		<result column="update_date" property="updateDate"/>
+		<collection property="columnElements" javaType="list" ofType="ColumnElement">
+			<id column="columnElementsId" property="id"/>
+			<result column="column_id" property="columnId"/>
+			<result column="element_id" property="element.id"/>
+			<result column="description" property="element.description"/>
+			<result column="element_name" property="element.elementName"/>
+			<result column="required" property="element.required"/>
+			<result column="default_val" property="element.defaultVal"/>
+			<result column="element_value" property="elementValue"/>
+		</collection>
+		<collection property="columnValidates" javaType="list" ofType="ColumnValidate">
+			<id column="columnValidatesId" property="id"/>
+			<result column="validate_id" property="validateId"/>
+			<result column="validate_val" property="validateVal"/>
+			<result column="validate_message" property="validateMessage"/>
+			<result column="name" property="validate.name"/>
+			<result column="value" property="validate.value"/>
+		</collection>
+	</resultMap>
+	<select id="findAllByRelation" resultMap="columnsMap" parameterType="Columns">
+		select 
+			a.id,
+			a.table_id,
+			a.column_name,
+			a.column_type,
+			a.data_type,
+			a.plugin,
+			a.properties_name,
+			a.properties_type,
+			a.comments,
+			a.gen_flag,
+			a.hide_flag,
+			a.sort_flag,
+			a.sequence,
+			a.create_user,
+			a.create_date,
+			a.update_user,
+			a.update_date,
+			b.id AS columnElementsId,
+			b.column_id,
+			b.element_id,
+			b.element_value,
+			b.create_user,
+			b.create_date,
+			b.update_user,
+			b.update_date,
+			c.description,
+			c.element_name,
+			c.required,
+			c.default_val,
+			d.validate_id,
+			d.validate_val,
+			d.validate_message,
+			e.name,
+			e.value
+		from 
+			gen_columns a 
+			left join gen_column_element b on a.id=b.column_id
+			left join gen_element c on c.id=b.element_id
+			left join gen_column_validate d on d.column_id=a.id
+			left join sys_dict e on e.id=d.validate_id
+		<where>
+				<if test="id != null and id != ''">
+					a.id=#{id}
+				</if>
+				<if test="tableId != null and tableId != ''">
+					AND a.table_id=#{tableId}
+				</if>
+				<if test="columnName != null and columnName != ''">
+					AND a.column_name=#{columnName}
+				</if>
+				<if test="dataType != null and dataType != ''">
+					AND a.data_type=#{dataType}
+				</if>
+				<if test="plugin != null and plugin != ''">
+					AND a.plugin=#{plugin}
+				</if>
+				<if test="propertiesName != null and propertiesName != ''">
+					AND a.properties_name=#{propertiesName}
+				</if>
+				<if test="propertiesType != null and propertiesType != ''">
+					AND a.properties_type=#{propertiesType}
+				</if>
+				<if test="comments != null and comments != ''">
+					AND a.comments=#{comments}
+				</if>
+				<if test="genFlag != null and genFlag != ''">
+					AND a.gen_flag=#{genFlag}
+				</if>
+				<if test="hideFlag != null and hideFlag != ''">
+					AND a.hide_flag=#{hideFlag}
+				</if>
+				<if test="sortFlag != null and sortFlag != ''">
+					AND a.sort_flag=#{sortFlag}
+				</if>
+				<if test="sequence != null and sequence != ''">
+					AND a.sequence=#{sequence}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND a.create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND a.create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND a.update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND a.update_date=#{updateDate}
+				</if>
+		</where>
+		order by a.sequence,c.sequence
+	</select>
+	<select id="findOne" parameterType="Columns" resultType="Columns">
+		select 
+			<include refid="columns"/>
+		from gen_columns
+		<where>
+			<if test="id != null and id != ''">
+				id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Columns" resultType="Columns">
+		select 
+			 <include refid="columns"/>
+		from gen_columns
+		<where>
+				<if test="id != null and id != ''">
+					id=#{id}
+				</if>
+				<if test="tableId != null and tableId != ''">
+					AND table_id=#{tableId}
+				</if>
+				<if test="columnName != null and columnName != ''">
+					AND column_name=#{columnName}
+				</if>
+				<if test="dataType != null and dataType != ''">
+					AND data_type=#{dataType}
+				</if>
+				<if test="plugin != null and plugin != ''">
+					AND plugin=#{plugin}
+				</if>
+				<if test="propertiesName != null and propertiesName != ''">
+					AND properties_name=#{propertiesName}
+				</if>
+				<if test="propertiesType != null and propertiesType != ''">
+					AND properties_type=#{propertiesType}
+				</if>
+				<if test="comments != null and comments != ''">
+					AND comments=#{comments}
+				</if>
+				<if test="genFlag != null and genFlag != ''">
+					AND gen_flag=#{genFlag}
+				</if>
+				<if test="hideFlag != null and hideFlag != ''">
+					AND hide_flag=#{hideFlag}
+				</if>
+				<if test="sortFlag != null and sortFlag != ''">
+					AND sort_flag=#{sortFlag}
+				</if>
+				<if test="sequence != null and sequence != ''">
+					AND sequence=#{sequence}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND create_user=#{createUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND create_date=#{createDate}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND update_user=#{updateUser}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND update_date=#{updateDate}
+				</if>
+		</where>
+		<include refid="orderby"/>
+	</select>
+	<insert id="addEntity" parameterType="Columns">
+		insert into 
+		gen_columns(
+			id,
+			table_id,
+			column_name,
+			column_type,
+			data_type,
+			plugin,
+			properties_name,
+			properties_type,
+			comments,
+			gen_flag,
+			hide_flag,
+			sort_flag,
+			sequence,
+			create_user,
+			create_date,
+			update_user,
+			update_date
+		) 
+		values(
+			#{id},
+			#{tableId},
+			#{columnName},
+			#{columnType},
+			#{dataType},
+			#{plugin},
+			#{propertiesName},
+			#{propertiesType},
+			#{comments},
+			#{genFlag},
+			#{hideFlag},
+			#{sortFlag},
+			#{sequence},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Columns">
+		update 
+		gen_columns 
+		<set>
+		<if test="id !=null and id !=''">
+		id=#{id},
+		</if>
+		<if test="tableId !=null and tableId !=''">
+		table_id=#{tableId},
+		</if>
+		<if test="columnName !=null and columnName !=''">
+		column_name=#{columnName},
+		</if>
+		<if test="columnType !=null and columnType !=''">
+		column_type=#{columnType},
+		</if>
+		<if test="dataType !=null and dataType !=''">
+		data_type=#{dataType},
+		</if>
+		<if test="plugin !=null and plugin !=''">
+		plugin=#{plugin},
+		</if>
+		<if test="propertiesName !=null and propertiesName !=''">
+		properties_name=#{propertiesName},
+		</if>
+		<if test="propertiesType !=null and propertiesType !=''">
+		properties_type=#{propertiesType},
+		</if>
+		<if test="comments !=null and comments !=''">
+		comments=#{comments},
+		</if>
+		<if test="genFlag !=null">
+		gen_flag=#{genFlag},
+		</if>
+		<if test="hideFlag !=null">
+		hide_flag=#{hideFlag},
+		</if>
+		<if test="sortFlag != null">
+		sort_flag=#{sortFlag},
+		</if>
+		<if test="sequence !=null and sequence !=''">
+		sequence=#{sequence},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+		create_user=#{createUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+		create_date=#{createDate},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+		update_user=#{updateUser},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+		update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Columns">
+		delete from gen_columns where id=#{id}
+	</delete>
+	<delete id="deleteColumnValidates" parameterType="Columns">
+		delete from gen_column_validate where column_id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Columns">
+		delete from gen_columns 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+	<!-- 获取表的默认列 -->
+	<select id="findTableDefaultColumns" parameterType="Columns" resultType="Columns">
+		select 
+			c.TABLE_NAME as "tableName",
+			c.COLUMN_NAME as "columnName",
+			c.COLUMN_TYPE as "columnType",
+			c.DATA_TYPE as "dataType",
+			c.COLUMN_COMMENT as "comments"
+		from information_schema.COLUMNS c 
+		where c.TABLE_SCHEMA='shiro' and c.TABLE_NAME=#{tableName}
+	</select>
+	<insert id="saveColumnValidates" parameterType="ColumnValidate">
+		insert into gen_column_validate(id,column_id,validate_id,validate_val,validate_message,create_user,creat_date,update_user,update_date)
+		values(#{id},
+			#{columnId},
+			#{validateId},
+			#{validateVal},
+			#{validateMessage},
+			#{createUser},
+			#{createDate},
+			#{updateUser},
+			#{updateDate})
+	</insert>
+</mapper>
