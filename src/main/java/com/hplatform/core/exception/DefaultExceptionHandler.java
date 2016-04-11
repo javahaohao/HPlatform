@@ -20,7 +20,7 @@ public class DefaultExceptionHandler {
     public ModelAndView processUnauthenticatedException(NativeWebRequest request, UnauthorizedException e) {
         ModelAndView mv = new ModelAndView();
         mv.addObject("exception", e);
-        mv.setViewName("unauthorized");
+        mv.setViewName("exception/unauthorized");
         return mv;
     }
 }

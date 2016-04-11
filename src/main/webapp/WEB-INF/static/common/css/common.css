@@ -6,6 +6,9 @@ iframe{
 #navbar-header{
 	background-color: #090C13;
 }
+.font-center{
+	text-align: center;
+}
 .left{
 	float:left;
 }

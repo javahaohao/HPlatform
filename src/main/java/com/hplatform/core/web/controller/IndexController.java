@@ -65,4 +65,14 @@ public class IndexController extends BaseController {
     public List<Area> findAreas(Model model,Area area) throws CRUDException{
     	return areaService.findAll(area);
     }
+    /**
+     * 404、500跳转页面
+     * @param model
+     * @return
+     * @throws CRUDException
+     */
+    @RequestMapping("/redirect")
+    public String redirect(Model model) throws CRUDException{
+    	return "exception/redirect";
+    }
 }

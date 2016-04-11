@@ -110,4 +110,13 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+	<!--异常页面配置  -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/redirect</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/redirect</location>
+	</error-page>
 </web-app>

@@ -380,7 +380,7 @@
 		
   </dependencies>
   <build>
-    <finalName>MvnExample</finalName>
+    <finalName>HPlatform</finalName>
     <plugins>
        <plugin>
            <groupId>org.apache.maven.plugins</groupId>
