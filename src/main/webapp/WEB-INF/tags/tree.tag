@@ -22,7 +22,7 @@
 	    var setting = {
 	        check: {
 	            enable: true ,
-	            chkboxType: { "Y": "", "N": "" }
+	            chkboxType: { "Y": "", "N": "ps" }
 	        },
 	        view: {
 	            dblClickExpand: false

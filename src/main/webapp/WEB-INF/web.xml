@@ -73,7 +73,7 @@
 	  <filter-name>sitemesh</filter-name>
 	  <url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<!-- EhCache页面缓存 -->  
+	<!-- EhCache页面缓存 
 	<filter>  
 	    <filter-name>SimplePageCachingFilter</filter-name>  
 	    <filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>  
@@ -85,7 +85,7 @@
 	<filter-mapping>  
 	    <filter-name>SimplePageCachingFilter</filter-name>  
 	    <url-pattern>*.js</url-pattern>  
-	</filter-mapping>
+	</filter-mapping>-->  
 	<!-- captcha servlet config-->
 	<servlet>
 		<servlet-name>CaptchaServlet</servlet-name>

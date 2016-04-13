@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <html>
 <head>
-    <tags:header inplugins="${plugins.jqui},${plugins.validate}" title="${op}用户"></tags:header>
+    <tags:header inplugins="${plugins.jqui},${plugins.validate},${plugins.ztree}" title="${op}用户"></tags:header>
 </head>
 <body>
 
