@@ -1,8 +1,8 @@
 package ${table.pkg}.${table.bumodel}.entity;
 
-import com.hplatform.core.entity.Base;
+import com.hplatform.core.entity.BaseEntity;
 
-public class ${table.domainName} extends Base<${table.domainName}>{
+public class ${table.domainName} extends BaseEntity<${table.domainName}>{
 	/**
 	 * 
 	 */

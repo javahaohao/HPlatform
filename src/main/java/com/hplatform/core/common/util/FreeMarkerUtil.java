@@ -95,7 +95,7 @@ public class FreeMarkerUtil {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("table", table);
 		Map<String, String> tmpMap = new HashMap<String, String>();
-		tmpMap.put(String.format("src/main/resources/mapper/mysql/%s/%sMapper.xml", new Object[]{table.getBumodel(),table.getDomainName()}),"mappersql.ftl" );
+		tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", new Object[]{table.getBumodel(),table.getDomainName()}),"mappersql.ftl" );
 		tmpMap.put(String.format("src/main/java/%s/%s/mapper/%sMapper.java", new Object[]{table.getPkg().replace(".","/"),table.getBumodel(),table.getDomainName()}),"mapper.ftl" );
 		tmpMap.put(String.format("src/main/java/%s/%s/service/%sService.java", new Object[]{table.getPkg().replace(".","/"),table.getBumodel(),table.getDomainName()}),"service.ftl" );
 		tmpMap.put(String.format("src/main/java/%s/%s/web/controller/%sController.java", new Object[]{table.getPkg().replace(".","/"),table.getBumodel(),table.getDomainName()}),ConstantsUtil.get().DICT_FG_JQGRID_ID.equals(table.getFgType())?"controllerjqgrid.ftl":"controller.ftl" );

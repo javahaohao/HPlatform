@@ -342,7 +342,7 @@
 			c.DATA_TYPE as "dataType",
 			c.COLUMN_COMMENT as "comments"
 		from information_schema.COLUMNS c 
-		where c.TABLE_SCHEMA='shiro' and c.TABLE_NAME=#{tableName}
+		where c.TABLE_SCHEMA='hp' and c.TABLE_NAME=#{tableName}
 	</select>
 	<insert id="saveColumnValidates" parameterType="ColumnValidate">
 		insert into gen_column_validate(id,column_id,validate_id,validate_val,validate_message,create_user,creat_date,update_user,update_date)

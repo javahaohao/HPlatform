@@ -48,7 +48,7 @@ public class ${table.domainName}Controller extends BaseController {
 	@RequiresPermissions("${table.domainName?uncap_first}:create")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String create(${table.domainName} ${table.domainName?uncap_first}, RedirectAttributes redirectAttributes) throws CRUDException {
-		${table.domainName?uncap_first}Service.saveEntity(${table.domainName?uncap_first});
+		${table.domainName?uncap_first}Service.save(${table.domainName?uncap_first});
         redirectAttributes.addFlashAttribute("msg", "新增成功");
         return getAdminUrlPath("/${table.domainName?uncap_first}");
     }
@@ -62,14 +62,14 @@ public class ${table.domainName}Controller extends BaseController {
 	@RequiresPermissions("${table.domainName?uncap_first}:update")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public String update(${table.domainName} ${table.domainName?uncap_first}, RedirectAttributes redirectAttributes) throws CRUDException {
-		${table.domainName?uncap_first}Service.updateEntity(${table.domainName?uncap_first});;
+		${table.domainName?uncap_first}Service.update(${table.domainName?uncap_first});;
         redirectAttributes.addFlashAttribute("msg", "修改成功");
         return getAdminUrlPath("/${table.domainName?uncap_first}");
     }
 	@RequiresPermissions("${table.domainName?uncap_first}:delete")
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
     public String delete(${table.domainName} ${table.domainName?uncap_first}, RedirectAttributes redirectAttributes) throws CRUDException {
-		${table.domainName?uncap_first}Service.deleteEntity(${table.domainName?uncap_first});
+		${table.domainName?uncap_first}Service.delete(${table.domainName?uncap_first});
         redirectAttributes.addFlashAttribute("msg", "删除成功");
         return getAdminUrlPath("/${table.domainName?uncap_first}");
     }
