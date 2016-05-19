@@ -209,7 +209,7 @@
 			var self = this,
 			$li = this.$itemLi.clone();
 			$li.attr('id',file.id);
-			$li.find('div.inner').html('<a href="'+adminFullPath+'/attachment/download?id='+file.id+'">'+file.name+'</a>');
+			$li.find('div.inner').html('<a href="javascript:void(0)" class="downloada">'+file.name+'</a>');
 			
 			self.processFile(file,$li);
 
@@ -437,6 +437,9 @@
 	        self.$info.on( 'click', '.ignore', function() {
 	            alert( 'todo' );
 	        } );
+	        $(document).on('click','.downloada',function(){
+	        	window.location=adminFullPath+'/attachment/download?id='+$(this).closest('li').attr('id');
+	        });
 		},
 		/**
 		 * 按照上传状态控制样式的展示
