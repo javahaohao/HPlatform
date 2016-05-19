@@ -445,17 +445,24 @@ public class FileUtil {
 		}
 		return false;
 	}
+	/**
+	 * 下载文件
+	 * @param path
+	 * @param name
+	 * @return
+	 * @throws Exception
+	 */
 	public static boolean downloadTemp(String path,String name) throws Exception{
 		HttpServletResponse response = UserUtil.getCurrentResponse();
 		HttpServletRequest request = UserUtil.getCurrentRequest();
 		File proposeFile = new File(path);
 		long fSize = proposeFile.length();  
-        // 下载  
+        // 响应头设置
         response.setContentType("application/x-download");  
         response.setHeader("Accept-Ranges", "bytes");  
         response.setHeader("Content-Length", String.valueOf(fSize));  
         response.setHeader("Content-Disposition", "attachment; filename="  
-                + name);  
+                + URLEncoder.encode(name, "UTF-8"));  
         long pos = 0;  
         if (null != request.getHeader("Range")) {  
             // 断点续传  
@@ -510,9 +517,9 @@ public class FileUtil {
 		// 获取浏览器类型
 		String browser = request.getHeader("user-agent");
 		// 设置响应头，206支持断点续传
-		int http_status = 206;
+		int http_status = HttpServletResponse.SC_PARTIAL_CONTENT;
 		if (browser.contains("MSIE"))
-			http_status = 200;// 200 响应头，不支持断点续传
+			http_status = HttpServletResponse.SC_OK;// 200 响应头，不支持断点续传
 
 		response.setStatus(http_status);
 		
@@ -528,7 +535,6 @@ public class FileUtil {
 				end = Integer.parseInt(rs[1]);
 				len = end - start + 1;
 				// 设置响应头
-				response.setHeader("Accept-Ranges", "bytes");
 				response.setHeader("Content-Range", "bytes= " + start + "-" + end + "/" + file.length());
 			} else {
 				start = 0;
@@ -542,22 +548,22 @@ public class FileUtil {
 		}
 				
 		// 响应头
-		response.setContentType("application/octet-stream;");
+		response.setHeader("Accept-Ranges", "bytes");
+		response.setContentType("application/x-download;charset=UTF-8");
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");  
 	    response.setHeader("Content-Length", String.valueOf(file.length())); 
-	    response.setContentType("application/octet-stream;charset=UTF-8");
-	    ServletOutputStream outputStream = response.getOutputStream();
+	    ServletOutputStream os = response.getOutputStream();
 		try {
-			// 建立文件输入流
-	        InputStream inputStream = new BufferedInputStream(new FileInputStream(path));
-	        byte[] buffer = new byte[1024];
+			// 建立文件输入输出流
+	        InputStream inputStream = new FileInputStream(file);
+	        BufferedOutputStream outputStream = new BufferedOutputStream(os);  
+	        byte[] buffer = new byte[5 * 1024];
 	        inputStream.skip(start);
-	        inputStream.mark(buffer.length);
-	        while ((len = inputStream.read(buffer)) > 0) {
+	        while ((len = inputStream.read(buffer, 0, buffer.length)) != -1) {
 	        	outputStream.write(buffer, 0, len);
 	        }
-	        outputStream.flush();
 	        outputStream.close();
+	        os.close();
 	        inputStream.close();
 		} catch (Exception e) {
 			success = false;
