@@ -303,10 +303,28 @@
             	self.uploader.skipFile(file);
             	self.setState( 'confirm' );
             	self.updateProgress($('.progress',$li), 100);
-            	//初始化已上传的id值
-            	var fileIds = self.uploaderOptions.fileIdContainer.val();
-            	self.uploaderOptions.fileIdContainer.val(fileIds===''?file.id:(fileIds+','+file.id));
+				self.setAttachmentId(file.id);
             }
+		},
+		/**
+		 * 设置上传成功的文件ID
+		 */
+		setAttachmentId:function(fileId){
+			var self = this;
+			//初始化已上传的id值
+			var fileIds = $(self.uploaderOptions.fileIdContainer).val();
+			if(!!!fileIds||fileIds.indexOf(fileId)==-1)
+				$(self.uploaderOptions.fileIdContainer).val(fileIds===''?fileId:(fileIds+','+fileId));
+		},
+		/**
+		 * 上传成功回调函数
+		 */
+		uploadSuccessEvent:function(file,response){
+			if(!!!response)return false;
+			var self = this;
+			file.path = response.path;
+			$('li#'+file.id).attr('id',response.id);
+			file.updateFileId(response.id);
 		},
 		/**
 		 * 绑定各种事件
@@ -362,17 +380,16 @@
 	        };
 	        
 	        self.uploader.onUploadSuccess = function(file,response) {
-                file.path = response.path;
-                $('li#'+file.id).attr('id',response.id);
-                file.updateFileId(response.id);
+                self.uploadSuccessEvent(file,response);
 	        };
 	        
 	        self.uploader.onUploadFinished = function() {
 	        	var completeFils = self.uploader.getFiles(WebUploader.File.Status.COMPLETE),fileIdArray=[];
 	        	for(var i=0; i<completeFils.length; i++){
-	        		fileIdArray.push(completeFils[i]['id']);
+					if(fileIdArray.indexOf(completeFils[i]['id'])==-1)
+						fileIdArray.push(completeFils[i]['id']);
 	        	}
-	        	self.uploaderOptions.fileIdContainer.val(fileIdArray.join(','));
+	        	$(self.uploaderOptions.fileIdContainer).val(fileIdArray.join(','));
 	        };
 	        
 	        self.uploader.onFileDequeued = function( file ) {
@@ -662,6 +679,8 @@
 	
 	                            self.uploader.skipFile(file);
 	                            file.path = data.path;
+	                            self.updateProgress($('.progress',$('li#'+data.id)), 100);
+								self.uploadSuccessEvent(file,data);
 	                            //UploadComlate(file);
 	                        }else{
 	                            task.resolve();

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cn.org.rapid_framework.util.ObjectUtils;
 
 import com.hplatform.core.common.util.FileUtil;
+import com.hplatform.core.common.util.UserUtil;
 import com.hplatform.core.constants.AttachmentConstants;
 import com.hplatform.core.entity.Attachment;
 import com.hplatform.core.service.AttachmentService;
@@ -177,8 +178,10 @@ public class AttachmentController extends BaseController {
 	 */
 	@RequestMapping(value = "/download")   
     public @ResponseBody void download(String id,ModelMap modelMap,HttpServletResponse response)throws Exception { 
-		Attachment attachment = attachmentService.findAttachmentById(id);
-		FileUtil.downloadTemp(StringUtils.arrayToDelimitedString(new String[]{attachment.getPath(),attachment.getRealName()}, ""), attachment.getName());
+		if(ObjectUtils.isNotEmpty(UserUtil.getCurrentPrincipal())){
+			Attachment attachment = attachmentService.findAttachmentById(id);
+			FileUtil.downloadTemp(StringUtils.arrayToDelimitedString(new String[]{attachment.getPath(),attachment.getRealName()}, ""), attachment.getName());
+		}
 	}
 	/**
 	 * 按照文件路径获取文件流

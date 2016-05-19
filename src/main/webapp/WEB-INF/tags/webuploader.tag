@@ -81,7 +81,7 @@ $(function() {
 		//进度条类型,详细参数见js
 		processType:'${processType}',
 		//初始化或者上传完之后文件id隐藏容器(自定义)
-		fileIdContainer:$("#${id}"),
+		fileIdContainer:"#${id}",
         method:'${empty method?"post":method}',
         //设置的formData值都要覆盖默认的上传自带值
         overFormData:{${overFormData}},
