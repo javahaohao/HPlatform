@@ -176,9 +176,9 @@ public class AttachmentController extends BaseController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/download")   
-    public @ResponseBody void download(String id,ModelMap modelMap)throws Exception { 
+    public @ResponseBody void download(String id,ModelMap modelMap,HttpServletResponse response)throws Exception { 
 		Attachment attachment = attachmentService.findAttachmentById(id);
-		FileUtil.download(StringUtils.arrayToDelimitedString(new String[]{attachment.getPath(),attachment.getRealName()}, File.separator), attachment.getName());
+		FileUtil.downloadTemp(StringUtils.arrayToDelimitedString(new String[]{attachment.getPath(),attachment.getRealName()}, ""), attachment.getName());
 	}
 	/**
 	 * 按照文件路径获取文件流

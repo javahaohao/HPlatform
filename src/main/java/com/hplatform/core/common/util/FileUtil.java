@@ -36,6 +36,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -444,6 +445,49 @@ public class FileUtil {
 		}
 		return false;
 	}
+	public static boolean downloadTemp(String path,String name) throws Exception{
+		HttpServletResponse response = UserUtil.getCurrentResponse();
+		HttpServletRequest request = UserUtil.getCurrentRequest();
+		File proposeFile = new File(path);
+		long fSize = proposeFile.length();  
+        // 下载  
+        response.setContentType("application/x-download");  
+        response.setHeader("Accept-Ranges", "bytes");  
+        response.setHeader("Content-Length", String.valueOf(fSize));  
+        response.setHeader("Content-Disposition", "attachment; filename="  
+                + name);  
+        long pos = 0;  
+        if (null != request.getHeader("Range")) {  
+            // 断点续传  
+            response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);  
+            try {  
+                pos = Long.parseLong(request.getHeader("Range").replaceAll(  
+                        "bytes=", "").replaceAll("-", ""));  
+            } catch (NumberFormatException e) {  
+                log.error(request.getHeader("Range") + " is not Number!");  
+                pos = 0;  
+            }  
+        }  
+        ServletOutputStream out = response.getOutputStream();  
+        BufferedOutputStream bufferOut = new BufferedOutputStream(out);  
+        InputStream inputStream = new FileInputStream(proposeFile);  
+        String contentRange = new StringBuffer("bytes ").append(  
+                new Long(pos).toString()).append("-").append(  
+                new Long(fSize - 1).toString()).append("/").append(  
+                new Long(fSize).toString()).toString();  
+        response.setHeader("Content-Range", contentRange);  
+        inputStream.skip(pos);  
+        byte[] buffer = new byte[5 * 1024];  
+        int length = 0;  
+        while ((length = inputStream.read(buffer, 0, buffer.length)) != -1) {  
+            bufferOut.write(buffer, 0, length);  
+        }  
+        bufferOut.flush();  
+        bufferOut.close();  
+        out.close();  
+        inputStream.close();  
+        return true;
+	}
 	/**
 	 * 下载文件
 	 * @param path
@@ -461,7 +505,7 @@ public class FileUtil {
 		int end = 0;
 		int len = 0;
 
-		HttpServletResponse response = UserUtil.getCurrentPrincipal().getResponse();
+		HttpServletResponse response = UserUtil.getCurrentResponse();
 		HttpServletRequest request = UserUtil.getCurrentRequest();
 		// 获取浏览器类型
 		String browser = request.getHeader("user-agent");
@@ -502,12 +546,10 @@ public class FileUtil {
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");  
 	    response.setHeader("Content-Length", String.valueOf(file.length())); 
 	    response.setContentType("application/octet-stream;charset=UTF-8");
-		OutputStream os = response.getOutputStream();
+	    ServletOutputStream outputStream = response.getOutputStream();
 		try {
 			// 建立文件输入流
 	        InputStream inputStream = new BufferedInputStream(new FileInputStream(path));
-			 // 建立文件输出流
-	        OutputStream outputStream = new BufferedOutputStream(os);
 	        byte[] buffer = new byte[1024];
 	        inputStream.skip(start);
 	        inputStream.mark(buffer.length);

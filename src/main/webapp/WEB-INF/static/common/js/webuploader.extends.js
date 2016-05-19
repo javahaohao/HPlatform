@@ -209,7 +209,7 @@
 			var self = this,
 			$li = this.$itemLi.clone();
 			$li.attr('id',file.id);
-			$li.find('div.inner').text(file.name);
+			$li.find('div.inner').html('<a href="'+adminFullPath+'/attachment/download?id='+file.id+'">'+file.name+'</a>');
 			
 			self.processFile(file,$li);
 
