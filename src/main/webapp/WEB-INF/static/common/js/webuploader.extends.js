@@ -679,7 +679,7 @@
 	
 	                            self.uploader.skipFile(file);
 	                            file.path = data.path;
-	                            self.updateProgress($('.progress',$('li#'+data.id)), 100);
+	                            self.updateProgress($('.progress',$('li#'+file.id)), 100);
 								self.uploadSuccessEvent(file,data);
 	                            //UploadComlate(file);
 	                        }else{
