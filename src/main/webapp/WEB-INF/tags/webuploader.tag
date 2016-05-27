@@ -124,10 +124,10 @@ $(function() {
         	innerHTML: '<i class="ace-icon fa fa-plus-circle align-top bigger-125"></i>选择文件'
         }
 	});
-
+	<c:if test="${not empty items}">
 	//初始化上传文件信息列表
 	${id}webuploader.loadingItems(eval('${elfn:toJSON(items)}')||[]);
-	
+	</c:if>
 
 	$('#${id}-cancle-upload').on('click',function(){
 		${id}webuploader.queueReset();
