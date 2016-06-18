@@ -28,7 +28,7 @@
 <%@ attribute name="prepareNextFile" type="java.lang.String" required="false" description="是否允许在文件传输时提前把下一个文件准备好。 对于一个文件的准备工作比较耗时，比如图片压缩，md5序列化。 如果能提前在当前文件传输期处理，可以节省总体耗时,默认为true"%>
 <%@ attribute name="changeEvent" type="java.lang.String" required="false" description="change事件"%>
 <link rel="stylesheet" type="text/css" href="${contextPath}/static/common/css/webuploader.extends.css" />
-<div id="wrapper" style="margin: 0 auto;">
+<div id="${id}-wrapper" style="margin: 0 auto;">
 	<p id="btn_p">
 		<button class="btn btn-primary btn-xs no-border uploadBtn" type="button" id="${id}-start-upload" style="${auto?'display:none':''}">
 			<i class="ace-icon fa fa-cloud-upload align-top bigger-125"></i>
@@ -46,7 +46,7 @@
         <div id="uploader" class="${id}uploader-container">
             <div class="queueList">
                 <div id="${id}dndArea" class="placeholder">
-                    <div id="filePicker">
+                    <div id="${id}-filePicker">
                     	<button class="btn btn-primary btn-xs no-border" type="button" id="single_pic_btn" style="display: none">
 							<i class="ace-icon fa fa-plus-circle align-top bigger-125"></i>
 							选择图片
@@ -75,6 +75,8 @@ $(function() {
 		$('#${id}').appendTo($('#${formId}'));
 	}
 	var ${id}webuploader = $('.${id}uploader-container').webuploader({
+		//容器id
+		wrapperId:'${id}',
 		//展现方式(类型有['thumbnails:缩略图模式','single_pic:单图片模式','process:进度条模式'])
 		//当设置single_pic模式时，auto属性设置为true，否则无法自动触发上传操作
 		modeType:'${empty modeType?"thumbnails":modeType}',

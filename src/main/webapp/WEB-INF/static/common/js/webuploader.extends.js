@@ -18,7 +18,7 @@
 	            // 文件总体选择信息。
 	            $info : container.find( '.statusBar' ).find( '.info' ),
 	            // 上传按钮
-	            $upload : $( '.uploadBtn',container.closest('#wrapper') ),
+	            $upload : $( '.uploadBtn',container.closest('#'+uploaderOptions.wrapperId+'-wrapper') ),
 	            // 没选择文件之前的内容。
 	            $placeHolder : container.find( '.placeholder' ),
 	            $progress : container.find( '.statusBar' ).find( '.progress' ).hide(),
@@ -134,20 +134,21 @@
 			};
 			//头像模式
 			modeTypeProcess['single_pic']=function(){
-				$('#btn_p').hide();
+				var wrapper = $('#'+self.uploaderOptions.wrapperId+'-wrapper');
+				$('#btn_p',wrapper).hide();
 				self.$statusBar.remove();
 				self.$itemLi.find('.tools-bottom').css({
 					'padding-top':'0px'
 				}).find('a').eq(2).show();
-				$('#wrapper').css({'width':'180px'});
+				wrapper.css({'width':'180px'});
 				self.$placeHolder.css({
 					'background-position-y':'20px',
 					'min-height':'0px',
 					'padding-top':'100px'
 				});
 				$.extend(self.uploaderOptions,{pick:{
-					id:'#filePicker',
-					button:$('#single_pic_btn').show()
+					id:'#'+self.uploaderOptions.wrapperId+'-filePicker',
+					button:$('#single_pic_btn',wrapper).show()
 				}});
 				self.thumbnailWidth=160;
 				self.thumbnailHeight=180;
