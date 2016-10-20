@@ -15,7 +15,6 @@ import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -27,6 +26,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.StringUtils;
+
+import com.hplatform.core.common.mybatis.BasePackageMapperScannerConfigurer;
 
 public class MybatisMapperDynamicLoader implements DisposableBean, InitializingBean, ApplicationContextAware {
 
@@ -48,11 +49,8 @@ public class MybatisMapperDynamicLoader implements DisposableBean, InitializingB
 		try {
 			service = Executors.newScheduledThreadPool(1);
 			// 获取xml所在包
-			MapperScannerConfigurer config = context.getBean(MapperScannerConfigurer.class);
-//			SqlSessionFactoryBean bean= context.getBean(SqlSessionFactoryBean.class);
-			Field field = config.getClass().getDeclaredField("basePackage");
-			field.setAccessible(true);
-			basePackage = (String) field.get(config);
+			BasePackageMapperScannerConfigurer config = context.getBean(BasePackageMapperScannerConfigurer.class);
+			basePackage = config.getBasePackage();
 			// 触发文件监听事件
 			scanner = new Scanner();
 			scanner.scan();

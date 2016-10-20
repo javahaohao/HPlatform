@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -18,6 +19,7 @@ import com.hplatform.core.common.cache.SpringCacheManagerWrapper;
 import com.hplatform.core.common.captcha.CaptchaException;
 import com.hplatform.core.common.util.ConstantsUtil;
 import com.hplatform.core.common.util.SpringUtils;
+import com.hplatform.core.common.util.UserUtil;
 import com.hplatform.core.constants.Constants;
 import com.hplatform.core.exception.ActivationAccountException;
 import com.hplatform.core.exception.CRUDException;
@@ -37,6 +39,9 @@ public class LoginController extends BaseController {
 		String exceptionClassName = (String) req
 				.getAttribute("shiroLoginFailure");
 		String error = null;
+		if(StringUtils.isBlank(exceptionClassName)&&UserUtil.isLogin()){
+			return getAdminUrlPath("/");
+		}
 		if (CaptchaException.class.getName().equals(exceptionClassName)) {
 			error = "验证码输入有误！";
 		} else if (UnknownAccountException.class.getName().equals(exceptionClassName)) {

@@ -140,4 +140,11 @@ public class UserUtil {
 			return false;
 		}
 	}
+	/**
+	 * 判断当前用户是否登录
+	 * @return
+	 */
+	public static boolean isLogin(){
+		return SecurityUtils.getSubject().getPrincipal()!=null;
+	}
 }

@@ -19,7 +19,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<!-- PAGE CONTENT BEGINS -->
-					<tags:webuploader id="test" modeType="process" chunked="true" duplicate="false" items="${attachmentList}" superId="112"></tags:webuploader> 
+					<tags:webuploader id="test" modeType="single_pic" chunked="true" duplicate="false" items="${attachmentList}" superId="112"></tags:webuploader> 
 					<tags:webuploader id="test2" modeType="process" chunked="true" duplicate="false" items="${attachmentList}" superId="112"></tags:webuploader> 
 				<!-- PAGE CONTENT ENDS -->
 			</div><!-- /.col -->

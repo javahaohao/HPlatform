@@ -56,9 +56,10 @@
 
     </bean>
 	<!-- Mybatis's sqlSessionFactory config -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="com.hplatform.core.common.mybatis.TypeAliasesMatchSqlSessionFactory">
 		<property name="dataSource" ref="mybatisdataSource"></property>
-		<property name="typeAliasesPackage" value="com.hplatform.core.entity,com.hplatform.model.entity"/>
+		<property name="typeAliasesPackage" value="com.hplatform.**.entity"/>
+		<property name="typeAliasesSuperType" value="com.hplatform.core.entity.BaseEntity"/>
 		<property name="mapperLocations">
 			<array>
 				<value>classpath:/mapper/**/*.xml</value>
@@ -102,9 +103,9 @@
 	</aop:config>
 
 	<!-- scan  mappers and let them be autowired -->
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">      
+	<bean class="com.hplatform.core.common.mybatis.BasePackageMapperScannerConfigurer">      
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>   
-		<property name="basePackage" value="com.hplatform.core.mapper,com.hplatform.model.mapper" />
+		<property name="basePackage" value="com.hplatform.**.mapper" />
 		<property name="annotationClass" value="com.hplatform.core.common.annotation.MyBatisMapper"/>
 	</bean>
     <!-- <bean id="dataSourceProxy" class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
