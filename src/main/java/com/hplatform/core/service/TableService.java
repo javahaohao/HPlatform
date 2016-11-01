@@ -3,6 +3,7 @@ package com.hplatform.core.service;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,4 +40,26 @@ public class TableService extends BaseService<Table, TableMapper> {
 			}
 		}
 	}
+	
+	@Override
+	public void save(Table t) throws CRUDException {
+		super.save(t);
+		if(CollectionUtils.isNotEmpty(t.getChilds())){
+			for(Table child : t.getChilds()){
+				child.setParent(t);
+				super.save(child);
+			}
+		}
+	}
+
+	@Override
+	public void update(Table t) throws CRUDException {
+		super.update(t);
+		if(CollectionUtils.isNotEmpty(t.getChilds())){
+			for(Table child : t.getChilds()){
+				super.update(child);
+			}
+		}
+	}
+	
 }

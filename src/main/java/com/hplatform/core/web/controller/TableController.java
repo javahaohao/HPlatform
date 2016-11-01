@@ -45,6 +45,7 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String showCreatFrom(Model model) {
         model.addAttribute("op", "新增");
+        model.addAttribute("relationTypes", Table.RelationType.values());
         return TableConstants.EDIT;
     }
 	@RequiresPermissions("table:create")

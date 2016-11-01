@@ -16,6 +16,31 @@ public class Table extends BaseEntity<Table>{
 	private String fgType;//风格
 	private List<Columns> columnList;
 	private List<Tags> tagList;
+	
+	//父表
+	private Table parent;
+	//子表
+	private List<Table> childs;
+	private RelationType relationType = RelationType.one;
+	
+	public static enum RelationType{
+		one("单表","one"),one_2_one("一对一","one_2_one"),one_2_more("一对多","one_2_more");
+		private final String info;
+		private final String value;
+        private RelationType(String info,String value) {
+            this.info = info;
+            this.value = value;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+		public String getValue() {
+			return value;
+		}
+	}
+	
 	public Table(){}
 	public Table(String id){this.id=id;}
 	
@@ -73,5 +98,23 @@ public class Table extends BaseEntity<Table>{
 	}
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+	public Table getParent() {
+		return parent;
+	}
+	public void setParent(Table parent) {
+		this.parent = parent;
+	}
+	public List<Table> getChilds() {
+		return childs;
+	}
+	public void setChilds(List<Table> childs) {
+		this.childs = childs;
+	}
+	public RelationType getRelationType() {
+		return relationType;
+	}
+	public void setRelationType(RelationType relationType) {
+		this.relationType = relationType;
 	}
 }

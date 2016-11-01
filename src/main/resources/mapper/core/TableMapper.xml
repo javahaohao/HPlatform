@@ -2,72 +2,153 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hplatform.core.mapper.TableMapper" >
 	<sql id="columns">
-		id AS "id",
-		fg_type AS "fgType",
-		update_user AS "updateUser",
-		update_date AS "updateDate",
-		table_name AS "tableName",
-		create_date AS "createDate",
-		pkg AS "pkg",
-		bumodel AS "bumodel",
-		domain_name AS "domainName",
-		create_user AS "createUser",
-		statu AS "statu",
-		comments AS "comments"
+		a.id AS id,
+		a.fg_type AS fgType,
+		a.update_user AS updateUser,
+		a.update_date AS updateDate,
+		a.table_name AS tableName,
+		a.create_date AS createDate,
+		a.pkg AS pkg,
+		a.bumodel AS bumodel,
+		a.domain_name AS domainName,
+		a.create_user AS createUser,
+		a.statu AS statu,
+		a.comments AS comments,
+		a.relation_type AS relation_type,
+		b.id AS pid,
+		b.fg_type AS pfg_type,
+		b.update_user AS pupdate_user,
+		b.update_date AS pupdate_date,
+		b.table_name AS ptable_name,
+		b.create_date AS pcreate_date,
+		b.pkg AS ppkg,
+		b.bumodel AS pbumodel,
+		b.domain_name AS pdomain_name,
+		b.create_user AS pcreate_user,
+		b.statu AS pstatu,
+		b.comments AS pcomments,
+		b.relation_type AS prelation_type,
+		c.id AS cid,
+		c.fg_type AS cfg_type,
+		c.update_user AS cupdate_user,
+		c.update_date AS cupdate_date,
+		c.table_name AS ctable_name,
+		c.create_date AS ccreate_date,
+		c.pkg AS cpkg,
+		c.bumodel AS cbumodel,
+		c.domain_name AS cdomain_name,
+		c.create_user AS ccreate_user,
+		c.statu AS cstatu,
+		c.comments AS ccomments,
+		c.relation_type AS crelation_type
 	</sql>
-	<select id="findOne" parameterType="Table" resultType="Table">
+	<sql id="leftjoin">
+		LEFT JOIN gen_table b ON a.parent_id=b.id
+		LEFT JOIN gen_table c ON c.parent_id=a.id
+	</sql>
+	<resultMap type="Table" id="tableResultMap">
+		<id property="id" column="id"></id>
+        <result column="fg_type" property="fgType"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_date" property="updateDate"/>
+        <result column="table_name" property="tableName"/>
+        <result column="create_date" property="createDate"/>
+        <result column="pkg" property="pkg"/>
+        <result column="bumodel" property="bumodel"/>
+        <result column="domain_name" property="domainName"/>
+        <result column="create_user" property="createUser"/>
+        <result column="statu" property="statu"/>
+        <result column="comments" property="comments"/>
+        <result column="relation_type" property="relationType"/>
+        <association property="parent" column="parent_id" javaType="Table">
+	      	<id property="id" column="pid"></id>
+	        <result column="pfg_type" property="fgType"/>
+	        <result column="pupdate_user" property="updateUser"/>
+	        <result column="pupdate_date" property="updateDate"/>
+	        <result column="ptable_name" property="tableName"/>
+	        <result column="pcreate_date" property="createDate"/>
+	        <result column="ppkg" property="pkg"/>
+	        <result column="pbumodel" property="bumodel"/>
+	        <result column="pdomain_name" property="domainName"/>
+	        <result column="pcreate_user" property="createUser"/>
+	        <result column="pstatu" property="statu"/>
+	        <result column="pcomments" property="comments"/>
+        	<result column="prelation_type" property="relationType"/>
+	    </association>
+        <collection property="childs" javaType="list" ofType="Table">
+            <id property="id" column="cid"></id>
+	        <result column="cfg_type" property="fgType"/>
+	        <result column="cupdate_user" property="updateUser"/>
+	        <result column="cupdate_date" property="updateDate"/>
+	        <result column="ctable_name" property="tableName"/>
+	        <result column="ccreate_date" property="createDate"/>
+	        <result column="cpkg" property="pkg"/>
+	        <result column="cbumodel" property="bumodel"/>
+	        <result column="cdomain_name" property="domainName"/>
+	        <result column="ccreate_user" property="createUser"/>
+	        <result column="cstatu" property="statu"/>
+	        <result column="ccomments" property="comments"/>
+        	<result column="crelation_type" property="relationType"/>
+        </collection>
+	</resultMap>
+	<select id="findOne" parameterType="Table" resultMap="tableResultMap">
 		select 
 			<include refid="columns"/>
-		from gen_table
+		from gen_table a
+		<include refid="leftjoin"></include>
 		<where>
 			<if test="id != null and id != ''">
-				id=#{id}
+				a.id=#{id}
 			</if>
 		</where>
 	</select>
-	<select id="findAll" parameterType="Table" resultType="Table">
+	<select id="findAll" parameterType="Table" resultMap="tableResultMap">
 		select 
 			 <include refid="columns"/>
-		from gen_table
+		from gen_table a
+		<include refid="leftjoin"></include>
 		<where>
 				<if test="id != null and id != ''">
-					id=#{id}
+					a.id=#{id}
 				</if>
 				<if test="updateUser != null and updateUser != ''">
-					AND update_user=#{updateUser}
+					AND a.update_user=#{updateUser}
 				</if>
 				<if test="updateDate != null and updateDate != ''">
-					AND update_date=#{updateDate}
+					AND a.update_date=#{updateDate}
 				</if>
 				<if test="tableName != null and tableName != ''">
-					AND table_name=#{tableName}
+					AND a.table_name=#{tableName}
 				</if>
 				<if test="createDate != null and createDate != ''">
-					AND create_date=#{createDate}
+					AND a.create_date=#{createDate}
 				</if>
 				<if test="pkg != null and pkg != ''">
-					AND pkg=#{pkg}
+					AND a.pkg=#{pkg}
 				</if>
 				<if test="bumodel != null and bumodel != ''">
-					AND bumodel=#{bumodel} 
+					AND a.bumodel=#{bumodel} 
 				</if>
 				<if test="domainName != null and domainName != ''">
-					AND domain_name=#{domainName}
+					AND a.domain_name=#{domainName}
 				</if>
 				<if test="createUser != null and createUser != ''">
-					AND create_user=#{createUser}
+					AND a.create_user=#{createUser}
 				</if>
 				<if test="statu != null and statu != ''">
-					AND statu=#{statu}
+					AND a.statu=#{statu}
 				</if>
 				<if test="fgType != null and fgType != ''">
-					AND fg_type=#{fgType}
+					AND a.fg_type=#{fgType}
 				</if>
 				<if test="comments != null and comments != ''">
-					AND comments=#{comments}
+					AND a.comments=#{comments}
+				</if>
+				<if test="parent != null">
+					AND a.parent_id=#{parent.id}
 				</if>
 		</where>
-		order by create_date desc
+		order by a.create_date desc
 	</select>
 	<insert id="addEntity" parameterType="Table">
 		insert into 
@@ -83,7 +164,9 @@
 			create_user,
 			statu,
 			comments,
-			fg_type
+			fg_type,
+			parent_id,
+			relation_type
 		) 
 		values(
 			#{id},
@@ -97,7 +180,9 @@
 			#{createUser},
 			#{statu},
 			#{comments},
-			#{fgType}
+			#{fgType},
+			#{parent.id},
+			#{relationType}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="Table">
@@ -138,7 +223,13 @@
 		comments=#{comments},
 		</if>
 		<if test="fgType !=null and fgType !=''">
-		fg_type=#{fgType}
+		fg_type=#{fgType},
+		</if>
+		<if test="relationType !=null and relationType !=''">
+		relation_type=#{relationType},
+		</if>
+		<if test="parent !=null">
+		parent_id=#{parent.id}
 		</if>
 		</set>
 		where id=#{id}
