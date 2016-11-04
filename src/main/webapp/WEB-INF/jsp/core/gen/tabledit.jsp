@@ -100,62 +100,7 @@
 			        </div>
 			        <div class="relation-content row">
 			        	<div class="col-sm-6">
-			        		<fieldset>
-			        			<legend>tb_abc</legend>
-			        			<div class="form-group col-xs-12 col-sm-6">
-						            <form:label path="tableName" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">表名:</form:label>
-						            <div class="col-xs-12 col-sm-9">
-						            	<span class="block input-icon input-icon-right">
-							            	<form:input path="tableName" maxlength="50" cssClass="width-100 required" title="表名必填"/>
-											<i class="ace-icon fa fa-info-circle"></i>
-										</span>
-									</div>
-						        </div>
-						        <div class="form-group col-xs-12 col-sm-6">
-						            <form:label path="domainName" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">类名:</form:label>
-						            <div class="col-xs-12 col-sm-9">
-						            	<span class="block input-icon input-icon-right">
-							            	<form:input path="domainName" maxlength="50" cssClass="width-100 required" title="类名必填"/>
-											<i class="ace-icon fa fa-info-circle"></i>
-										</span>
-									</div>
-						        </div>
-						        <div class="form-group col-xs-12 col-sm-6">
-						            <form:label path="bumodel" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">模块:</form:label>
-						            <div class="col-xs-12 col-sm-9">
-						            	<span class="block input-icon input-icon-right">
-							            	<form:input path="bumodel" maxlength="50" cssClass="width-100 required" title="业务模块必填"/>
-											<i class="ace-icon fa fa-info-circle"></i>
-										</span>
-									</div>
-						        </div>
-						        <div class="form-group col-xs-12 col-sm-6">
-						            <form:label path="pkg" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">包名:</form:label>
-						            <div class="col-xs-12 col-sm-9">
-						            	<span class="block input-icon input-icon-right">
-							            	<form:input path="pkg" maxlength="50" cssClass="width-100 required" title="包名必填"/>
-											<i class="ace-icon fa fa-info-circle"></i>
-										</span>
-									</div>
-						        </div>
-						        <div class="form-group col-xs-12 col-sm-6">
-						            <form:label path="pkg" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">风格:</form:label>
-						            <div class="col-xs-12 col-sm-9">
-						            	<span class="block input-icon input-icon-right">
-						            		<form:select path="fgType" itemLabel="name" itemValue="id" items="${elfn:getChildDictById(constants.DICT_FG_PARENT_ID)}" cssClass="select2 width-100 required input-xlarge" title="生成风格"></form:select>
-										</span>
-									</div>
-						        </div>
-						        <div class="form-group col-xs-12 col-sm-6">
-						            <form:label path="comments" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">描述:</form:label>
-						            <div class="col-xs-12 col-sm-9">
-						            	<span class="block input-icon input-icon-right">
-							            	<form:textarea path="comments" cssClass="width-100 input-xlarge"/>
-											<i class="ace-icon fa fa-info-circle"></i>
-										</span>
-									</div>
-						        </div>
-			        		</fieldset>
+			        		
 			        	</div>
 			        </div>
 			    </form:form>
