@@ -100,7 +100,89 @@
 			        </div>
 			        <div class="relation-content row">
 			        	<div class="col-sm-6">
-			        		
+			        		<div clas="widget-box">
+			        			<div class="widget-header widget-header-flat widget-header-small">
+			        				<h5 class="widget-title">
+										<i class="ace-icon fa fa-signal"></i>
+										tb_abc
+									</h5>
+									<div class="widget-toolbar no-border">
+										<div class="inline dropdown-hover">
+											<button class="btn btn-minier btn-primary">
+												This Week
+												<i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+											</button>
+
+											<ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+												<li class="active">
+													<a href="#" class="blue">
+														<i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
+														This Week
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+			        			</div>
+			        			<div class="widget-body">
+									<div class="widget-main">
+										<div class="form-group col-xs-12 col-sm-6">
+								            <form:label path="tableName" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">表名:</form:label>
+								            <div class="col-xs-12 col-sm-9">
+								            	<span class="block input-icon input-icon-right">
+									            	<form:input path="tableName" maxlength="50" cssClass="width-100 required" title="表名必填"/>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
+								        </div>
+								        <div class="form-group col-xs-12 col-sm-6">
+								            <form:label path="domainName" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">类名:</form:label>
+								            <div class="col-xs-12 col-sm-9">
+								            	<span class="block input-icon input-icon-right">
+									            	<form:input path="domainName" maxlength="50" cssClass="width-100 required" title="类名必填"/>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
+								        </div>
+								        <div class="form-group col-xs-12 col-sm-6">
+								            <form:label path="bumodel" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">模块:</form:label>
+								            <div class="col-xs-12 col-sm-9">
+								            	<span class="block input-icon input-icon-right">
+									            	<form:input path="bumodel" maxlength="50" cssClass="width-100 required" title="业务模块必填"/>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
+								        </div>
+								        <div class="form-group col-xs-12 col-sm-6">
+								            <form:label path="pkg" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">包名:</form:label>
+								            <div class="col-xs-12 col-sm-9">
+								            	<span class="block input-icon input-icon-right">
+									            	<form:input path="pkg" maxlength="50" cssClass="width-100 required" title="包名必填"/>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
+								        </div>
+								        <div class="form-group col-xs-12 col-sm-6">
+								            <form:label path="pkg" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">风格:</form:label>
+								            <div class="col-xs-12 col-sm-9">
+								            	<span class="block input-icon input-icon-right">
+								            		<form:select path="fgType" itemLabel="name" itemValue="id" items="${elfn:getChildDictById(constants.DICT_FG_PARENT_ID)}" cssClass="select2 width-100 required input-xlarge" title="生成风格"></form:select>
+												</span>
+											</div>
+								        </div>
+								        <div class="form-group col-xs-12 col-sm-6">
+								            <form:label path="comments" cssClass="control-label col-xs-12 col-sm-3 no-padding-right">描述:</form:label>
+								            <div class="col-xs-12 col-sm-9">
+								            	<span class="block input-icon input-icon-right">
+									            	<form:textarea path="comments" cssClass="width-100 input-xlarge"/>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
+								        </div>
+								        <div class="clearfix"></div>
+									</div>
+								</div><!-- widget-body ENDS -->
+			        		</div>
 			        	</div>
 			        </div>
 			    </form:form>
