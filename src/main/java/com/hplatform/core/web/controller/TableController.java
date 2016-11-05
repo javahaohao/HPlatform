@@ -44,7 +44,7 @@ public class TableController extends BaseController {
 	@RequiresPermissions("table:create")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String showCreatFrom(Model model) {
-        model.addAttribute("op", "新增");
+        model.addAttribute("op", "保存");
         model.addAttribute("relationTypes", Table.RelationType.values());
         return TableConstants.EDIT;
     }
@@ -59,13 +59,14 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String showUpdateForm(Table table, Model model) throws CRUDException {
         model.addAttribute("table", tableService.findOne(table));
+        model.addAttribute("relationTypes", Table.RelationType.values());
         model.addAttribute("op", "修改");
         return TableConstants.EDIT;
     }
 	@RequiresPermissions("table:update")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     public String update(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
-		tableService.update(table);;
+		tableService.update(table);
         redirectAttributes.addFlashAttribute("msg", "修改成功");
         return getAdminUrlPath("/table");
     }

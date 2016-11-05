@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,10 @@ public class TableService extends BaseService<Table, TableMapper> {
 		super.update(t);
 		if(CollectionUtils.isNotEmpty(t.getChilds())){
 			for(Table child : t.getChilds()){
-				super.update(child);
+				if(StringUtils.isNotBlank(child.getId()))
+					super.update(child);
+				else
+					super.save(child);
 			}
 		}
 	}

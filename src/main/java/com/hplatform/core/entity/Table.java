@@ -14,6 +14,7 @@ public class Table extends BaseEntity<Table>{
 	private String comments;
 	private String tableName;
 	private String fgType;//风格
+	private Boolean genFlag;//是否生成
 	private List<Columns> columnList;
 	private List<Tags> tagList;
 	
@@ -116,5 +117,11 @@ public class Table extends BaseEntity<Table>{
 	}
 	public void setRelationType(RelationType relationType) {
 		this.relationType = relationType;
+	}
+	public Boolean getGenFlag() {
+		return genFlag;
+	}
+	public void setGenFlag(Boolean genFlag) {
+		this.genFlag = genFlag;
 	}
 }

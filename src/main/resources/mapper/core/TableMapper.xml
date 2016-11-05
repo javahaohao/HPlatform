@@ -15,6 +15,7 @@
 		a.statu AS statu,
 		a.comments AS comments,
 		a.relation_type AS relation_type,
+		a.gen_flag AS gen_flag,
 		b.id AS pid,
 		b.fg_type AS pfg_type,
 		b.update_user AS pupdate_user,
@@ -28,6 +29,7 @@
 		b.statu AS pstatu,
 		b.comments AS pcomments,
 		b.relation_type AS prelation_type,
+		b.gen_flag AS pgen_flag,
 		c.id AS cid,
 		c.fg_type AS cfg_type,
 		c.update_user AS cupdate_user,
@@ -40,7 +42,8 @@
 		c.create_user AS ccreate_user,
 		c.statu AS cstatu,
 		c.comments AS ccomments,
-		c.relation_type AS crelation_type
+		c.relation_type AS crelation_type,
+		c.gen_flag AS cgen_flag
 	</sql>
 	<sql id="leftjoin">
 		LEFT JOIN gen_table b ON a.parent_id=b.id
@@ -60,6 +63,7 @@
         <result column="statu" property="statu"/>
         <result column="comments" property="comments"/>
         <result column="relation_type" property="relationType"/>
+        <result column="gen_flag" property="genFlag"/>
         <association property="parent" column="parent_id" javaType="Table">
 	      	<id property="id" column="pid"></id>
 	        <result column="pfg_type" property="fgType"/>
@@ -74,6 +78,7 @@
 	        <result column="pstatu" property="statu"/>
 	        <result column="pcomments" property="comments"/>
         	<result column="prelation_type" property="relationType"/>
+        	<result column="pgen_flag" property="genFlag"/>
 	    </association>
         <collection property="childs" javaType="list" ofType="Table">
             <id property="id" column="cid"></id>
@@ -89,6 +94,7 @@
 	        <result column="cstatu" property="statu"/>
 	        <result column="ccomments" property="comments"/>
         	<result column="crelation_type" property="relationType"/>
+        	<result column="cgen_flag" property="genFlag"/>
         </collection>
 	</resultMap>
 	<select id="findOne" parameterType="Table" resultMap="tableResultMap">
@@ -147,6 +153,9 @@
 				<if test="parent != null">
 					AND a.parent_id=#{parent.id}
 				</if>
+				<if test="genFlag != null and genFlag != ''">
+					AND a.gen_flag=#{genFlag}
+				</if>
 		</where>
 		order by a.create_date desc
 	</select>
@@ -166,7 +175,8 @@
 			comments,
 			fg_type,
 			parent_id,
-			relation_type
+			relation_type,
+			gen_flag
 		) 
 		values(
 			#{id},
@@ -182,7 +192,8 @@
 			#{comments},
 			#{fgType},
 			#{parent.id},
-			#{relationType}
+			#{relationType},
+			#{genFlag}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="Table">
@@ -227,6 +238,9 @@
 		</if>
 		<if test="relationType !=null and relationType !=''">
 		relation_type=#{relationType},
+		</if>
+		<if test="genFlag !=''">
+		gen_flag=#{genFlag},
 		</if>
 		<if test="parent !=null">
 		parent_id=#{parent.id}
