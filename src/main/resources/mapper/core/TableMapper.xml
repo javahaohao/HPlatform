@@ -16,6 +16,8 @@
 		a.comments AS comments,
 		a.relation_type AS relation_type,
 		a.gen_flag AS gen_flag,
+		a.table_alias AS table_alias,
+		a.foreign_key AS foreign_key,
 		b.id AS pid,
 		b.fg_type AS pfg_type,
 		b.update_user AS pupdate_user,
@@ -30,6 +32,8 @@
 		b.comments AS pcomments,
 		b.relation_type AS prelation_type,
 		b.gen_flag AS pgen_flag,
+		b.table_alias AS btable_alias,
+		b.foreign_key AS bforeign_key,
 		c.id AS cid,
 		c.fg_type AS cfg_type,
 		c.update_user AS cupdate_user,
@@ -43,7 +47,9 @@
 		c.statu AS cstatu,
 		c.comments AS ccomments,
 		c.relation_type AS crelation_type,
-		c.gen_flag AS cgen_flag
+		c.gen_flag AS cgen_flag,
+		c.table_alias AS ctable_alias,
+		c.foreign_key AS cforeign_key
 	</sql>
 	<sql id="leftjoin">
 		LEFT JOIN gen_table b ON a.parent_id=b.id
@@ -64,6 +70,8 @@
         <result column="comments" property="comments"/>
         <result column="relation_type" property="relationType"/>
         <result column="gen_flag" property="genFlag"/>
+        <result column="table_alias" property="tableAlias"/>
+        <result column="foreign_key" property="foreignKey"/>
         <association property="parent" column="parent_id" javaType="Table">
 	      	<id property="id" column="pid"></id>
 	        <result column="pfg_type" property="fgType"/>
@@ -79,6 +87,8 @@
 	        <result column="pcomments" property="comments"/>
         	<result column="prelation_type" property="relationType"/>
         	<result column="pgen_flag" property="genFlag"/>
+	        <result column="ptable_alias" property="tableAlias"/>
+	        <result column="pforeign_key" property="foreignKey"/>
 	    </association>
         <collection property="childs" javaType="list" ofType="Table">
             <id property="id" column="cid"></id>
@@ -95,6 +105,8 @@
 	        <result column="ccomments" property="comments"/>
         	<result column="crelation_type" property="relationType"/>
         	<result column="cgen_flag" property="genFlag"/>
+	        <result column="ctable_alias" property="tableAlias"/>
+	        <result column="cforeign_key" property="foreignKey"/>
         </collection>
 	</resultMap>
 	<select id="findOne" parameterType="Table" resultMap="tableResultMap">
@@ -156,6 +168,12 @@
 				<if test="genFlag != null and genFlag != ''">
 					AND a.gen_flag=#{genFlag}
 				</if>
+				<if test="tableAlias != null and tableAlias != ''">
+					AND a.table_alias=#{tableAlias}
+				</if>
+				<if test="foreignKey != null and foreignKey != ''">
+					AND a.foreign_key=#{foreignKey}
+				</if>
 		</where>
 		order by a.create_date desc
 	</select>
@@ -176,7 +194,9 @@
 			fg_type,
 			parent_id,
 			relation_type,
-			gen_flag
+			gen_flag,
+			foreign_key,
+			table_alias
 		) 
 		values(
 			#{id},
@@ -193,7 +213,9 @@
 			#{fgType},
 			#{parent.id},
 			#{relationType},
-			#{genFlag}
+			#{genFlag},
+			#{foreignKey},
+			#{tableAlias}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="Table">
@@ -238,6 +260,12 @@
 		</if>
 		<if test="relationType !=null and relationType !=''">
 		relation_type=#{relationType},
+		</if>
+		<if test="foreignKey !=null and foreignKey !=''">
+		foreign_key=#{foreignKey},
+		</if>
+		<if test="tableAlias !=null and tableAlias !=''">
+		table_alias=#{tableAlias},
 		</if>
 		<if test="genFlag !=''">
 		gen_flag=#{genFlag},

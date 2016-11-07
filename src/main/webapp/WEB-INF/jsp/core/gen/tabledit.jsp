@@ -66,6 +66,24 @@
 										</div>
 							        </div>
 							        <div class="form-group col-xs-12 col-sm-6">
+							            <form:label path="tableAlias" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">别名:</form:label>
+							            <div class="col-xs-12 col-sm-7">
+							            	<span class="block input-icon input-icon-right">
+								            	<form:input path="tableAlias" maxlength="50" cssClass="width-100" title="别名"/>
+												<i class="ace-icon fa fa-info-circle"></i>
+											</span>
+										</div>
+							        </div>
+							        <div class="form-group col-xs-12 col-sm-6">
+							            <form:label path="foreignKey" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">外键:</form:label>
+							            <div class="col-xs-12 col-sm-7">
+							            	<span class="block input-icon input-icon-right">
+								            	<form:input path="foreignKey" maxlength="50" cssClass="width-100" title="外键"/>
+												<i class="ace-icon fa fa-info-circle"></i>
+											</span>
+										</div>
+							        </div>
+							        <div class="form-group col-xs-12 col-sm-6">
 							            <form:label path="domainName" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">类名:</form:label>
 							            <div class="col-xs-12 col-sm-7">
 							            	<span class="block input-icon input-icon-right">
@@ -159,6 +177,15 @@
 							<div class="col-xs-12 col-sm-9">
 								<span class="block input-icon input-icon-right">
 									<input name="childs[{{index}}].tableName" value="{{tableName}}" maxlength="50" class="width-100 required tableName" title="表名必填"/>
+									<i class="ace-icon fa fa-info-circle"></i>
+								</span>
+							</div>
+						</div>
+						<div class="form-group col-xs-12 col-sm-6">
+							<label path="tableAlias" class="control-label col-xs-12 col-sm-3">别名:</label>
+							<div class="col-xs-12 col-sm-9">
+								<span class="block input-icon input-icon-right">
+									<input name="childs[{{index}}].tableAlias" value="{{tableAlias}}" maxlength="50" class="width-100 required" title="别名必填"/>
 									<i class="ace-icon fa fa-info-circle"></i>
 								</span>
 							</div>

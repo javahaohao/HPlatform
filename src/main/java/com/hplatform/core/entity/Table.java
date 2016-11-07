@@ -14,6 +14,8 @@ public class Table extends BaseEntity<Table>{
 	private String comments;
 	private String tableName;
 	private String fgType;//风格
+	private String tableAlias;//别名
+	private String foreignKey;//外键
 	private Boolean genFlag;//是否生成
 	private List<Columns> columnList;
 	private List<Tags> tagList;
@@ -25,7 +27,7 @@ public class Table extends BaseEntity<Table>{
 	private RelationType relationType = RelationType.one;
 	
 	public static enum RelationType{
-		one("单表","one"),one_2_one("一对一","one_2_one"),one_2_more("一对多","one_2_more");
+		one("单表","one"),one_2_one("一对一","one_2_one"),one_2_more("一对多","one_2_more"),more_2_one("多对一","more_2_one");
 		private final String info;
 		private final String value;
         private RelationType(String info,String value) {
@@ -69,6 +71,13 @@ public class Table extends BaseEntity<Table>{
 	}
 	public void setColumnList(List<Columns> columnList) {
 		this.columnList = columnList;
+	}
+	/**
+	 * 获取用斜线分开的包路径
+	 * @return
+	 */
+	public String getSplitPkg(){
+		return getPkg().replace(".","/");
 	}
 	public String getPkg() {
 		return pkg;
@@ -123,5 +132,17 @@ public class Table extends BaseEntity<Table>{
 	}
 	public void setGenFlag(Boolean genFlag) {
 		this.genFlag = genFlag;
+	}
+	public String getTableAlias() {
+		return tableAlias;
+	}
+	public void setTableAlias(String tableAlias) {
+		this.tableAlias = tableAlias;
+	}
+	public String getForeignKey() {
+		return foreignKey;
+	}
+	public void setForeignKey(String foreignKey) {
+		this.foreignKey = foreignKey;
 	}
 }

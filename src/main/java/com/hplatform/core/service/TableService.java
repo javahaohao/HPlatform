@@ -28,20 +28,43 @@ public class TableService extends BaseService<Table, TableMapper> {
 		List<String> idList = Arrays.asList(table.getId().split(","));
 		Table genTable = null;
 		for(String id : idList){
-			try {
-				genTable = findOne(new Table(id));
-				Columns columns = new Columns();
-				columns.setTableId(table.getId());
-				columns.setGenFlag(Boolean.TRUE);
-				List<Columns> columnList = columnsMapper.findAllByRelation(columns);
-				genTable.setColumnList(columnList);
-				FreeMarkerUtil.genCode(genTable);
-			} catch (CRUDException e) {
-				log.error(e);
-			}
+			genTable = comTable(id);
+			FreeMarkerUtil.genCode(genTable);
+			if(Table.RelationType.one_2_more.equals(table.getRelationType()))
+				genChildCode(genTable);
 		}
 	}
-	
+	/**
+	 * 生成子表代码
+	 * @param table
+	 * @throws Exception 
+	 */
+	public void genChildCode(Table parent) throws Exception{
+		for(Table child : parent.getChilds()){
+			child.setParent(parent);
+			child.setRelationType(Table.RelationType.more_2_one);
+			FreeMarkerUtil.genCode(child);
+		}
+	}
+	/**
+	 * 按照表id组合表与字段的关系
+	 * @param id
+	 * @return
+	 */
+	public Table comTable(String id){
+		Table genTable = null;
+		try {
+			genTable = findOne(new Table(id));
+			Columns columns = new Columns();
+			columns.setTableId(id);
+			columns.setGenFlag(Boolean.TRUE);
+			List<Columns> columnList = columnsMapper.findAllByRelation(columns);
+			genTable.setColumnList(columnList);
+		} catch (CRUDException e) {
+			log.error(e);
+		}
+		return genTable;
+	}
 	@Override
 	public void save(Table t) throws CRUDException {
 		super.save(t);
