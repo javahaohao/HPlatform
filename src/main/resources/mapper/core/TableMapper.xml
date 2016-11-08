@@ -18,6 +18,7 @@
 		a.gen_flag AS gen_flag,
 		a.table_alias AS table_alias,
 		a.foreign_key AS foreign_key,
+		a.label_name AS label_name,
 		b.id AS pid,
 		b.fg_type AS pfg_type,
 		b.update_user AS pupdate_user,
@@ -32,8 +33,9 @@
 		b.comments AS pcomments,
 		b.relation_type AS prelation_type,
 		b.gen_flag AS pgen_flag,
-		b.table_alias AS btable_alias,
-		b.foreign_key AS bforeign_key,
+		b.table_alias AS ptable_alias,
+		b.foreign_key AS pforeign_key,
+		b.label_name AS plabel_name,
 		c.id AS cid,
 		c.fg_type AS cfg_type,
 		c.update_user AS cupdate_user,
@@ -49,6 +51,7 @@
 		c.relation_type AS crelation_type,
 		c.gen_flag AS cgen_flag,
 		c.table_alias AS ctable_alias,
+		c.label_name AS clabel_name,
 		c.foreign_key AS cforeign_key
 	</sql>
 	<sql id="leftjoin">
@@ -72,6 +75,7 @@
         <result column="gen_flag" property="genFlag"/>
         <result column="table_alias" property="tableAlias"/>
         <result column="foreign_key" property="foreignKey"/>
+        <result column="label_name" property="labelName"/>
         <association property="parent" column="parent_id" javaType="Table">
 	      	<id property="id" column="pid"></id>
 	        <result column="pfg_type" property="fgType"/>
@@ -89,6 +93,7 @@
         	<result column="pgen_flag" property="genFlag"/>
 	        <result column="ptable_alias" property="tableAlias"/>
 	        <result column="pforeign_key" property="foreignKey"/>
+        	<result column="plabel_name" property="labelName"/>
 	    </association>
         <collection property="childs" javaType="list" ofType="Table">
             <id property="id" column="cid"></id>
@@ -107,6 +112,7 @@
         	<result column="cgen_flag" property="genFlag"/>
 	        <result column="ctable_alias" property="tableAlias"/>
 	        <result column="cforeign_key" property="foreignKey"/>
+        	<result column="clabel_name" property="labelName"/>
         </collection>
 	</resultMap>
 	<select id="findOne" parameterType="Table" resultMap="tableResultMap">
@@ -196,7 +202,8 @@
 			relation_type,
 			gen_flag,
 			foreign_key,
-			table_alias
+			table_alias,
+			label_name
 		) 
 		values(
 			#{id},
@@ -215,7 +222,8 @@
 			#{relationType},
 			#{genFlag},
 			#{foreignKey},
-			#{tableAlias}
+			#{tableAlias},
+			#{labelName}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="Table">
@@ -266,6 +274,9 @@
 		</if>
 		<if test="tableAlias !=null and tableAlias !=''">
 		table_alias=#{tableAlias},
+		</if>
+		<if test="labelName !=null and labelName !=''">
+		label_name=#{labelName},
 		</if>
 		<if test="genFlag !=''">
 		gen_flag=#{genFlag},

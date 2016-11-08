@@ -30,7 +30,7 @@ public class TableService extends BaseService<Table, TableMapper> {
 		for(String id : idList){
 			genTable = comTable(id);
 			FreeMarkerUtil.genCode(genTable);
-			if(Table.RelationType.one_2_more.equals(table.getRelationType()))
+			if(Table.RelationType.one_2_more.equals(genTable.getRelationType()))
 				genChildCode(genTable);
 		}
 	}
@@ -41,9 +41,11 @@ public class TableService extends BaseService<Table, TableMapper> {
 	 */
 	public void genChildCode(Table parent) throws Exception{
 		for(Table child : parent.getChilds()){
-			child.setParent(parent);
-			child.setRelationType(Table.RelationType.more_2_one);
-			FreeMarkerUtil.genCode(child);
+			if(child.getGenFlag()){
+				child.setParent(parent);
+				child.setRelationType(Table.RelationType.more_2_one);
+				FreeMarkerUtil.genCode(child);
+			}
 		}
 	}
 	/**
@@ -59,6 +61,10 @@ public class TableService extends BaseService<Table, TableMapper> {
 			columns.setTableId(id);
 			columns.setGenFlag(Boolean.TRUE);
 			List<Columns> columnList = columnsMapper.findAllByRelation(columns);
+			for(Table child:genTable.getChilds()){
+				columns.setTableId(child.getId());
+				child.setColumnList(columnsMapper.findAllByRelation(columns));
+			}
 			genTable.setColumnList(columnList);
 		} catch (CRUDException e) {
 			log.error(e);

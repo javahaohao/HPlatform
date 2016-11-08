@@ -84,6 +84,15 @@
 										</div>
 							        </div>
 							        <div class="form-group col-xs-12 col-sm-6">
+							            <form:label path="labelName" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">Label:</form:label>
+							            <div class="col-xs-12 col-sm-7">
+							            	<span class="block input-icon input-icon-right">
+								            	<form:input path="labelName" maxlength="50" cssClass="width-100" title="被关联表显示字段"/>
+												<i class="ace-icon fa fa-info-circle"></i>
+											</span>
+										</div>
+							        </div>
+							        <div class="form-group col-xs-12 col-sm-6">
 							            <form:label path="domainName" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">类名:</form:label>
 							            <div class="col-xs-12 col-sm-7">
 							            	<span class="block input-icon input-icon-right">
@@ -119,7 +128,7 @@
 										</div>
 							        </div>
 							        <div class="form-group col-xs-12 col-sm-6">
-							            <form:label path="relationType" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">表关系:</form:label>
+							            <form:label path="relationType" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">关系:</form:label>
 							            <div class="col-xs-12 col-sm-7">
 							            	<span class="block input-icon input-icon-right">
 							            	<form:select path="relationType" itemLabel="info" itemValue="value" items="${relationTypes}" cssClass="select2 width-100 required input-xlarge" title="生成表关系"></form:select>

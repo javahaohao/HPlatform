@@ -2,6 +2,8 @@ package com.hplatform.core.entity;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Table extends BaseEntity<Table>{
 	/**
 	 * 
@@ -17,6 +19,7 @@ public class Table extends BaseEntity<Table>{
 	private String tableAlias;//别名
 	private String foreignKey;//外键
 	private Boolean genFlag;//是否生成
+	private String labelName;//被选择时label显示字段
 	private List<Columns> columnList;
 	private List<Tags> tagList;
 	
@@ -144,5 +147,35 @@ public class Table extends BaseEntity<Table>{
 	}
 	public void setForeignKey(String foreignKey) {
 		this.foreignKey = foreignKey;
+	}
+	public String getLabelName() {
+		return labelName;
+	}
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
+	/**
+	 * 获取数据库字段对应的java属性名
+	 * @param column
+	 * @return
+	 */
+	public String getJavaColumnName(String column){
+		if(StringUtils.isNotBlank(column)){
+			for(Columns c : getColumnList()){
+				if(column.equals(c.getColumnName()))
+					return c.getPropertiesName();
+			}
+		}
+		return column;
+	}
+	/**
+	 * 获取显示字段的java字段名
+	 * @return
+	 */
+	public String getJavaLableName(){
+		return getJavaColumnName(labelName);
+	}
+	public String getJavaForeignKey(){
+		return getJavaColumnName(parent.getForeignKey());
 	}
 }

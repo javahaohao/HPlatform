@@ -6,7 +6,7 @@
 		${table.tableAlias}.${column.columnName} AS ${table.tableAlias}${column.propertiesName},
 	</#list>
 	<#list table.childs as childTable> 
-		<#list childTable.getColumnList() as column> 
+		<#list childTable.columnList as column> 
 		${childTable.tableAlias}.${column.columnName} AS ${childTable.tableAlias}${column.propertiesName}<#if childTable_has_next||column_has_next>,</#if>
 		</#list>
 	</#list>

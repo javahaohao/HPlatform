@@ -6,7 +6,7 @@
 		${table.tableAlias}.${column.columnName} AS "${column.propertiesName}",
 	</#list>
 	<#list table.parent.columnList as column> 
-		${table.parent.tableAlias}.${column.columnName} AS "${table.parent.domainName}.${column.propertiesName}"<#if column_has_next>,</#if>
+		${table.parent.tableAlias}.${column.columnName} AS "${table.parent.domainName?uncap_first}.${column.propertiesName}"<#if column_has_next>,</#if>
 	</#list>
 	</sql>
 	<select id="findOne" parameterType="${table.domainName}" resultType="${table.domainName}">
