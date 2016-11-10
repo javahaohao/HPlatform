@@ -1,6 +1,3 @@
-﻿/**
- * 
- */
 package com.hplatform.core.common.util;
 
 import java.io.File;
@@ -17,12 +14,12 @@ import org.apache.tools.zip.ZipOutputStream;
 
 /**
  * 利于ant包来压缩文件 可对空文件夹进行压缩<br>
- * 
+ *
  * 注：压缩文件的关键步骤在于对文件的读取，存放的时特别要注意文件的路径，最好的方式用相对路径，
- * 
- * 
+ *
+ *
  * @author Administrator
- * 
+ *
  */
 public class AntZipFileUtil {
 	static boolean flag = true; // 压缩成功与否标志
@@ -81,7 +78,7 @@ public class AntZipFileUtil {
 	}
 	/**
 	 * 压缩目录（包含空目录）与文件
-	 * 
+	 *
 	 * @param srcFile
 	 *            待压缩的目录与文件
 	 * @param oppositePath
@@ -91,7 +88,7 @@ public class AntZipFileUtil {
 	 * @throws IOException
 	 */
 	private static void compressFile(File srcFile, String oppositePath,
-			ZipOutputStream zipOut) throws IOException {
+									 ZipOutputStream zipOut) throws IOException {
 		/*
 		 * 因为是空目录，所以要在结尾加一个"/"。 不然就会被当作是空文件。 ZipEntry的isDirectory()方法中,目录以"/"结尾.
 		 * org.apache.tools.zip.ZipEntry : public boolean isDirectory() { return
@@ -123,7 +120,7 @@ public class AntZipFileUtil {
 
 	/**
 	 * 递归完成目录文件读取，由compressFile()方法调用
-	 * 
+	 *
 	 * @param file
 	 *            要读取的文件目录
 	 * @param oppositePath
@@ -133,7 +130,7 @@ public class AntZipFileUtil {
 	 * @throws IOException
 	 */
 	private static void compressFolder(File file, String oppositePath,
-			ZipOutputStream zipOut) throws IOException {
+									   ZipOutputStream zipOut) throws IOException {
 		File[] files = file.listFiles();
 
 		if (files.length == 0) {// 如果目录为空，则单独压缩空目录。
@@ -166,7 +163,7 @@ public class AntZipFileUtil {
 
 	/**
 	 * 解压指定zip文件
-	 * 
+	 *
 	 * @param srcZipFile
 	 *            待解压的文件（包含路径）
 	 * @param targetStr
@@ -212,7 +209,7 @@ public class AntZipFileUtil {
 
 	/**
 	 * 设置压缩或解压时缓冲区大小。
-	 * 
+	 *
 	 * @param bufSize
 	 *            缓冲区大小
 	 */
