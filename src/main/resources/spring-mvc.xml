@@ -78,7 +78,7 @@
 
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${sitePath}/"/>
-	<mvc:view-controller path="/${adminPath}" view-name="redirect:${adminPath}/"/>
+	<mvc:view-controller path="${adminPath}" view-name="redirect:${adminPath}/"/>
 
     <!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>

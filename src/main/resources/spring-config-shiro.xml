@@ -109,7 +109,7 @@
     <bean id="sysUserFilter" class="com.hplatform.core.common.filter.SysUserFilter"/>
     <!-- 登出过滤器 -->
     <bean id="logOutFilter" class="com.hplatform.core.common.filter.LogOutFilter">
-    	<property name="redirectUrl" value="${adminPath}/"/>
+    	<property name="redirectUrl" value="${adminPath}/login"/>
     </bean>
     <!-- 匿名过滤器 -->
     <bean id="anonFilter" class="com.hplatform.core.common.filter.AnonFilter"></bean>
@@ -119,7 +119,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="${adminPath}/login"/>
-        <property name="successUrl" value="${adminPath}/"/>
+        <property name="successUrl" value="${adminPath}/welcome"/>
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>

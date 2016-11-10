@@ -146,8 +146,8 @@ public class FreeMarkerUtil {
 		tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/edit.jsp", table.getBumodel(),StringUtils.lowerCase(table.getDomainName()))
 				,String.format("%sedit.ftl", genTypeMaps.get(table.getRelationType())));
 		for(String tmp : tmpMap.keySet()){
-//			FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(),File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
-			FileUtil.printTxtToFile(StringUtils.join("G:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+			FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(),File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+//			FileUtil.printTxtToFile(StringUtils.join("G:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 		}
 	}
 }
