@@ -37,7 +37,7 @@
 						<form:label path="className" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="className">班级名字：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${classInfo.domainName}"/>
+								<input id="className" name="className" class="width-100" value="${classInfo.className}"/>
 							</span>
 						</div>
 					</div>
@@ -45,39 +45,7 @@
 						<form:label path="floor" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="floor">楼层：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${classInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="createUser" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="createUser">创建人：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${classInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="updateUser" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="updateUser">修改人：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${classInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="createDate" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="createDate">创建时间：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${classInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="updateDate" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="updateDate">修改时间：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${classInfo.domainName}"/>
+								<input id="floor" name="floor" class="width-100" value="${classInfo.floor}"/>
 							</span>
 						</div>
 					</div>

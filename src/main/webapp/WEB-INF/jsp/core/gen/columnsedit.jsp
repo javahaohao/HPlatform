@@ -243,12 +243,11 @@
 				   var tbody = $('tbody',$('#dialog-setting-'+statindex));
 				   tbody.html('');
 				   for(var index in data){
-					  var defaultVal='';
-					  if(data[index].elementName==="name"||data[index].elementName==="path")defaultVal=$('#dvalue',$('#tr-'+statindex)).val();
-					  if(data[index].elementName==="value")defaultVal='$\{'+$('#dvalue',$('#tr-'+statindex)).val()+'\}';
-					   tbody.append('<tr><td><input type="hidden" name="columnList['+statindex+'].columnElements['+index+'].elementId" value="'+data[index].id+'">'+(data[index].required==='${constants.DICT_YES_PARENT_ID}'?'<font color="red">*</font>':'')+data[index].elementName+
-							   '</td><td><input type="text" value="'+(defaultVal||(data[index].defaultVal||''))+'" name="columnList['+statindex+'].columnElements['+index+'].elementValue" mustrequired="'+data[index].required+'" statindex="'+statindex+'" class="width-100"></td><td>'+(data[index].description||'暂无')+'</td></tr>');
-					   $('#elements',$('#columnTag-'+statindex)).html($('input',tbody).clone());
+				   		if(!isNaN(index)){
+						   tbody.append('<tr><td><input type="hidden" name="columnList['+statindex+'].columnElements['+index+'].elementId" value="'+data[index].id+'">'+(data[index].required==='${constants.DICT_YES_PARENT_ID}'?'<font color="red">*</font>':'')+data[index].elementName+
+								   '</td><td><input type="text" value="'+((data[index].defaultVal||''))+'" name="columnList['+statindex+'].columnElements['+index+'].elementValue" mustrequired="'+data[index].required+'" statindex="'+statindex+'" class="width-100"></td><td>'+(data[index].description||'暂无')+'</td></tr>');
+						   $('#elements',$('#columnTag-'+statindex)).html($('input',tbody).clone());
+						}
 				   }
 			   }
 			});

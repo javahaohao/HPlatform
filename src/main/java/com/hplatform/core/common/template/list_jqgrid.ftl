@@ -72,7 +72,7 @@
 			$('#btnAdd').on('click',function(){
 				window.location="${"$"}{adminFullPath}/${table.domainName?uncap_first}/add";
 			});
-			$(".deleteBtn").click(function() {
+            $(document).on('click',".deleteBtn",function() {
 				var self = this;
 	        	platform.showDeleteDialog({
 					beforDeleteHandler:function(dialog){

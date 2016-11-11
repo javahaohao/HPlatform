@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <html>
 <head>
-    <tags:header inplugins="${"$"}{plugins.jqgrid},${"$"}{plugins.jqui}" title="${table.comments}"></tags:header>
+    <tags:header inplugins="${"$"}{plugins.jqgrid},${"$"}{plugins.jqui},${"$"}{plugins.template}" title="${table.comments}"></tags:header>
 </head>
 <body>
 	<div class="page-content-area">
@@ -72,7 +72,7 @@
 			$('#btnAdd').on('click',function(){
 				window.location="${"$"}{adminFullPath}/${table.domainName?uncap_first}/add";
 			});
-			$(".deleteBtn").click(function() {
+            $(document).on('click',".deleteBtn",function() {
 				var self = this;
 	        	platform.showDeleteDialog({
 					beforDeleteHandler:function(dialog){
@@ -98,7 +98,7 @@
 				columnModel:[
 					<#list table.parent.columnList as column> 
 		        	<#if !column.hideFlag??||!column.hideFlag>
-		        	{header:'${column.comments}',name:'${column.propertiesName}',index:'${column.columnName}',sortable:true},
+		        	{header:'${column.comments}',name:'${table.parent.domainName?uncap_first}.${column.propertiesName}',index:'${column.columnName}',sortable:true},
 		            </#if>
 		            </#list>
 					<#list table.columnList as column> 

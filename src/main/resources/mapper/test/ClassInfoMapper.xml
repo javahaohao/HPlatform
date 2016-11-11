@@ -5,38 +5,22 @@
 		cls.id AS clsid,
 		cls.class_name AS clsclassName,
 		cls.floor AS clsfloor,
-		cls.create_user AS clscreateUser,
-		cls.update_user AS clsupdateUser,
-		cls.create_date AS clscreateDate,
-		cls.update_date AS clsupdateDate,
 		stu.id AS stuid,
 		stu.cls_id AS stuclsId,
 		stu.stu_name AS stustuName,
 		stu.age AS stuage,
-		stu.sex AS stusex,
-		stu.create_user AS stucreateUser,
-		stu.update_user AS stuupdateUser,
-		stu.create_date AS stucreateDate,
-		stu.update_date AS stuupdateDate
+		stu.sex AS stusex
 	</sql>
 	<resultMap id="classInfoResultMap" type="ClassInfo">
 	    <id column="clsid" property="id" />
 		<result column="clsclassName" property="className" />
 		<result column="clsfloor" property="floor" />
-		<result column="clscreateUser" property="createUser" />
-		<result column="clsupdateUser" property="updateUser" />
-		<result column="clscreateDate" property="createDate" />
-		<result column="clsupdateDate" property="updateDate" />
-	    <collection property="StuInfoList" javaType="list" ofType="StuInfo">
+	    <collection property="stuInfoList" javaType="list" ofType="StuInfo">
 	        <id column="stuid" property="id" />
 			<result column="stuclsId" property="clsId" />
 			<result column="stustuName" property="stuName" />
 			<result column="stuage" property="age" />
 			<result column="stusex" property="sex" />
-			<result column="stucreateUser" property="createUser" />
-			<result column="stuupdateUser" property="updateUser" />
-			<result column="stucreateDate" property="createDate" />
-			<result column="stuupdateDate" property="updateDate" />
 	    </collection>
 	</resultMap>
 	<select id="findOne" parameterType="ClassInfo" resultMap="classInfoResultMap">
@@ -65,18 +49,6 @@
 				<if test="floor != null and floor != ''">
 					AND cls.floor=#{floor}
 				</if>
-				<if test="createUser != null and createUser != ''">
-					AND cls.create_user=#{createUser}
-				</if>
-				<if test="updateUser != null and updateUser != ''">
-					AND cls.update_user=#{updateUser}
-				</if>
-				<if test="createDate != null and createDate != ''">
-					AND cls.create_date=#{createDate}
-				</if>
-				<if test="updateDate != null and updateDate != ''">
-					AND cls.update_date=#{updateDate}
-				</if>
 		</where>
 	</select>
 	<insert id="addEntity" parameterType="ClassInfo">
@@ -84,20 +56,12 @@
 		tb_class_info(
 			id,
 			class_name,
-			floor,
-			create_user,
-			update_user,
-			create_date,
-			update_date
+			floor
 		) 
 		values(
 			#{id},
 			#{className},
-			#{floor},
-			#{createUser},
-			#{updateUser},
-			#{createDate},
-			#{updateDate}
+			#{floor}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="ClassInfo">
@@ -111,19 +75,7 @@
 			class_name=#{className},
 		</if>
 		<if test="floor !=null and floor !=''">
-			floor=#{floor},
-		</if>
-		<if test="createUser !=null and createUser !=''">
-			create_user=#{createUser},
-		</if>
-		<if test="updateUser !=null and updateUser !=''">
-			update_user=#{updateUser},
-		</if>
-		<if test="createDate !=null and createDate !=''">
-			create_date=#{createDate},
-		</if>
-		<if test="updateDate !=null and updateDate !=''">
-			update_date=#{updateDate}
+			floor=#{floor}
 		</if>
 		</set>
 		where id=#{id}

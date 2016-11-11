@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <html>
 <head>
-    <title>子表${op}</title>
+	<tags:header inplugins="${plugins.jqui},${plugins.validate}" title="子表${op}"></tags:header>
 </head>
 <body>
 	<div class="page-content-area">
@@ -34,18 +34,10 @@
 					</p>
 					<form:hidden path="id"/>
 					<div class="form-group">
-						<form:label path="clsId" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="clsId">班级：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
 						<form:label path="stuName" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="stuName">学生名字：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
+                                <input id="stuName" name="stuName" class="width-100" value="${stuInfo.stuName}"/>
 							</span>
 						</div>
 					</div>
@@ -53,7 +45,7 @@
 						<form:label path="age" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="age">年龄：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
+                                <input id="age" name="age" class="width-100" value="${stuInfo.age}"/>
 							</span>
 						</div>
 					</div>
@@ -61,44 +53,12 @@
 						<form:label path="sex" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="sex">性别：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
+                                <input id="sex" name="sex" class="width-100" value="${stuInfo.sex}"/>
 							</span>
 						</div>
 					</div>
 					<div class="form-group">
-						<form:label path="createUser" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="createUser">创建人：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="updateUser" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="updateUser">修改人：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="createDate" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="createDate">创建时间：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="updateDate" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="updateDate">修改时间：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-								<input id="id" name="name" class="class" value="${stuInfo.domainName}"/>
-							</span>
-						</div>
-					</div>
-					<div class="form-group">
-						<form:label path="className" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="className">父表：</form:label>
+						<form:label path="classInfo.className" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="classInfo.className">父表：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
 							<form:select path="clsId" itemLabel="className" itemValue="id" items="${parents}" cssClass="select2 width-100 required" title="父表"></form:select>

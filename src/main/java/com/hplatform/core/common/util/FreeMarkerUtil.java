@@ -1,23 +1,22 @@
 package com.hplatform.core.common.util;
 
+import com.hplatform.core.common.freemarkertmp.IsELFun;
+import com.hplatform.core.common.freemarkertmp.TrimELFun;
+import com.hplatform.core.entity.Table;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.hplatform.core.common.freemarkertmp.TableMappingFun;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.hplatform.core.entity.Table;
-
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateExceptionHandler;
 
 public class FreeMarkerUtil {
     private final transient Log log = LogFactory.getLog(FreeMarkerUtil.class);
@@ -130,7 +129,8 @@ public class FreeMarkerUtil {
 		if(table.getGenFlag()) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("table", table);
-			map.put("tableMapping", new TableMappingFun());
+			map.put("trimEL", new TrimELFun());
+			map.put("isEL", new IsELFun());
 			Map<String, String> tmpMap = new HashMap<String, String>();
 			tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", table.getBumodel(), table.getDomainName())
 					, String.format("%smappersql.ftl", genTypeMaps.get(table.getRelationType())));
@@ -150,7 +150,7 @@ public class FreeMarkerUtil {
 					, String.format("%sedit.ftl", genTypeMaps.get(table.getRelationType())));
 			for (String tmp : tmpMap.keySet()) {
 				FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
-//			FileUtil.printTxtToFile(StringUtils.join("G:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+//			FileUtil.printTxtToFile(StringUtils.join("f:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 			}
 		}
 	}

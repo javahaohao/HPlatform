@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <html>
 <head>
-    <tags:header inplugins="${plugins.jqgrid},${plugins.jqui}" title="子表"></tags:header>
+    <tags:header inplugins="${plugins.jqgrid},${plugins.template},${plugins.jqui}" title="子表"></tags:header>
 </head>
 <body>
 	<div class="page-content-area">
@@ -72,7 +72,7 @@
 			$('#btnAdd').on('click',function(){
 				window.location="${adminFullPath}/stuInfo/add";
 			});
-			$(".deleteBtn").click(function() {
+			$(document).on('click',".deleteBtn",function() {
 				var self = this;
 	        	platform.showDeleteDialog({
 					beforDeleteHandler:function(dialog){
@@ -96,20 +96,12 @@
 				url:'${adminFullPath}/stuInfo/list'
 			},{
 				columnModel:[
-		        	{header:'班级名字',name:'className',index:'class_name',sortable:true},
-		        	{header:'楼层',name:'floor',index:'floor',sortable:true},
-		        	{header:'创建人',name:'createUser',index:'create_user',sortable:true},
-		        	{header:'修改人',name:'updateUser',index:'update_user',sortable:true},
-		        	{header:'创建时间',name:'createDate',index:'create_date',sortable:true},
-		        	{header:'修改时间',name:'updateDate',index:'update_date',sortable:true},
+		        	{header:'班级名字',name:'classInfo.className',index:'class_name',sortable:true},
+		        	{header:'楼层',name:'classInfo.floor',index:'floor',sortable:true},
 		        	{header:'班级',name:'clsId',index:'cls_id',sortable:true},
 		        	{header:'学生名字',name:'stuName',index:'stu_name',sortable:true},
 		        	{header:'年龄',name:'age',index:'age',sortable:true},
 		        	{header:'性别',name:'sex',index:'sex',sortable:true},
-		        	{header:'创建人',name:'createUser',index:'create_user',sortable:true},
-		        	{header:'修改人',name:'updateUser',index:'update_user',sortable:true},
-		        	{header:'创建时间',name:'createDate',index:'create_date',sortable:true},
-		        	{header:'修改时间',name:'updateDate',index:'update_date',sortable:true},
 					{header:'操作',name:'',sortable:false,title:false,classes:'no-white-space',formatter:function(val,obj,row,oper){
 						return template('oper',row);
 					}}

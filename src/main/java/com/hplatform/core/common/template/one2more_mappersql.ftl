@@ -19,7 +19,7 @@
 		</#if> 
 	</#list>
 	<#list table.childs as childTable> 
-	    <collection property="${childTable.domainName}List" javaType="list" ofType="${childTable.domainName}">
+	    <collection property="${childTable.domainName?uncap_first}List" javaType="list" ofType="${childTable.domainName}">
 	        <id column="${childTable.tableAlias}id" property="id" />
 		<#list childTable.columnList as column> 
 			<#if column.propertiesName!="id">
