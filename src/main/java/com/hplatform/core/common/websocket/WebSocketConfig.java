@@ -13,9 +13,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 import com.hplatform.core.web.taglib.Functions;
 
-@Configuration
-@EnableWebMvc
-@EnableWebSocket
+//@Configuration
+//@EnableWebMvc
+//@EnableWebSocket
 public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());

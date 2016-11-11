@@ -14,7 +14,7 @@ public class ${table.domainName} extends BaseEntity<${table.domainName}>{
 	</#if> 
 </#list>
 <#list table.childs as child>
-	private List<${child.domainName}> ${child.domainName}List;
+	private List<${child.domainName}> ${child.domainName?uncap_first}List;
 </#list>
 <#list table.columnList as column> 
 <#if column.propertiesName!="id"&&column.propertiesName!="createDate"&&column.propertiesName!="createUser"&&column.propertiesName!="updateDate"&&column.propertiesName!="updateUser">

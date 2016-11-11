@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.test.mapper.StuInfoMapper" >
+	<sql id="columns">
+		stu.id AS "id",
+		stu.cls_id AS "clsId",
+		stu.stu_name AS "stuName",
+		stu.age AS "age",
+		stu.sex AS "sex",
+		stu.create_user AS "createUser",
+		stu.update_user AS "updateUser",
+		stu.create_date AS "createDate",
+		stu.update_date AS "updateDate",
+		cls.id AS "classInfo.id",
+		cls.class_name AS "classInfo.className",
+		cls.floor AS "classInfo.floor",
+		cls.create_user AS "classInfo.createUser",
+		cls.update_user AS "classInfo.updateUser",
+		cls.create_date AS "classInfo.createDate",
+		cls.update_date AS "classInfo.updateDate"
+	</sql>
+	<select id="findOne" parameterType="StuInfo" resultType="StuInfo">
+		SELECT 
+			<include refid="columns"/>
+		FROM tb_stu_info stu
+		LEFT JOIN tb_class_info cls ON cls.id=stu.cls_id
+		<where>
+			<if test="id != null and id != ''">
+				stu.id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="StuInfo" resultType="StuInfo">
+		SELECT 
+			 <include refid="columns"/>
+		FROM tb_stu_info stu
+		LEFT JOIN tb_class_info cls ON cls.id=stu.cls_id
+		<where>
+				<if test="id != null and id != ''">
+					AND stu.id=#{id}
+				</if>
+				<if test="clsId != null and clsId != ''">
+					AND stu.cls_id=#{clsId}
+				</if>
+				<if test="stuName != null and stuName != ''">
+					AND stu.stu_name=#{stuName}
+				</if>
+				<if test="age != null and age != ''">
+					AND stu.age=#{age}
+				</if>
+				<if test="sex != null and sex != ''">
+					AND stu.sex=#{sex}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND stu.create_user=#{createUser}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND stu.update_user=#{updateUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND stu.create_date=#{createDate}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND stu.update_date=#{updateDate}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="StuInfo">
+		insert into 
+		tb_stu_info(
+			id,
+			cls_id,
+			stu_name,
+			age,
+			sex,
+			create_user,
+			update_user,
+			create_date,
+			update_date
+		) 
+		values(
+			#{id},
+			#{clsId},
+			#{stuName},
+			#{age},
+			#{sex},
+			#{createUser},
+			#{updateUser},
+			#{createDate},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="StuInfo">
+		update 
+			tb_stu_info 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="clsId !=null and clsId !=''">
+			cls_id=#{clsId},
+		</if>
+		<if test="stuName !=null and stuName !=''">
+			stu_name=#{stuName},
+		</if>
+		<if test="age !=null and age !=''">
+			age=#{age},
+		</if>
+		<if test="sex !=null and sex !=''">
+			sex=#{sex},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="StuInfo">
+		delete from tb_stu_info where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="StuInfo">
+		delete from tb_stu_info 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

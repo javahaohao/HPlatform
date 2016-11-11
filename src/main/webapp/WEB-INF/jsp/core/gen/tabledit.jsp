@@ -285,7 +285,7 @@
 				index:$('.childitem',$('.relation-content')).size()
 			});
 			var item = $(template('itemtemplate', data));
-			$(".select2",item).prepend('<option value="">--请选择--</option>').select2({allowClear:true})
+			$(".select2",item).prepend('<option value="">--请选择--</option>').select2({allowClear:true});
 			$('.relation-content').append(item);
 		}
 	</script>

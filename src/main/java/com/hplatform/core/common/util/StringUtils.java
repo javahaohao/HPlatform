@@ -26,4 +26,28 @@ public class StringUtils {
 		String firstChar = c.substring(0, 1);
 		return String.format("%s%s",new Object[]{firstChar.toUpperCase(),c.substring(1, c.length())});
 	}
+	public static String lowerFirst(String c){
+		String firstChar = c.substring(0, 1);
+		return String.format("%s%s",new Object[]{firstChar.toLowerCase(),c.substring(1, c.length())});
+	}
+
+	/**
+	 * 判断参数是否为EL表达式参数类型
+	 * @param param
+	 * @return
+	 */
+	public static boolean isELType(String param){
+		return org.apache.commons.lang3.StringUtils.isNotBlank(param)
+				&&param.startsWith("${")
+				&&param.endsWith("}");
+	}
+
+	/**
+	 * 获取EL表达式的name属性
+	 * @param param
+	 * @return
+	 */
+	public static String getELName(String param){
+		return param.replace("${","").replace("}","");
+	}
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.hplatform.core.common.freemarkertmp.TableMappingFun;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -126,28 +127,31 @@ public class FreeMarkerUtil {
 	};
 	
 	public static void genCode(Table table) throws Exception{
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("table", table);
-		Map<String, String> tmpMap = new HashMap<String, String>();
-		tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", table.getBumodel(),table.getDomainName())
-				,String.format("%smappersql.ftl", genTypeMaps.get(table.getRelationType())));
-		tmpMap.put(String.format("src/main/java/%s/%s/mapper/%sMapper.java", table.getSplitPkg(),table.getBumodel(),table.getDomainName())
-				,"mapper.ftl" );
-		tmpMap.put(String.format("src/main/java/%s/%s/service/%sService.java", table.getSplitPkg(),table.getBumodel(),table.getDomainName())
-				,"service.ftl" );
-		tmpMap.put(String.format("src/main/java/%s/%s/web/controller/%sController.java", table.getSplitPkg(),table.getBumodel(),table.getDomainName())
-				,String.format("%scontroller%s.ftl",genTypeMaps.get(table.getRelationType()),fgTypeMaps.get(table.getFgType())));
-		tmpMap.put(String.format("src/main/java/%s/%s/entity/%s.java", table.getSplitPkg(),table.getBumodel(),table.getDomainName())
-				,String.format("%sdomain.ftl", genTypeMaps.get(table.getRelationType())) );
-		tmpMap.put(String.format("src/main/java/%s/%s/constants/%sConstants.java", table.getSplitPkg(),table.getBumodel(),table.getDomainName())
-				,"constants.ftl" );
-		tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/list.jsp", table.getBumodel(),StringUtils.lowerCase(table.getDomainName()))
-				, String.format("%slist%s.ftl",genTypeMaps.get(table.getRelationType()),fgTypeMaps.get(table.getFgType())));
-		tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/edit.jsp", table.getBumodel(),StringUtils.lowerCase(table.getDomainName()))
-				,String.format("%sedit.ftl", genTypeMaps.get(table.getRelationType())));
-		for(String tmp : tmpMap.keySet()){
-			FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(),File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+		if(table.getGenFlag()) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("table", table);
+			map.put("tableMapping", new TableMappingFun());
+			Map<String, String> tmpMap = new HashMap<String, String>();
+			tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", table.getBumodel(), table.getDomainName())
+					, String.format("%smappersql.ftl", genTypeMaps.get(table.getRelationType())));
+			tmpMap.put(String.format("src/main/java/%s/%s/mapper/%sMapper.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, "mapper.ftl");
+			tmpMap.put(String.format("src/main/java/%s/%s/service/%sService.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, "service.ftl");
+			tmpMap.put(String.format("src/main/java/%s/%s/web/controller/%sController.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, String.format("%scontroller%s.ftl", genTypeMaps.get(table.getRelationType()), fgTypeMaps.get(table.getFgType())));
+			tmpMap.put(String.format("src/main/java/%s/%s/entity/%s.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, String.format("%sdomain.ftl", genTypeMaps.get(table.getRelationType())));
+			tmpMap.put(String.format("src/main/java/%s/%s/constants/%sConstants.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, "constants.ftl");
+			tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/list.jsp", table.getBumodel(), StringUtils.lowerCase(table.getDomainName()))
+					, String.format("%slist%s.ftl", genTypeMaps.get(table.getRelationType()), fgTypeMaps.get(table.getFgType())));
+			tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/edit.jsp", table.getBumodel(), StringUtils.lowerCase(table.getDomainName()))
+					, String.format("%sedit.ftl", genTypeMaps.get(table.getRelationType())));
+			for (String tmp : tmpMap.keySet()) {
+				FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 //			FileUtil.printTxtToFile(StringUtils.join("G:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+			}
 		}
 	}
 }

@@ -24,7 +24,7 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 	private ElementService elementService;
 	/**
 	 * 查询所有信息
-	 * @param attachment
+	 * @param columns
 	 * @return
 	 * @throws CRUDException
 	 */
@@ -71,7 +71,7 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 	}
 	/**
 	 * 修改生成列规则
-	 * @param columns
+	 * @param columnList
 	 * @throws CRUDException
 	 */
 	public void editColumns(List<Columns> columnList) throws CRUDException{

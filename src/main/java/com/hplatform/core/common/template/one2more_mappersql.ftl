@@ -47,7 +47,7 @@
 			 <include refid="columns"/>
 		FROM ${table.tableName} ${table.tableAlias}
 		<#list table.childs as childTable>
-		LEFT JOIN ${childTable.tableName} ${childTable.tableAlias} ON ${table.tableName}.id = ${childTable.tableAlias}.${table.foreignKey}
+		LEFT JOIN ${childTable.tableName} ${childTable.tableAlias} ON ${table.tableAlias}.id = ${childTable.tableAlias}.${table.foreignKey}
 		</#list>
 		<where>
 			<#list table.columnList as column> 

@@ -22,7 +22,7 @@
 			<if test="type !=null and type !=''">
 				type=#{type},
 			</if>
-			<if test="url !=null and url !=''">
+			<if test="url !=null">
 				url=#{url},
 			</if>
 			<if test="icon !=null and icon !=''">

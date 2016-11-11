@@ -130,7 +130,7 @@
 											    				${columnElement.element.required eq constants.DICT_YES_PARENT_ID?'<font color="red">*</font>':''}${columnElement.element.elementName}
 											    			</td>
 											    			<td>
-											    				<input type="text" name="columnList[${stat.index}].columnElements[${statu.index}].elementValue" value="${columnElement.elementValue}" mustrequired="${columnElement.element.required}" statindex="${stat.index}" class="width-100">
+											    				<input type="text" name="columnList[${stat.index}].columnElements[${statu.index}].elementValue" value="${empty columnElement.elementValue?columnElement.element.defaultVal:columnElement.elementValue}" mustrequired="${columnElement.element.required}" statindex="${stat.index}" class="width-100">
 											    			</td>
 											    			<td>${empty columnElement.element.description?'暂无':columnElement.element.description}</td>
 											    		</tr>

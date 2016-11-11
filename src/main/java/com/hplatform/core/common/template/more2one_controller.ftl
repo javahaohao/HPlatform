@@ -14,6 +14,8 @@ import com.hplatform.core.web.controller.BaseController;
 import ${table.pkg}.${table.bumodel}.constants.${table.domainName}Constants;
 import ${table.pkg}.${table.bumodel}.entity.${table.domainName};
 import ${table.pkg}.${table.bumodel}.service.${table.domainName}Service;
+import ${table.parent.pkg}.${table.parent.bumodel}.entity.${table.parent.domainName};
+import ${table.parent.pkg}.${table.parent.bumodel}.service.${table.parent.domainName}Service;
 
 @Controller
 @RequestMapping("${"$"}{adminPath}/${table.domainName?uncap_first}")
@@ -40,7 +42,7 @@ public class ${table.domainName}Controller extends BaseController {
     }
 	@RequiresPermissions("${table.domainName?uncap_first}:create")
     @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String showCreatFrom(Model model) {
+    public String showCreatFrom(Model model) throws CRUDException{
         model.addAttribute("op", "保存");
         initParents(model);
         return ${table.domainName}Constants.EDIT;

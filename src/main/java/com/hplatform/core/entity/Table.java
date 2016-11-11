@@ -2,6 +2,7 @@ package com.hplatform.core.entity;
 
 import java.util.List;
 
+import cn.org.rapid_framework.util.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class Table extends BaseEntity<Table>{
@@ -176,6 +177,9 @@ public class Table extends BaseEntity<Table>{
 		return getJavaColumnName(labelName);
 	}
 	public String getJavaForeignKey(){
-		return getJavaColumnName(parent.getForeignKey());
+		if(ObjectUtils.isNotEmpty(parent))
+			return getJavaColumnName(parent.getForeignKey());
+		else
+			return null;
 	}
 }

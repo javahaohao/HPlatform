@@ -28,6 +28,6 @@ public class ${table.domainName} extends BaseEntity<${table.domainName}>{
 		this.${table.parent.domainName?uncap_first}=${table.parent.domainName?uncap_first};
 	}
 	public ${table.parent.domainName} get${table.parent.domainName}(){
-		return this.${table.parent.domainName};
+		return this.${table.parent.domainName?uncap_first};
 	}
 }

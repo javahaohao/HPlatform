@@ -36,16 +36,14 @@ public class TableService extends BaseService<Table, TableMapper> {
 	}
 	/**
 	 * 生成子表代码
-	 * @param table
+	 * @param parent
 	 * @throws Exception 
 	 */
 	public void genChildCode(Table parent) throws Exception{
 		for(Table child : parent.getChilds()){
-			if(child.getGenFlag()){
-				child.setParent(parent);
-				child.setRelationType(Table.RelationType.more_2_one);
-				FreeMarkerUtil.genCode(child);
-			}
+			child.setParent(parent);
+			child.setRelationType(Table.RelationType.more_2_one);
+			FreeMarkerUtil.genCode(child);
 		}
 	}
 	/**
