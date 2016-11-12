@@ -51,14 +51,7 @@
 			<result column="default_val" property="element.defaultVal"/>
 			<result column="element_value" property="elementValue"/>
 		</collection>
-		<collection property="columnValidates" ofType="ColumnValidate">
-			<id column="columnValidatesId" property="id"/>
-			<result column="validate_id" property="validateId"/>
-			<result column="validate_val" property="validateVal"/>
-			<result column="validate_message" property="validateMessage"/>
-			<result column="name" property="validate.name"/>
-			<result column="value" property="validate.value"/>
-		</collection>
+		<collection property="columnValidates" ofType="ColumnValidate" column="id" select="findAllByValidate"></collection>
 	</resultMap>
 	<select id="findAllByRelation" resultMap="columnsMap" parameterType="Columns">
 		select 
@@ -90,18 +83,11 @@
 			c.description,
 			c.element_name,
 			c.required,
-			c.default_val,
-			d.validate_id,
-			d.validate_val,
-			d.validate_message,
-			e.name,
-			e.value
+			c.default_val
 		from 
 			gen_columns a 
 			left join gen_column_element b on a.id=b.column_id
 			left join gen_element c on c.id=b.element_id
-			left join gen_column_validate d on d.column_id=a.id
-			left join sys_dict e on e.id=d.validate_id
 		<where>
 				<if test="id != null and id != ''">
 					a.id=#{id}
@@ -153,6 +139,17 @@
 				</if>
 		</where>
 		order by a.sequence,c.sequence
+	</select>
+	<select id="findAllByValidate" resultType="ColumnValidate">
+		select
+		d.validate_id AS "validateId",
+		d.validate_val AS "validateVal",
+		d.validate_message AS "validateMessage",
+		e.name AS "validate.name",
+		e.value AS "validate.value"
+		from gen_column_validate d
+		left join sys_dict e on e.id=d.validate_id
+		where d.column_id=#{id}
 	</select>
 	<select id="findOne" parameterType="Columns" resultType="Columns">
 		select 

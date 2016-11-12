@@ -1,5 +1,9 @@
 package com.hplatform.core.entity;
 
+import org.apache.commons.collections.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,13 +27,12 @@ public class Columns extends BaseEntity<Columns>{
 	private boolean sortFlag;
 	private int sequence;
 	private List<ColumnElement> columnElements;
-	private Set<ColumnValidate> columnValidates;
-	
-	
-	public Set<ColumnValidate> getColumnValidates() {
+	private ArrayList<ColumnValidate> columnValidates;
+
+	public ArrayList<ColumnValidate> getColumnValidates() {
 		return columnValidates;
 	}
-	public void setColumnValidates(Set<ColumnValidate> columnValidates) {
+	public void setColumnValidates(ArrayList<ColumnValidate> columnValidates) {
 		this.columnValidates = columnValidates;
 	}
 	public List<ColumnElement> getColumnElements() {

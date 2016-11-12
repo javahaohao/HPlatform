@@ -224,6 +224,7 @@
 			platform.showContentDialog({
 				title:'"'+$('#tr-'+statindex).attr('columnName')+'"标签元素设置',
 				content:'#dialog-setting-'+statindex,
+				option:{width:"500"},
 				selectedHandler:function(dialog){
 					$('#elements',$('#columnTag-'+statindex)).html($('input',dialog).clone());
 					$('[setting="plugin'+statindex+'"]').closest('a').attr('class','green');

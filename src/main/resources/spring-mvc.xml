@@ -52,7 +52,7 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		日期类型的转换
 		<property name="webBindingInitializer">  
-			<bean class="com.hplatform.core.common.dateconvert.MyWebBindingInitializer"/>  
+			<bean class="com.hplatform.core.common.formbindconvertvert.MyWebBindingInitializer"/>
 		</property>
 		<property name="messageConverters">
 			<list>

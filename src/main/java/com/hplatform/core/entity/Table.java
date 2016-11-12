@@ -1,5 +1,6 @@
 package com.hplatform.core.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.org.rapid_framework.util.ObjectUtils;
@@ -21,7 +22,7 @@ public class Table extends BaseEntity<Table>{
 	private String foreignKey;//外键
 	private Boolean genFlag;//是否生成
 	private String labelName;//被选择时label显示字段
-	private List<Columns> columnList;
+	private ArrayList<Columns> columnList;
 	private List<Tags> tagList;
 	
 	//父表
@@ -70,10 +71,10 @@ public class Table extends BaseEntity<Table>{
 	public void setBumodel(String bumodel) {
 		this.bumodel = bumodel;
 	}
-	public List<Columns> getColumnList() {
+	public ArrayList<Columns> getColumnList() {
 		return columnList;
 	}
-	public void setColumnList(List<Columns> columnList) {
+	public void setColumnList(ArrayList<Columns> columnList) {
 		this.columnList = columnList;
 	}
 	/**

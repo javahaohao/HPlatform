@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <html>
 <head>
-    <tags:header inplugins="${"$"}{plugins.jqgrid},${"$"}{plugins.jqui},${"$"}{plugins.template}" title="${table.comments}"></tags:header>
+    <tags:header inplugins="${"$"}{plugins.jqgrid},${"$"}{plugins.jqui},${"$"}{plugins.template},${"$"}{plugins.jbox}" title="${table.comments}"></tags:header>
 </head>
 <body>
 	<div class="page-content-area">

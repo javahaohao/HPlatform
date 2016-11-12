@@ -44,6 +44,7 @@
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
 								<#include "gen_tags.ftl" encoding="UTF-8">
+                                <i class="ace-icon fa fa-info-circle"></i>
 							</span>
 						</div>
 					</div>

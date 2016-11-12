@@ -1,6 +1,5 @@
 <#if column.plugin=="587c1da1c19049e28577cfe988cef9b9">
 <form:input<#list column.columnElements as columnElement> ${columnElement.element.elementName}="<#if isEL(columnElement.elementValue)>${'$'}{${trimEL(columnElement.elementValue)?eval}}<#elseif columnElement.elementValue?contains('.')>${columnElement.elementValue?eval}<#else>${columnElement.elementValue}</#if>"</#list>/>
-<i class="ace-icon fa fa-info-circle"></i>
 <#elseif column.plugin=="1db4e28fa5264429a4c9693fdad3eaa1">
 <form:select<#list column.columnElements as columnElement> ${columnElement.element.elementName}="<#if isEL(columnElement.elementValue)>${'$'}{${trimEL(columnElement.elementValue)?eval}}<#elseif columnElement.elementValue?contains('.')>${columnElement.elementValue?eval}<#else>${columnElement.elementValue}</#if>"</#list>></form:select>
 <#elseif column.plugin=="b429024598fe4c00880e88292d8481ef">

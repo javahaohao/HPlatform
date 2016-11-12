@@ -45,25 +45,12 @@ public class ColumnValidate extends BaseEntity<ColumnValidate> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		ColumnValidate that = (ColumnValidate) o;
-
-		if (columnId != null ? !columnId.equals(that.columnId) : that.columnId != null) return false;
-		if (validateId != null ? !validateId.equals(that.validateId) : that.validateId != null) return false;
-		if (validateVal != null ? !validateVal.equals(that.validateVal) : that.validateVal != null) return false;
-		return validateMessage != null ? validateMessage.equals(that.validateMessage) : that.validateMessage == null;
-
-	}
-
-	@Override
-	public int hashCode() {
-		int result = columnId != null ? columnId.hashCode() : 0;
-		result = 31 * result + (validateId != null ? validateId.hashCode() : 0);
-		result = 31 * result + (validateVal != null ? validateVal.hashCode() : 0);
-		result = 31 * result + (validateMessage != null ? validateMessage.hashCode() : 0);
-		return result;
+	public String toString() {
+		return "ColumnValidate{" +
+				"columnId='" + columnId + '\'' +
+				", validateId='" + validateId + '\'' +
+				", validateVal='" + validateVal + '\'' +
+				", validateMessage='" + validateMessage + '\'' +
+				'}';
 	}
 }

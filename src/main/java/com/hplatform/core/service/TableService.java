@@ -1,5 +1,6 @@
 package com.hplatform.core.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class TableService extends BaseService<Table, TableMapper> {
 			Columns columns = new Columns();
 			columns.setTableId(id);
 			columns.setGenFlag(Boolean.TRUE);
-			List<Columns> columnList = columnsMapper.findAllByRelation(columns);
+			ArrayList<Columns> columnList = columnsMapper.findAllByRelation(columns);
 			for(Table child:genTable.getChilds()){
 				columns.setTableId(child.getId());
 				child.setColumnList(columnsMapper.findAllByRelation(columns));
