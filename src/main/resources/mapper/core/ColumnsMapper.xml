@@ -41,7 +41,7 @@
 		<result column="create_date" property="createDate"/>
 		<result column="update_user" property="updateUser"/>
 		<result column="update_date" property="updateDate"/>
-		<collection property="columnElements" javaType="list" ofType="ColumnElement">
+		<collection property="columnElements" ofType="ColumnElement">
 			<id column="columnElementsId" property="id"/>
 			<result column="column_id" property="columnId"/>
 			<result column="element_id" property="element.id"/>
@@ -51,7 +51,7 @@
 			<result column="default_val" property="element.defaultVal"/>
 			<result column="element_value" property="elementValue"/>
 		</collection>
-		<collection property="columnValidates" javaType="list" ofType="ColumnValidate">
+		<collection property="columnValidates" ofType="ColumnValidate">
 			<id column="columnValidatesId" property="id"/>
 			<result column="validate_id" property="validateId"/>
 			<result column="validate_val" property="validateVal"/>

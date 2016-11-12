@@ -100,7 +100,7 @@
         <description>按照字典表的ids批量查询字典数据id,id,id</description>
         <name>getDictsByIds</name>
         <function-class>com.hplatform.core.web.taglib.Functions</function-class>
-        <function-signature>com.hplatform.core.entity.Dict getDictsByIds(java.lang.String)</function-signature>
+        <function-signature>java.util.Collection getDictsByIds(java.lang.String)</function-signature>
     </function>
     
     <function>
@@ -190,14 +190,14 @@
        <description>返回集合对象中指定字段组成的字符串</description>
        <name>joinObjColumnValList</name>
        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
-       <function-signature>java.util.List joinObjColumnValList(java.util.List,java.lang.String,java.lang.String)</function-signature>
+       <function-signature>java.lang.String joinObjColumnValList(java.util.Collection,java.lang.String,java.lang.String)</function-signature>
        <example>${elfn:joinObjColumnValList(list,column,split)}</example>
     </function>
     <function>
        <description>获取集合中某列等于某个值的对象</description>
        <name>getObjFromList</name>
        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
-       <function-signature>java.lang.Object getObjFromList(java.util.List,java.lang.String,java.lang.String)</function-signature>
+       <function-signature>java.lang.Object getObjFromList(java.util.Collection,java.lang.String,java.lang.String)</function-signature>
        <example>${elfn:getObjFromList(list,eqColumn,eqStr)}</example>
     </function>
 </taglib>

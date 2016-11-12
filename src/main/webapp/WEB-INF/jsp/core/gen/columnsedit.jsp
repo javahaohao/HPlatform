@@ -213,7 +213,7 @@
 				$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
 					if(""===$(this).val()){
 						flag=false;
-						showSettingElementDialog($(this).attr('statindex'))
+						showSettingElementDialog($(this).attr('statindex'));
 						return flag;
 					}
 				});

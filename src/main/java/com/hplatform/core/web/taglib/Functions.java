@@ -1,49 +1,21 @@
 package com.hplatform.core.web.taglib;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import cn.org.rapid_framework.util.ObjectUtils;
+import com.hplatform.core.common.util.*;
+import com.hplatform.core.constants.Constants;
+import com.hplatform.core.entity.*;
+import com.hplatform.core.exception.CRUDException;
+import com.hplatform.core.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.util.CollectionUtils;
 
-import cn.org.rapid_framework.util.ObjectUtils;
-
-import com.hplatform.core.common.util.AnalysisObject;
-import com.hplatform.core.common.util.ConstantsUtil;
-import com.hplatform.core.common.util.JSPlugins;
-import com.hplatform.core.common.util.PropertiesUtil;
-import com.hplatform.core.common.util.SpringUtils;
-import com.hplatform.core.common.util.UserUtil;
-import com.hplatform.core.constants.Constants;
-import com.hplatform.core.entity.Area;
-import com.hplatform.core.entity.Attachment;
-import com.hplatform.core.entity.Dict;
-import com.hplatform.core.entity.Organization;
-import com.hplatform.core.entity.Principal;
-import com.hplatform.core.entity.Resource;
-import com.hplatform.core.entity.Role;
-import com.hplatform.core.entity.Tags;
-import com.hplatform.core.entity.User;
-import com.hplatform.core.exception.CRUDException;
-import com.hplatform.core.service.AreaService;
-import com.hplatform.core.service.AttachmentService;
-import com.hplatform.core.service.DictService;
-import com.hplatform.core.service.OrganizationService;
-import com.hplatform.core.service.ResourceService;
-import com.hplatform.core.service.RoleService;
-import com.hplatform.core.service.TagsService;
-import com.hplatform.core.service.UserService;
+import java.util.*;
 
 public class Functions {
 	private static final transient Log log = LogFactory.getLog(Functions.class);
@@ -215,8 +187,8 @@ public class Functions {
      * @return
      * @throws CRUDException 
      */
-    public static List<Dict> getDictsByIds(String dictIds) throws CRUDException{
-    	List<Dict> dictList = null;
+    public static Collection<Dict> getDictsByIds(String dictIds) throws CRUDException{
+    	Collection<Dict> dictList = null;
     	if(!StringUtils.isEmpty(dictIds)){
     		dictList = new ArrayList<Dict>();
     		for(String dictId : Arrays.asList(dictIds.split(",")))
@@ -324,7 +296,7 @@ public class Functions {
     }
     /**
      * 按照文件id,id批量获取文件信息
-     * @param id
+     * @param ids
      * @return
      */
     public static List<Attachment> getAttachList(String ids){
@@ -464,7 +436,7 @@ public class Functions {
      * @throws Exception
      */
     @SuppressWarnings("rawtypes")
-	public static String joinObjColumnValList(List paramList,String columnMethod,String paramSplit) throws Exception{
+	public static String joinObjColumnValList(Collection paramList,String columnMethod,String paramSplit) throws Exception{
     	StringBuffer returnValue = new StringBuffer();
     	for(Object obj : paramList){
     		obj = AnalysisObject.getResult(obj, columnMethod);
@@ -485,7 +457,7 @@ public class Functions {
      * @throws Exception
      */
     @SuppressWarnings("rawtypes")
-	public static Object getObjFromList(List paramList,String eqColumn,String eqStr) throws Exception{
+	public static Object getObjFromList(Collection paramList,String eqColumn,String eqStr) throws Exception{
     	Object retObj = null;
     	if(!CollectionUtils.isEmpty(paramList))
 	    	for(Object obj : paramList){

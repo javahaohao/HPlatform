@@ -98,12 +98,16 @@
 				columnModel:[
 					<#list table.parent.columnList as column> 
 		        	<#if !column.hideFlag??||!column.hideFlag>
-		        	{header:'${column.comments}',name:'${table.parent.domainName?uncap_first}.${column.propertiesName}',index:'${column.columnName}',sortable:true},
+		        	{header:'${column.comments}',name:'${table.parent.domainName?uncap_first}.${column.propertiesName}',index:'${column.columnName}',sortable:true<#if column.propertiesType=='Date'>,formatter:function(val,options,obj,oper){
+                        return new Date(val).format('yyyy-MM-dd hh:mm:ss');
+                    }</#if>},
 		            </#if>
 		            </#list>
 					<#list table.columnList as column> 
 		        	<#if !column.hideFlag??||!column.hideFlag>
-		        	{header:'${column.comments}',name:'${column.propertiesName}',index:'${column.columnName}',sortable:true},
+		        	{header:'${column.comments}',name:'${column.propertiesName}',index:'${column.columnName}',sortable:true<#if column.propertiesType=='Date'>,formatter:function(val,options,obj,oper){
+                        return new Date(val).format('yyyy-MM-dd hh:mm:ss');
+                    }</#if>},
 		            </#if>
 		            </#list>
 					{header:'操作',name:'',sortable:false,title:false,classes:'no-white-space',formatter:function(val,obj,row,oper){

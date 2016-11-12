@@ -32,12 +32,12 @@
 							返回
 						</button>
 					</p>
-					<form:hidden path="id"/>
+<form:hidden path="id"/>
 					<div class="form-group">
 						<form:label path="className" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="className">班级名字：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="className" name="className" class="width-100" value="${classInfo.className}"/>
+<input id="className" name="className" class="width-100" value="${classInfo.className}"/>
 							</span>
 						</div>
 					</div>
@@ -45,7 +45,7 @@
 						<form:label path="floor" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="floor">楼层：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-								<input id="floor" name="floor" class="width-100" value="${classInfo.floor}"/>
+<input id="floor" name="floor" class="width-100" value="${classInfo.floor}"/>
 							</span>
 						</div>
 					</div>
@@ -58,7 +58,13 @@
         $(function () {
 			//添加表单验证
 			formValidate($("#subForm"), 'help-block inline error', 'div',{
+				className:{
+					required:true
+				}
 			},{
+				className:{
+					required:'班级名称必填'
+				}
 			});
         });
     </script>

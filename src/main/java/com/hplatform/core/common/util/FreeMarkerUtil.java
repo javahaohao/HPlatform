@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -131,6 +132,12 @@ public class FreeMarkerUtil {
 			map.put("table", table);
 			map.put("trimEL", new TrimELFun());
 			map.put("isEL", new IsELFun());
+            map.put("excludeColumns",new HashSet<String>(){{
+                add("createDate");
+                add("updateDate");
+                add("createUser");
+                add("updateUser");
+            }});
 			Map<String, String> tmpMap = new HashMap<String, String>();
 			tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", table.getBumodel(), table.getDomainName())
 					, String.format("%smappersql.ftl", genTypeMaps.get(table.getRelationType())));

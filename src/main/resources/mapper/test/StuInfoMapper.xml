@@ -7,9 +7,17 @@
 		stu.stu_name AS "stuName",
 		stu.age AS "age",
 		stu.sex AS "sex",
+		stu.create_user AS "createUser",
+		stu.update_user AS "updateUser",
+		stu.create_date AS "createDate",
+		stu.update_date AS "updateDate",
 		cls.id AS "classInfo.id",
 		cls.class_name AS "classInfo.className",
-		cls.floor AS "classInfo.floor"
+		cls.floor AS "classInfo.floor",
+		cls.create_user AS "classInfo.createUser",
+		cls.update_user AS "classInfo.updateUser",
+		cls.create_date AS "classInfo.createDate",
+		cls.update_date AS "classInfo.updateDate"
 	</sql>
 	<select id="findOne" parameterType="StuInfo" resultType="StuInfo">
 		SELECT 
@@ -43,6 +51,18 @@
 				<if test="sex != null and sex != ''">
 					AND stu.sex=#{sex}
 				</if>
+				<if test="createUser != null and createUser != ''">
+					AND stu.create_user=#{createUser}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND stu.update_user=#{updateUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND stu.create_date=#{createDate}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND stu.update_date=#{updateDate}
+				</if>
 		</where>
 	</select>
 	<insert id="addEntity" parameterType="StuInfo">
@@ -52,14 +72,22 @@
 			cls_id,
 			stu_name,
 			age,
-			sex
+			sex,
+			create_user,
+			update_user,
+			create_date,
+			update_date
 		) 
 		values(
 			#{id},
 			#{clsId},
 			#{stuName},
 			#{age},
-			#{sex}
+			#{sex},
+			#{createUser},
+			#{updateUser},
+			#{createDate},
+			#{updateDate}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="StuInfo">
@@ -79,7 +107,19 @@
 			age=#{age},
 		</if>
 		<if test="sex !=null and sex !=''">
-			sex=#{sex}
+			sex=#{sex},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
 		</if>
 		</set>
 		where id=#{id}

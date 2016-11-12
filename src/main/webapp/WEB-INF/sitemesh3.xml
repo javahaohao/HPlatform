@@ -3,6 +3,6 @@
   <mapping path="/admin/*" decorator="/WEB-INF/layout/layout.jsp"/>
   <mapping path="/admin/login" exclue="true"/>
   <mapping path="/admin/user/register/*" exclue="true"/>
-  <mapping path="/admin/" exclue="true"/>
+  <!--<mapping path="/admin/" exclue="true"/>-->
   <mapping path="/admin/unlayout/*" exclue="true"/>
 </sitemesh>

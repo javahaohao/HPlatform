@@ -29,7 +29,8 @@ public class IndexController extends BaseController {
 
     @RequestMapping("${adminPath}/")
     public String adminPath( Model model) {
-        return "index";
+//        return "index";
+        return "welcome";
     }
     @RequestMapping("${sitePath}/")
     public String sitePath(Model model) throws CRUDException {

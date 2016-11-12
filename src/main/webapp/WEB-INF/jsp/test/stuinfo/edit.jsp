@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <html>
 <head>
-	<tags:header inplugins="${plugins.jqui},${plugins.validate}" title="子表${op}"></tags:header>
+    <tags:header inplugins="${plugins.jqui},${plugins.validate}" title="子表${op}"></tags:header>
 </head>
 <body>
 	<div class="page-content-area">
@@ -32,12 +32,12 @@
 							返回
 						</button>
 					</p>
-					<form:hidden path="id"/>
+<form:hidden path="id"/>
 					<div class="form-group">
 						<form:label path="stuName" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="stuName">学生名字：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-                                <input id="stuName" name="stuName" class="width-100" value="${stuInfo.stuName}"/>
+<input id="stuName" name="stuName" class="width-100" value="${stuInfo.stuName}"/>
 							</span>
 						</div>
 					</div>
@@ -45,7 +45,7 @@
 						<form:label path="age" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="age">年龄：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-                                <input id="age" name="age" class="width-100" value="${stuInfo.age}"/>
+<input id="age" name="age" class="width-100" value="${stuInfo.age}"/>
 							</span>
 						</div>
 					</div>
@@ -53,12 +53,12 @@
 						<form:label path="sex" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="sex">性别：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
-                                <input id="sex" name="sex" class="width-100" value="${stuInfo.sex}"/>
+<input id="sex" name="sex" class="width-100" value="${stuInfo.sex}"/>
 							</span>
 						</div>
 					</div>
 					<div class="form-group">
-						<form:label path="classInfo.className" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="classInfo.className">父表：</form:label>
+						<form:label path="classInfo.className" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="className">父表：</form:label>
 						<div class="col-xs-12 col-sm-5">
 							<span class="block input-icon input-icon-right">
 							<form:select path="clsId" itemLabel="className" itemValue="id" items="${parents}" cssClass="select2 width-100 required" title="父表"></form:select>
@@ -74,7 +74,13 @@
         $(function () {
 			//添加表单验证
 			formValidate($("#subForm"), 'help-block inline error', 'div',{
+				stuName:{
+					required:true
+				}
 			},{
+				stuName:{
+					required:名字必填
+				}
 			});
         });
     </script>

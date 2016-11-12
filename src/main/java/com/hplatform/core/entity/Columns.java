@@ -1,6 +1,7 @@
 package com.hplatform.core.entity;
 
 import java.util.List;
+import java.util.Set;
 
 
 public class Columns extends BaseEntity<Columns>{
@@ -22,13 +23,13 @@ public class Columns extends BaseEntity<Columns>{
 	private boolean sortFlag;
 	private int sequence;
 	private List<ColumnElement> columnElements;
-	private List<ColumnValidate> columnValidates;
+	private Set<ColumnValidate> columnValidates;
 	
 	
-	public List<ColumnValidate> getColumnValidates() {
+	public Set<ColumnValidate> getColumnValidates() {
 		return columnValidates;
 	}
-	public void setColumnValidates(List<ColumnValidate> columnValidates) {
+	public void setColumnValidates(Set<ColumnValidate> columnValidates) {
 		this.columnValidates = columnValidates;
 	}
 	public List<ColumnElement> getColumnElements() {
