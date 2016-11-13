@@ -1,25 +1,25 @@
 package com.hplatform.core.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.hplatform.core.common.util.ConstantsUtil;
+import com.hplatform.core.common.util.FreeMarkerUtil;
+import com.hplatform.core.constants.TableConstants;
+import com.hplatform.core.entity.Columns;
+import com.hplatform.core.entity.Table;
+import com.hplatform.core.exception.CRUDException;
+import com.hplatform.core.mapper.TableMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hplatform.core.common.util.FreeMarkerUtil;
-import com.hplatform.core.entity.Columns;
-import com.hplatform.core.entity.Table;
-import com.hplatform.core.exception.CRUDException;
-import com.hplatform.core.mapper.ColumnsMapper;
-import com.hplatform.core.mapper.TableMapper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class TableService extends BaseService<Table, TableMapper> {
 	@Autowired
-	private ColumnsMapper columnsMapper;
+	private ColumnsService columnsService;
 	/**
 	 * 批量代码生成
 	 * @param table
@@ -52,21 +52,22 @@ public class TableService extends BaseService<Table, TableMapper> {
 	 * @param id
 	 * @return
 	 */
-	public Table comTable(String id){
+	public Table comTable(String id)throws CRUDException{
 		Table genTable = null;
 		try {
 			genTable = findOne(new Table(id));
 			Columns columns = new Columns();
 			columns.setTableId(id);
 			columns.setGenFlag(Boolean.TRUE);
-			ArrayList<Columns> columnList = columnsMapper.findAllByRelation(columns);
+			ArrayList<Columns> columnList = columnsService.findByRelation(columns);
 			for(Table child:genTable.getChilds()){
 				columns.setTableId(child.getId());
-				child.setColumnList(columnsMapper.findAllByRelation(columns));
+				child.setColumnList(columnsService.findByRelation(columns));
 			}
 			genTable.setColumnList(columnList);
 		} catch (CRUDException e) {
 			log.error(e);
+			throw new CRUDException(e);
 		}
 		return genTable;
 	}
@@ -93,5 +94,35 @@ public class TableService extends BaseService<Table, TableMapper> {
 			}
 		}
 	}
-	
+
+	/**
+	 * 修改标的生成标识为已完成
+	 * @param id
+	 * @throws CRUDException
+	 */
+	public void updateGenComplete(String id) throws CRUDException {
+		Table update = new Table(id);
+		update.setStatu(ConstantsUtil.get().getDICT_YES_PARENT_ID());
+		update.setStep(TableConstants.GEN_STEP_THREE);
+		update.setGenFlag(true);
+		super.update(update);
+	}
+
+	/**
+	 * 重置方案生成规则
+	 * @param tableId
+	 */
+	public void resetGenRules(String tableId)throws CRUDException{
+		try{
+			Table table = new Table(tableId);
+			columnsService.resetGenRules(table);
+			table.setStep(TableConstants.GEN_STEP_ONE);
+			table.setStatu(ConstantsUtil.get().getDICT_NO_PARENT_ID());
+			table.setGenFlag(true);
+			super.update(table);
+		}catch(Exception e){
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
 }

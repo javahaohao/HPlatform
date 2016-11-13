@@ -73,7 +73,7 @@
 				<#if (column.columnValidates?size>0&&!column.hideFlag)>
 				${column.propertiesName}:{
 					<#list column.columnValidates as columnValidate>
-					${columnValidate.validate.value}:${columnValidate.validateMessage}<#if columnValidate_has_next>,</#if>
+					${columnValidate.validate.value}:'${columnValidate.validateMessage}'<#if columnValidate_has_next>,</#if>
 					</#list>
 				}<#if (column_has_next&&table.columnList[column_index+1].columnValidates?size>0)>,</#if>
 				</#if>

@@ -3,27 +3,27 @@
 <mapper namespace="${table.pkg}.${table.bumodel}.mapper.${table.domainName}Mapper" >
 	<sql id="columns">
 	<#list table.columnList as column> 
-		${column.columnName} AS "${column.propertiesName}"<#if column_has_next>,</#if>
+		${table.tableAlias}.${column.columnName} AS "${column.propertiesName}"<#if column_has_next>,</#if>
 	</#list>
 	</sql>
 	<select id="findOne" parameterType="${table.domainName}" resultType="${table.domainName}">
 		select 
 			<include refid="columns"/>
-		from ${table.tableName}
+		from ${table.tableName} ${table.tableAlias}
 		<where>
 			<if test="id != null and id != ''">
-				id=${"#"}{id}
+			${table.tableAlias}.id=${"#"}{id}
 			</if>
 		</where>
 	</select>
 	<select id="findAll" parameterType="${table.domainName}" resultType="${table.domainName}">
 		select 
 			 <include refid="columns"/>
-		from ${table.tableName}
+		from ${table.tableName} ${table.tableAlias}
 		<where>
 			<#list table.columnList as column> 
 				<if test="${column.propertiesName} != null and ${column.propertiesName} != ''">
-					AND ${column.columnName}=${"#"}{${column.propertiesName}}
+					AND ${table.tableAlias}.${column.columnName}=${"#"}{${column.propertiesName}}
 				</if>
 			</#list>
 		</where>

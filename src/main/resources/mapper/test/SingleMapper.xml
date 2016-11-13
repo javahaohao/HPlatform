@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.test.mapper.SingleMapper" >
+	<sql id="columns">
+		single.id AS "id",
+		single.test_one AS "testOne",
+		single.test_two AS "testTwo",
+		single.test_three AS "testThree",
+		single.create_user AS "createUser",
+		single.update_user AS "updateUser",
+		single.create_date AS "createDate",
+		single.update_date AS "updateDate"
+	</sql>
+	<select id="findOne" parameterType="Single" resultType="Single">
+		select 
+			<include refid="columns"/>
+		from tb_single single
+		<where>
+			<if test="id != null and id != ''">
+			single.id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="Single" resultType="Single">
+		select 
+			 <include refid="columns"/>
+		from tb_single single
+		<where>
+				<if test="id != null and id != ''">
+					AND single.id=#{id}
+				</if>
+				<if test="testOne != null and testOne != ''">
+					AND single.test_one=#{testOne}
+				</if>
+				<if test="testTwo != null and testTwo != ''">
+					AND single.test_two=#{testTwo}
+				</if>
+				<if test="testThree != null and testThree != ''">
+					AND single.test_three=#{testThree}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND single.create_user=#{createUser}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND single.update_user=#{updateUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND single.create_date=#{createDate}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND single.update_date=#{updateDate}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="Single">
+		insert into 
+		tb_single(
+			id,
+			test_one,
+			test_two,
+			test_three,
+			create_user,
+			update_user,
+			create_date,
+			update_date
+		) 
+		values(
+			#{id},
+			#{testOne},
+			#{testTwo},
+			#{testThree},
+			#{createUser},
+			#{updateUser},
+			#{createDate},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="Single">
+		update 
+			tb_single 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="testOne !=null and testOne !=''">
+			test_one=#{testOne},
+		</if>
+		<if test="testTwo !=null and testTwo !=''">
+			test_two=#{testTwo},
+		</if>
+		<if test="testThree !=null and testThree !=''">
+			test_three=#{testThree},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="Single">
+		delete from tb_single where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="Single">
+		delete from tb_single 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

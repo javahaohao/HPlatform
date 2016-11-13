@@ -1,8 +1,11 @@
 package com.hplatform.core.common.util;
 
+import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.freemarkertmp.IsELFun;
 import com.hplatform.core.common.freemarkertmp.TrimELFun;
+import com.hplatform.core.constants.TableConstants;
 import com.hplatform.core.entity.Table;
+import com.hplatform.core.service.TableService;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
@@ -127,7 +130,7 @@ public class FreeMarkerUtil {
 	};
 	
 	public static void genCode(Table table) throws Exception{
-		if(table.getGenFlag()) {
+		if(ObjectUtils.isNotEmpty(table.getGenFlag())&&table.getGenFlag()) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("table", table);
 			map.put("trimEL", new TrimELFun());
@@ -159,6 +162,8 @@ public class FreeMarkerUtil {
 				FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 //			FileUtil.printTxtToFile(StringUtils.join("f:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 			}
+			//更新表为已经生成代码状态
+			SpringUtils.getBean(TableService.class).updateGenComplete(table.getId());
 		}
 	}
 }

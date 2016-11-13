@@ -24,12 +24,14 @@ public class Table extends BaseEntity<Table>{
 	private String labelName;//被选择时label显示字段
 	private ArrayList<Columns> columnList;
 	private List<Tags> tagList;
+
+	private Integer step;
 	
 	//父表
 	private Table parent;
 	//子表
 	private List<Table> childs;
-	private RelationType relationType = RelationType.one;
+	private RelationType relationType;
 	
 	public static enum RelationType{
 		one("单表","one"),one_2_one("一对一","one_2_one"),one_2_more("一对多","one_2_more"),more_2_one("多对一","more_2_one");
@@ -156,6 +158,15 @@ public class Table extends BaseEntity<Table>{
 	public void setLabelName(String labelName) {
 		this.labelName = labelName;
 	}
+
+	public Integer getStep() {
+		return step;
+	}
+
+	public void setStep(Integer step) {
+		this.step = step;
+	}
+
 	/**
 	 * 获取数据库字段对应的java属性名
 	 * @param column

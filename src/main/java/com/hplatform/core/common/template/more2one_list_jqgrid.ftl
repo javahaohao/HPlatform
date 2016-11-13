@@ -98,14 +98,14 @@
 				columnModel:[
 					<#list table.parent.columnList as column> 
 		        	<#if !column.hideFlag??||!column.hideFlag>
-		        	{header:'${column.comments}',name:'${table.parent.domainName?uncap_first}.${column.propertiesName}',index:'${column.columnName}',sortable:true<#if column.propertiesType=='Date'>,formatter:function(val,options,obj,oper){
+		        	{header:'${column.comments}',name:'${table.parent.domainName?uncap_first}.${(column.propertiesName=='createUser'||column.propertiesName=='updateUser')?string((column.propertiesName+'Name'),column.propertiesName)}',index:'${table.parent.tableAlias}.${column.columnName}',sortable:true<#if column.propertiesType=='java.util.Date'>,formatter:function(val,options,obj,oper){
                         return new Date(val).format('yyyy-MM-dd hh:mm:ss');
                     }</#if>},
 		            </#if>
 		            </#list>
 					<#list table.columnList as column> 
 		        	<#if !column.hideFlag??||!column.hideFlag>
-		        	{header:'${column.comments}',name:'${column.propertiesName}',index:'${column.columnName}',sortable:true<#if column.propertiesType=='Date'>,formatter:function(val,options,obj,oper){
+		        	{header:'${column.comments}',name:'${(column.propertiesName=='createUser'||column.propertiesName=='updateUser')?string((column.propertiesName+'Name'),column.propertiesName)}',index:'${table.tableAlias}.${column.columnName}',sortable:${column.sortFlag?string('true','false')}<#if column.propertiesType=='java.util.Date'>,formatter:function(val,options,obj,oper){
                         return new Date(val).format('yyyy-MM-dd hh:mm:ss');
                     }</#if>},
 		            </#if>

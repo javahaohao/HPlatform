@@ -51,6 +51,7 @@ public class TableController extends BaseController {
 	@RequiresPermissions("table:create")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String create(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
+        table.setStep(TableConstants.GEN_STEP_ONE);
 		tableService.save(table);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
         return getAdminUrlPath("/table");
@@ -82,13 +83,18 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/{tableId}/viewColumn",method = RequestMethod.GET)
     public String list(Columns columns,Model model) throws CRUDException {
 		model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
-		model.addAttribute("tableId",columns.getTableId());
+		model.addAttribute("table",tableService.findOne(new Table(columns.getTableId())));
 		model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
         return TableConstants.COLUMN_EDIT;
     }
 	@RequiresPermissions("table:create")
     @RequestMapping(value = "/editColumns", method = RequestMethod.POST)
     public String editColumns(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
+        if(TableConstants.GEN_STEP_TWO!=table.getStep()){
+            table.setStep(TableConstants.GEN_STEP_TWO);
+            table.setGenFlag(true);
+            tableService.update(table);
+        }
 		columnsService.editColumns(table.getColumnList());
         redirectAttributes.addFlashAttribute("msg", "规则保存成功！");
         return getAdminUrlPath("/table");
@@ -107,4 +113,19 @@ public class TableController extends BaseController {
 		redirectAttributes.addFlashAttribute("msg", "代码生成成功！");
 		return getAdminUrlPath("/table");
 	}
+
+    /**
+     * 重置方案配置规则
+     * @param table
+     * @param redirectAttributes
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:update")
+    @RequestMapping(value = "/{id}/reset", method = RequestMethod.GET)
+    public String reset(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
+        tableService.resetGenRules(table.getId());
+        redirectAttributes.addFlashAttribute("msg", "规则重置成功");
+        return getAdminUrlPath("/table/"+table.getId()+"/viewColumn");
+    }
 }

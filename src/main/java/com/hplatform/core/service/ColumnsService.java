@@ -1,5 +1,6 @@
 package com.hplatform.core.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,23 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 	 * @return
 	 * @throws CRUDException
 	 */
+	public ArrayList<Columns> findByRelation(Columns columns) throws CRUDException{
+		try{
+			return m.findAllByRelation(columns);
+		}catch(Exception e){
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
+	/**
+	 * 查询所有信息,如果没有生成则通过mysql系统关系表查出
+	 * @param columns
+	 * @return
+	 * @throws CRUDException
+	 */
 	public List<Columns> findAllByRelation(Columns columns) throws CRUDException{
 		try{
-			List<Columns> columnList = m.findAllByRelation(columns);
+			List<Columns> columnList = findByRelation(columns);
 			if(CollectionUtils.isEmpty(columnList)){
 				columnList = findTableDefaultColumns(columns);
 			}
@@ -98,6 +113,27 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 					m.saveColumnValidates(columnValidate);
 				}
 			}
+		}
+	}
+	/**
+	 * 重置方案生成规则
+	 * @param table
+	 */
+	public void resetGenRules(Table table)throws CRUDException{
+		try{
+			if(ObjectUtils.isNotEmpty(table)&& org.apache.commons.lang.StringUtils.isNotBlank(table.getId())) {
+				Columns c = new Columns();
+				c.setTableId(table.getId());
+				List<Columns> results = m.findAll(c);
+				for (Columns column : results) {
+					m.deleteColumnElements(column);
+					m.deleteColumnValidates(column);
+					m.deleteEntity(column);
+				}
+			}
+		}catch(Exception e){
+			log.error(e);
+			throw new CRUDException(e);
 		}
 	}
 }

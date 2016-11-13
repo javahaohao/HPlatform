@@ -1,17 +1,12 @@
 package com.hplatform.core.web.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import com.hplatform.core.common.formbindconvert.DateConvertPropertyEditor;
+import com.hplatform.core.common.util.PropertiesUtil;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
-import com.hplatform.core.common.formbindconvert.DateConvertPropertyEditor;
-import com.hplatform.core.common.util.PropertiesUtil;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 public abstract class BaseController {
 	@InitBinder

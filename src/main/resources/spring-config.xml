@@ -75,6 +75,8 @@
 	<!-- 启用事务 -->
 	<tx:advice id="mybatisTxAdvice" transaction-manager="mybatisTransactionManager">
 		<tx:attributes>
+		  <tx:method name="reset*" rollback-for="com.hplatform.core.exception,Exception" />
+		  <tx:method name="gen*" rollback-for="com.hplatform.core.exception,Exception" />
 		  <tx:method name="save*" rollback-for="com.hplatform.core.exception,Exception" />
 		  <tx:method name="edit*" rollback-for="com.hplatform.core.exception,Exception" />
 		  <tx:method name="insert*" rollback-for="com.hplatform.core.exception,Exception" />

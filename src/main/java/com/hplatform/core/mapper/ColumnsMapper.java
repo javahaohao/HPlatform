@@ -12,5 +12,6 @@ public interface ColumnsMapper extends BaseMapper<Columns>{
 	public ArrayList<Columns> findAllByRelation(Columns columns);
 	public ArrayList<ColumnValidate> findAllByValidate(Columns columns);
 	public void deleteColumnValidates(Columns columns);
+	public void deleteColumnElements(Columns columns);
 	public void saveColumnValidates(ColumnValidate columnValidate);
 }

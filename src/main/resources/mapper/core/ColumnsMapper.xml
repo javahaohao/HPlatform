@@ -41,7 +41,7 @@
 		<result column="create_date" property="createDate"/>
 		<result column="update_user" property="updateUser"/>
 		<result column="update_date" property="updateDate"/>
-		<collection property="columnElements" ofType="ColumnElement">
+		<collection property="columnElements" javaType="list" ofType="ColumnElement">
 			<id column="columnElementsId" property="id"/>
 			<result column="column_id" property="columnId"/>
 			<result column="element_id" property="element.id"/>
@@ -51,7 +51,7 @@
 			<result column="default_val" property="element.defaultVal"/>
 			<result column="element_value" property="elementValue"/>
 		</collection>
-		<collection property="columnValidates" ofType="ColumnValidate" column="id" select="findAllByValidate"></collection>
+		<collection property="columnValidates" javaType="list" ofType="ColumnValidate" column="id" select="findAllByValidate"></collection>
 	</resultMap>
 	<select id="findAllByRelation" resultMap="columnsMap" parameterType="Columns">
 		select 
@@ -321,6 +321,9 @@
 	</delete>
 	<delete id="deleteColumnValidates" parameterType="Columns">
 		delete from gen_column_validate where column_id=#{id}
+	</delete>
+	<delete id="deleteColumnElements" parameterType="Columns">
+		delete from gen_column_element where column_id=#{id}
 	</delete>
 	<delete id="deleteBatchEntity" parameterType="Columns">
 		delete from gen_columns 

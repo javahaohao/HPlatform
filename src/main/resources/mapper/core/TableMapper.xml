@@ -19,6 +19,7 @@
 		a.table_alias AS table_alias,
 		a.foreign_key AS foreign_key,
 		a.label_name AS label_name,
+		a.step AS step,
 		b.id AS pid,
 		b.fg_type AS pfg_type,
 		b.update_user AS pupdate_user,
@@ -36,6 +37,7 @@
 		b.table_alias AS ptable_alias,
 		b.foreign_key AS pforeign_key,
 		b.label_name AS plabel_name,
+		b.step AS pstep,
 		c.id AS cid,
 		c.fg_type AS cfg_type,
 		c.update_user AS cupdate_user,
@@ -52,7 +54,8 @@
 		c.gen_flag AS cgen_flag,
 		c.table_alias AS ctable_alias,
 		c.label_name AS clabel_name,
-		c.foreign_key AS cforeign_key
+		c.foreign_key AS cforeign_key,
+		c.step AS cstep
 	</sql>
 	<sql id="leftjoin">
 		LEFT JOIN gen_table b ON a.parent_id=b.id
@@ -76,6 +79,7 @@
         <result column="table_alias" property="tableAlias"/>
         <result column="foreign_key" property="foreignKey"/>
         <result column="label_name" property="labelName"/>
+        <result column="step" property="step"/>
         <association property="parent" column="parent_id" javaType="Table">
 	      	<id property="id" column="pid"></id>
 	        <result column="pfg_type" property="fgType"/>
@@ -94,6 +98,7 @@
 	        <result column="ptable_alias" property="tableAlias"/>
 	        <result column="pforeign_key" property="foreignKey"/>
         	<result column="plabel_name" property="labelName"/>
+        	<result column="pstep" property="step"/>
 	    </association>
         <collection property="childs" javaType="list" ofType="Table">
             <id property="id" column="cid"></id>
@@ -113,6 +118,7 @@
 	        <result column="ctable_alias" property="tableAlias"/>
 	        <result column="cforeign_key" property="foreignKey"/>
         	<result column="clabel_name" property="labelName"/>
+        	<result column="cstep" property="step"/>
         </collection>
 	</resultMap>
 	<select id="findOne" parameterType="Table" resultMap="tableResultMap">
@@ -180,6 +186,9 @@
 				<if test="foreignKey != null and foreignKey != ''">
 					AND a.foreign_key=#{foreignKey}
 				</if>
+				<if test="step != null and step != ''">
+					AND a.step=#{step}
+				</if>
 		</where>
 		order by a.create_date desc
 	</select>
@@ -203,6 +212,7 @@
 			gen_flag,
 			foreign_key,
 			table_alias,
+			step,
 			label_name
 		) 
 		values(
@@ -223,6 +233,7 @@
 			#{genFlag},
 			#{foreignKey},
 			#{tableAlias},
+			#{step},
 			#{labelName}
 		)
 	</insert>
@@ -277,6 +288,9 @@
 		</if>
 		<if test="labelName !=null and labelName !=''">
 		label_name=#{labelName},
+		</if>
+		<if test="step !=null and step !=''">
+		step=#{step},
 		</if>
 		<if test="genFlag !=''">
 		gen_flag=#{genFlag},

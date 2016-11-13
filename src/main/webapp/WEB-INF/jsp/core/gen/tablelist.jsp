@@ -1,10 +1,16 @@
+<%@ page import="com.hplatform.core.constants.TableConstants" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+		 pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/include/taglib.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<tags:header inplugins="${plugins.jqui},${plugins.dataTables}" title="代码生成"></tags:header>
+	<tags:header inplugins="${plugins.jqui},${plugins.dataTables},${plugins.jbox}" title="代码生成"></tags:header>
+	<style type="text/css">
+		.progress{
+			margin-bottom: 0px;
+		}
+	</style>
 </head>
 <body>
 	<div class="page-content-area">
@@ -64,21 +70,25 @@
 					            <th>表名</th>
 					            <th>实体类名</th>
 					            <th>包路径</th>
-					            <th>状态</th>
 					            <th>备注</th>
-					            <th>操作</th>
+								<th>状态</th>
+								<th>操作</th>
 					        </tr>
 					    </thead>
 					    <tbody>
 					        <c:forEach items="${tableList}" var="table" varStatus="stat">
 					            <tr>
-					            	<td class="center"><input name="idList" type="checkbox" class="ace" value="${table.id}"/><span class="lbl"></span></td>
+					            	<td class="center"><input name="idList" type="checkbox" class="ace" value="${table.id}" table-step="${table.step}" table-name="${table.tableName}"/><span class="lbl"></span></td>
 					            	<td>${stat.index+1}</td>
 					                <td>${table.tableName}</td>
 					                <td>${table.domainName}</td>
 					                <td>${table.pkg}</td>
-					                <td>${table.statu}</td>
-					                <td>${table.comments}</td>
+									<td>${table.comments}</td>
+					                <td>
+										<div class="progress progress-striped pos-rel active" data-percent="<fmt:formatNumber value='${(table.step/3)*100}' pattern='#'/>%">
+											<div class="progress-bar progress-bar-success" style="width:<fmt:formatNumber value='${(table.step/3)*100}' pattern='#'/>%;"></div>
+										</div>
+									</td>
 					                <td>
 					                	<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 											<shiro:hasPermission name="table:update">
@@ -131,16 +141,26 @@
 				});
 			});
 			$('#btnGenCode').on('click',function(){
-				var result = getTableChecked();
-				if(!!!result)
+				var skipTable = [];
+				var result = getTableChecked(false,function(id){
+					if(parseInt('<%=TableConstants.GEN_STEP_TWO%>')<=parseInt($('[value="'+id+'"]').attr('table-step')))
+						return true;
+					skipTable.push($('[value="'+id+'"]').attr('table-name'));
 					return false;
+				});
+				if(!!!result){
+					$.jBox.tip('亲！请选择配置好方案生成规则的数据进行操作！', 'warn');
+					return false;
+				}
+				if(skipTable.length>0)
+					$.jBox.tip('亲！['+skipTable.join(',')+']未配置方案生成规则，系统自动跳过！', 'info');
 				window.location="${adminFullPath}/table/genCodeBatch?id="+result;
 			});
 			//添加表格排序事件
 			$('#sortable').dataTable({
 				"aoColumns": [
 			      { "bSortable": false },
-			      { "bSortable": false }, null,null, null,null,null,
+			      { "bSortable": false }, null,null, null,{ "bSortable": false },null,
 				  { "bSortable": false }
 				],"aaSorting": []});
 			//添加表格全选事件

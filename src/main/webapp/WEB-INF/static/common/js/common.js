@@ -335,8 +335,9 @@ function negatedParam(param){
 /**
  * 获取选中的数据id
  * @param single true单选，默认为多选
+ * @param filterfun 过滤选择，返回true为通过 ，false验证不通过
  */
-function getTableChecked(single){
+function getTableChecked(single,filterfun){
 	var $checked = $('input[name="idList"]:checked'),checkArray = [];
 	if($checked.size()<=0){
 		$.jBox.tip('亲！请先选择您要操作的数据！', 'error');
@@ -344,14 +345,16 @@ function getTableChecked(single){
 	}
 	if(!!!single){
 		$checked.each(function(){
-			checkArray.push($(this).val());
+			if(!!filterfun&&filterfun($(this).val()))
+				checkArray.push($(this).val());
 		});
 	}else{
 		if($checked.size()>1){
 			$.jBox.tip('亲！请选择一条数据进行操作！', 'error');
 			return false;
 		}
-		checkArray.push($(this).val());
+		if(!!filterfun&&filterfun($(this).val()))
+			checkArray.push($(this).val());
 	}
 	return checkArray.join(',');
 }

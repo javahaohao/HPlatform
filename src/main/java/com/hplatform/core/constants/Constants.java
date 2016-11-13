@@ -134,19 +134,19 @@ public class Constants {
     	mysqlDataTypeMap.put("CHAR","String");
     	mysqlDataTypeMap.put("BLOB","byte");
     	mysqlDataTypeMap.put("TEXT","String");
-    	mysqlDataTypeMap.put("INTEGER","Long");
+    	mysqlDataTypeMap.put("INTEGER","java.lang.Long");
     	mysqlDataTypeMap.put("INT","int");
-    	mysqlDataTypeMap.put("TINYINT","Integer");
-    	mysqlDataTypeMap.put("SMALLINT","Integer");
-    	mysqlDataTypeMap.put("MEDIUMINT","Integer");
-    	mysqlDataTypeMap.put("BIT","Boolean");
+    	mysqlDataTypeMap.put("TINYINT","java.lang.Integer");
+    	mysqlDataTypeMap.put("SMALLINT","java.lang.Integer");
+    	mysqlDataTypeMap.put("MEDIUMINT","java.lang.Integer");
+    	mysqlDataTypeMap.put("BIT","java.lang.Boolean");
     	mysqlDataTypeMap.put("BIGINT","BigInteger");
-    	mysqlDataTypeMap.put("FLOAT","Float");
-    	mysqlDataTypeMap.put("DOUBLE","Double");
-    	mysqlDataTypeMap.put("DECIMAL","BigDecimal");
-    	mysqlDataTypeMap.put("DATE","Date");
-    	mysqlDataTypeMap.put("DATETIME","Date");
-    	mysqlDataTypeMap.put("YEAR","Date");
+    	mysqlDataTypeMap.put("FLOAT","java.lang.Float");
+    	mysqlDataTypeMap.put("DOUBLE","java.lang.Double");
+    	mysqlDataTypeMap.put("DECIMAL","java.math.BigDecimal");
+    	mysqlDataTypeMap.put("DATE","java.util.Date");
+    	mysqlDataTypeMap.put("DATETIME","java.util.Date");
+    	mysqlDataTypeMap.put("YEAR","java.util.Date");
     }
     /**
      * 获取对应的java类型

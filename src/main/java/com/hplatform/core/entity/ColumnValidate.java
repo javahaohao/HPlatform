@@ -43,14 +43,4 @@ public class ColumnValidate extends BaseEntity<ColumnValidate> {
 	public void setValidateVal(String validateVal) {
 		this.validateVal = validateVal;
 	}
-
-	@Override
-	public String toString() {
-		return "ColumnValidate{" +
-				"columnId='" + columnId + '\'' +
-				", validateId='" + validateId + '\'' +
-				", validateVal='" + validateVal + '\'' +
-				", validateMessage='" + validateMessage + '\'' +
-				'}';
-	}
 }

@@ -49,7 +49,7 @@
 								</h5>
 								<div class="widget-toolbar no-border">
 									<label>
-										<input name="genFlag" type="checkbox" ${table.genFlag?'checked':''} class="ace ace-switch ace-switch-3" title="是否生成">
+										<input name="genFlag" type="checkbox" ${table.genFlag?'checked':''} class="ace ace-switch ace-switch-7" title="是否生成">
 										<span class="lbl middle"></span>
 									</label>
 								</div>
@@ -171,7 +171,7 @@
 					</h5>
 					<div class="widget-toolbar no-border">
 						<label>
-							<input type="checkbox" name="childs[{{index}}].genFlag" {{if genFlag}}checked{{/if}} class="ace ace-switch ace-switch-3" title="是否生成">
+							<input type="checkbox" name="childs[{{index}}].genFlag" {{if genFlag}}checked{{/if}} class="ace ace-switch ace-switch-7" title="是否生成">
 							<span class="lbl middle"></span>
 						</label>
 						<a href="#" data-action="close">
