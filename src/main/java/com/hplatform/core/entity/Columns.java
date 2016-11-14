@@ -1,6 +1,7 @@
 package com.hplatform.core.entity;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class Columns extends BaseEntity<Columns>{
 	private String tableName;
 	private String columnName;
 	private String columnType;
+	private String columnKey;
 	private String dataType;
 	private String plugin;
 	private String propertiesName;
@@ -118,5 +120,23 @@ public class Columns extends BaseEntity<Columns>{
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public String getColumnKey() {
+		return columnKey;
+	}
+
+	public void setColumnKey(String columnKey) {
+		this.columnKey = columnKey;
+	}
+
+	/**
+	 * 判断当前字段是否是主键
+	 * @return
+	 */
+	public boolean isPk(){
+		if(StringUtils.isNotBlank(columnKey))
+			return "PRI".equals(columnKey);
+		return false;
 	}
 }

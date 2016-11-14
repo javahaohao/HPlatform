@@ -340,7 +340,8 @@
 			c.COLUMN_NAME as "columnName",
 			c.COLUMN_TYPE as "columnType",
 			c.DATA_TYPE as "dataType",
-			c.COLUMN_COMMENT as "comments"
+			c.COLUMN_COMMENT as "comments",
+			c.COLUMN_KEY as "columnKey"
 		from information_schema.COLUMNS c 
 		where c.TABLE_SCHEMA='hp' and c.TABLE_NAME=#{tableName}
 	</select>

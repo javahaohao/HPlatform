@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.org.rapid_framework.util.ObjectUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class Table extends BaseEntity<Table>{
@@ -193,5 +194,15 @@ public class Table extends BaseEntity<Table>{
 			return getJavaColumnName(parent.getForeignKey());
 		else
 			return null;
+	}
+
+	/**
+	 * 增加子类
+	 * @param table
+	 */
+	public void addChilds(Table table){
+		if(CollectionUtils.isEmpty(childs))
+			childs = new ArrayList<Table>();
+		childs.add(table);
 	}
 }

@@ -163,7 +163,8 @@
 	<script id="itemtemplate" type="text/html">
 		<div class="col-sm-6 childitem">
 			<input type="hidden" name="childs[{{index}}].id" value="{{id}}"/>
-			<div clas="widget-box">
+			<input type="hidden" name="childs[{{index}}].relationType" value="{{relationType}}"/>
+			<div class="widget-box">
 				<div class="widget-header widget-header-flat widget-header-small">
 					<h5 class="widget-title">
 						<i class="ace-icon fa fa-signal"></i>
@@ -174,8 +175,8 @@
 							<input type="checkbox" name="childs[{{index}}].genFlag" {{if genFlag}}checked{{/if}} class="ace ace-switch ace-switch-7" title="是否生成">
 							<span class="lbl middle"></span>
 						</label>
-						<a href="#" data-action="close">
-							<i class="ace-icon fa fa-times"></i>
+						<a href="javascript:void(0)" class="close-warp" objid="{{id}}">
+							<i class="ace-icon fa fa-times bigger-110 red"></i>
 						</a>
 					</div>
 				</div>
@@ -264,7 +265,7 @@
 				else
 					$.jBox.tip("表关系请设置“一对多”关系！", 'error');
 			});
-			$(document).on('click','[data-action="close"]',function(){
+			$(document).on('click','.close-warp',function(){
 				var self = $(this);
 				platform.showDeleteDialog({
 					beforDeleteHandler:function(dialog){
@@ -282,7 +283,8 @@
 		});
 		function addChild(data){
 			data = $.extend(true,data,{
-				index:$('.childitem',$('.relation-content')).size()
+				index:$('.childitem',$('.relation-content')).size(),
+				relationType:'<%=Table.RelationType.more_2_one%>'
 			});
 			var item = $(template('itemtemplate', data));
 			$(".select2",item).prepend('<option value="">--请选择--</option>').select2({allowClear:true});

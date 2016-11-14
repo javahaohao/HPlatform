@@ -1,5 +1,6 @@
 package com.hplatform.core.service;
 
+import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.util.ConstantsUtil;
 import com.hplatform.core.common.util.FreeMarkerUtil;
 import com.hplatform.core.constants.TableConstants;
@@ -29,11 +30,46 @@ public class TableService extends BaseService<Table, TableMapper> {
 		List<String> idList = Arrays.asList(table.getId().split(","));
 		Table genTable = null;
 		for(String id : idList){
-			genTable = comTable(id);
-			FreeMarkerUtil.genCode(genTable);
-			if(Table.RelationType.one_2_more.equals(genTable.getRelationType()))
-				genChildCode(genTable);
+			genTable = findOne(new Table(id));
+			if(null!=genTable){
+				if(Table.RelationType.one_2_more.equals(genTable.getRelationType())) {
+					if(CollectionUtils.isNotEmpty(genTable.getChilds()))
+						genOneToMore(genTable);
+					else
+						genOne(genTable);
+				}else if(Table.RelationType.more_2_one.equals(genTable.getRelationType())) {
+					if(ObjectUtils.isNotEmpty(genTable.getParent())){
+						//反向按照一对多进行生成
+						genTable.getParent().addChilds(genTable);
+						genOneToMore(genTable.getParent());
+					}else{
+						//如果没有父表则按照单表生成策略生成
+						genOne(genTable);
+					}
+				}
+			}
+
 		}
+	}
+
+	/**
+	 * 生成单表
+	 * @param genTable
+	 * @throws Exception
+	 */
+	public void genOne(Table genTable) throws Exception {
+		genTable.setRelationType(Table.RelationType.one);
+		FreeMarkerUtil.genCode(genTable);
+	}
+	/**
+	 * 生成一对多代码
+	 * @param genTable
+	 * @throws Exception
+	 */
+	public void genOneToMore(Table genTable) throws Exception {
+		genTable = comTable(genTable);
+		FreeMarkerUtil.genCode(genTable);
+		genChildCode(genTable);
 	}
 	/**
 	 * 生成子表代码
@@ -49,15 +85,13 @@ public class TableService extends BaseService<Table, TableMapper> {
 	}
 	/**
 	 * 按照表id组合表与字段的关系
-	 * @param id
+	 * @param genTable
 	 * @return
 	 */
-	public Table comTable(String id)throws CRUDException{
-		Table genTable = null;
+	public Table comTable(Table genTable)throws CRUDException{
 		try {
-			genTable = findOne(new Table(id));
 			Columns columns = new Columns();
-			columns.setTableId(id);
+			columns.setTableId(genTable.getId());
 			columns.setGenFlag(Boolean.TRUE);
 			ArrayList<Columns> columnList = columnsService.findByRelation(columns);
 			for(Table child:genTable.getChilds()){

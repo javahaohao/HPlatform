@@ -1,5 +1,8 @@
 package com.hplatform.core.web.controller;
 
+import com.hplatform.core.constants.TagsConstants;
+import com.hplatform.core.entity.Element;
+import com.hplatform.core.service.ElementService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,8 @@ public class TableController extends BaseController {
 	private ColumnsService columnsService;
 	@Autowired
 	private DictService dictService;
+	@Autowired
+	private ElementService elementService;
 	@ModelAttribute
 	public Table get(@RequestParam(required=false) String id) throws CRUDException {
 		return new Table();
@@ -84,6 +89,10 @@ public class TableController extends BaseController {
     public String list(Columns columns,Model model) throws CRUDException {
 		model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
 		model.addAttribute("table",tableService.findOne(new Table(columns.getTableId())));
+		model.addAttribute("defaultMVCSelectTag", TagsConstants.MORE_TO_ONE_DEFAULT_TAGS_MVCSELECT);
+        Element element = new Element();
+        element.setTagId(TagsConstants.MORE_TO_ONE_DEFAULT_TAGS_MVCSELECT);
+        model.addAttribute("defaultMVCSelectTagElements", elementService.findAll(element));
 		model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
         return TableConstants.COLUMN_EDIT;
     }

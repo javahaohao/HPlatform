@@ -38,7 +38,7 @@
 					</#if>
 					</#list>
 					<#list table.columnList as column>
-					<#if (!column.hideFlag??||!column.hideFlag)&&!excludeColumns?seq_contains(column.propertiesName)&&column.propertiesName!=table.javaForeignKey>
+					<#if (!column.hideFlag??||!column.hideFlag)&&!excludeColumns?seq_contains(column.propertiesName)>
 					<div class="form-group">
 						<form:label path="${column.propertiesName}" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="${column.propertiesName}">${column.comments}：</form:label>
 						<div class="col-xs-12 col-sm-5">

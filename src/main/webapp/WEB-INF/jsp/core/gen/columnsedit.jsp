@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<tags:header inplugins="${plugins.jqui},${plugins.validate}" title="列定义"></tags:header>
+<tags:header inplugins="${plugins.jqui},${plugins.validate},${plugins.select2}" title="列定义"></tags:header>
 </head>
 <body>
 	<c:set var="plugins" value="${elfn:getPluginsList()}"></c:set>
@@ -91,6 +91,10 @@
 										</thead>
 										<tbody>
 										<c:forEach items="${columnsList}" var="column" varStatus="stat">
+											<c:set var="isdefault" value="false"></c:set>
+											<c:if test="${(not empty table.parent)&&(table.parent.foreignKey eq column.columnName)}">
+												<c:set var="isdefault" value="true"></c:set>
+											</c:if>
 											<tr id="tr-${stat.index}" columnName="${column.columnName}">
 												<td>${column.columnName}
 													<input type="hidden" name="columnList[${stat.index}].id" value="${column.id}">
@@ -111,15 +115,18 @@
 												</td>
 												<td><input name="columnList[${stat.index}].comments" value="${column.comments}" class="width-100"></td>
 												<td>
-													<select name="columnList[${stat.index}].plugin" class="select2" style="min-width: 110px;" statindex="${stat.index}" id="plugin${stat.index}">
+													<c:if test="${isdefault}">
+														<input type="hidden" value="${defaultMVCSelectTag}" name="columnList[${stat.index}].plugin">
+													</c:if>
+													<select name="columnList[${stat.index}].plugin" class="select2" ${isdefault?'disabled="disabled"':''} style="min-width: 110px;" statindex="${stat.index}" id="plugin${stat.index}">
 														<c:forEach items="${plugins}" var="plugin">
-															<option title="${plugin.remark}" value="${plugin.id}"<c:if test="${column.plugin eq plugin.id}">selected="selected"</c:if>>${plugin.tagName}</option>
+															<option title="${plugin.remark}" value="${plugin.id}"<c:if test="${(column.plugin eq plugin.id)||(isdefault&&(plugin.id eq defaultMVCSelectTag))}">selected="selected"</c:if>>${plugin.tagName}</option>
 														</c:forEach>
 													</select>
 												</td>
 												<td class="center">
 													<a class="${fn:length(column.columnElements)<=0?'grey':'green'}" href="#" title="标签元素设置">
-														<i class="ace-icon fa fa-plug bigger-125 cursor" setting="plugin${stat.index}" statindex="${stat.index}"></i>
+														<i class="ace-icon fa fa-plug bigger-125 cursor" <c:if test="${!isdefault}">setting="plugin${stat.index}"</c:if> statindex="${stat.index}"></i>
 													</a>
 												</td>
 												<td class="center">
@@ -135,13 +142,13 @@
 												</td>
 												<td class="center">
 													<label class="position-relative">
-														<input type="checkbox" class="ace" name="columnList[${stat.index}].hideFlag" <c:if test="${column.hideFlag}">checked="checked"</c:if>>
+														<input type="checkbox" class="ace" name="columnList[${stat.index}].hideFlag" <c:if test="${(not empty column.hideFlag&&column.hideFlag)||(empty column.hideFlag&&column.pk)}">checked="checked"</c:if>>
 														<span class="lbl"></span>
 													</label>
 												</td>
 												<td class="center">
 													<label class="position-relative">
-														<input type="checkbox" class="ace" name="columnList[${stat.index}].sortFlag" <c:if test="${column.sortFlag||empty column.id}">checked="checked"</c:if>>
+														<input type="checkbox" class="ace" name="columnList[${stat.index}].sortFlag" <c:if test="${column.sortFlag||(empty column.id&&!column.pk)}">checked="checked"</c:if>>
 														<span class="lbl"></span>
 													</label>
 												</td>
@@ -159,6 +166,21 @@
 															</tr>
 															</thead>
 															<tbody>
+															<%--展示默认列的属性值--%>
+															<c:if test="${isdefault&&(empty column.columnElements)}">
+																<c:forEach items="${defaultMVCSelectTagElements}" var="element" varStatus="statu">
+																	<tr>
+																		<td>
+																			<input type="hidden" name="columnList[${stat.index}].columnElements[${statu.index}].elementId" value="${element.id}"/>
+																				${columnElement.element.required eq constants.DICT_YES_PARENT_ID?'<font color="red">*</font>':''}${element.elementName}
+																		</td>
+																		<td>
+																			<input type="text" name="columnList[${stat.index}].columnElements[${statu.index}].elementValue" value="${element.defaultVal}" mustrequired="${element.required}" statindex="${stat.index}" class="width-100">
+																		</td>
+																		<td>${empty element.description?'暂无':element.description}</td>
+																	</tr>
+																</c:forEach>
+															</c:if>
 															<c:forEach items="${column.columnElements}" var="columnElement" varStatus="statu">
 																<tr>
 																	<td>
