@@ -23,7 +23,7 @@ import com.hplatform.core.mapper.AttachmentMapper;
 
 @Service
 public class AttachmentService extends BaseService<Attachment, AttachmentMapper> {
-	
+
 	/**
 	 * 根据文件id查询文件
 	 * @param id
@@ -43,7 +43,7 @@ public class AttachmentService extends BaseService<Attachment, AttachmentMapper>
 	
 	/**
 	 * 删除文件
-	 * @param listId
+	 * @param id
 	 * @throws CRUDException
 	 */
 	public void deleteAttachment(String id) throws CRUDException {

@@ -3,6 +3,8 @@ package com.hplatform.core.web.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -13,6 +15,7 @@ import com.hplatform.core.common.util.UserUtil;
 import com.hplatform.core.entity.Principal;
 
 public class AuthorityInterceptor extends HandlerInterceptorAdapter  {
+	private final transient Log log = LogFactory.getLog(this.getClass());
 	/**  
      * 在业务处理器处理请求之前被调用  
      * 如果返回false  
@@ -40,7 +43,7 @@ public class AuthorityInterceptor extends HandlerInterceptorAdapter  {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response,
 			Object obj, ModelAndView modelAndView) throws Exception {
 			if(!StringUtils.isEmpty(modelAndView)){
-				System.out.println(modelAndView.getViewName());
+				log.info(modelAndView.getViewName());
 			}
 	}
 	/**  

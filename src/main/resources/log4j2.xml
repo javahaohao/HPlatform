@@ -25,23 +25,11 @@
     </appenders>
     <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
     <loggers>
-    	<logger name="org.apache.shiro" level="error" additivity="false">
-            <appender-ref ref="Console"/>
-        </logger>
-    	<logger name="net.sf.ehcache.Cache" level="error" additivity="false">
-            <appender-ref ref="Console"/>
-        </logger>
-    	<logger name="org.mybatis.spring" level="error" additivity="false">
-            <appender-ref ref="Console"/>
-        </logger>
-        <logger name="org.apache.ibatis.logging.Log" level="DEBUG" additivity="false">
-            <appender-ref ref="Console"/>
-        </logger>
-        <logger name="com.test.log.Hello" level="info" additivity="false">
+    	<logger name="com.hplatform" level="debug" additivity="false">
             <appender-ref ref="Console"/>
         </logger>
         <!--建立一个默认的root的logger-->
-        <root level="DEBUG">
+        <root level="error">
         	<appender-ref ref="Console"/>
         </root>
 
