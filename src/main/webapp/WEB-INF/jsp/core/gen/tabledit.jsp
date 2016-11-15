@@ -260,10 +260,10 @@
         	formValidate($("#subForm"), 'help-block inline error', 'div');
 			
 			$('#addChild').on('click',function(){
-				if($('select[name="relationType"]',$('.table')).val()=="<%=Table.RelationType.one_2_more%>")
+				if($('select[name="relationType"]',$('.table')).val()!="<%=Table.RelationType.one%>")
 					addChild();
 				else
-					$.jBox.tip("表关系请设置“一对多”关系！", 'error');
+					$.jBox.tip("表关系请设置“一对多”或“一对一”关系！", 'error');
 			});
 			$(document).on('click','.close-warp',function(){
 				var self = $(this);
