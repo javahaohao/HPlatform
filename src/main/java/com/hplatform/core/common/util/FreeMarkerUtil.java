@@ -134,6 +134,7 @@ public class FreeMarkerUtil {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("table", table);
 			map.put("trimEL", new TrimELFun());
+			map.put("parents", "parents");
 			map.put("isEL", new IsELFun());
             map.put("excludeColumns",new HashSet<String>(){{
                 add("createDate");

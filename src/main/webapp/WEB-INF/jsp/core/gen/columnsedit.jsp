@@ -142,7 +142,7 @@
 												</td>
 												<td class="center">
 													<label class="position-relative">
-														<input type="checkbox" class="ace" name="columnList[${stat.index}].hideFlag" <c:if test="${(not empty column.hideFlag&&column.hideFlag)||(empty column.hideFlag&&column.pk)}">checked="checked"</c:if>>
+														<input type="checkbox" class="ace" name="columnList[${stat.index}].hideFlag" <c:if test="${column.hideFlag||(!column.hideFlag&&column.pk)}">checked="checked"</c:if>>
 														<span class="lbl"></span>
 													</label>
 												</td>

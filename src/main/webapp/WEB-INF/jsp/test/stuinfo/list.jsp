@@ -106,8 +106,8 @@
 		        	{header:'修改时间',name:'classInfo.updateDate',index:'cls.update_date',sortable:true,formatter:function(val,options,obj,oper){
                         return new Date(val).format('yyyy-MM-dd hh:mm:ss');
                     }},
-		        	{header:'班级1',name:'clsId',index:'stu.cls_id',sortable:true},
-		        	{header:'学生名字1',name:'stuName',index:'stu.stu_name',sortable:true},
+		        	{header:'班级',name:'clsId',index:'stu.cls_id',sortable:true},
+		        	{header:'学生名字',name:'stuName',index:'stu.stu_name',sortable:false},
 		        	{header:'年龄',name:'age',index:'stu.age',sortable:true},
 		        	{header:'性别',name:'sex',index:'stu.sex',sortable:true},
 		        	{header:'创建人',name:'createUserName',index:'stu.create_user',sortable:true},

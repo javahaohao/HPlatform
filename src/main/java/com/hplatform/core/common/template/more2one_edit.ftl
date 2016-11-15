@@ -50,14 +50,6 @@
 					</div>
 					</#if>
 					</#list>
-					<div class="form-group">
-						<form:label path="${table.parent.domainName?uncap_first}.${table.parent.javaLableName}" cssClass="control-label col-xs-12 col-sm-3 no-padding-right" for="${table.parent.javaLableName}">${table.parent.comments}：</form:label>
-						<div class="col-xs-12 col-sm-5">
-							<span class="block input-icon input-icon-right">
-							<form:select path="${table.javaForeignKey}" itemLabel="${table.parent.javaLableName}" itemValue="id" items="${"$"}{parents}" cssClass="select2 width-100 required" title="${table.parent.comments}"></form:select>
-							</span>
-						</div>
-					</div>
 			    </form:form>
 				<!-- PAGE CONTENT ENDS -->
 			</div><!-- /.col -->
