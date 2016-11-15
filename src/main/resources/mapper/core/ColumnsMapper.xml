@@ -6,6 +6,7 @@
 		table_id AS "tableId",
 		column_name AS "columnName",
 		column_type AS "columnType",
+		column_key AS "columnKey",
 		data_type AS "dataType",
 		plugin AS "plugin",
 		properties_name AS "propertiesName",
@@ -41,6 +42,7 @@
 		<result column="create_date" property="createDate"/>
 		<result column="update_user" property="updateUser"/>
 		<result column="update_date" property="updateDate"/>
+		<result column="column_key" property="columnKey"/>
 		<collection property="columnElements" javaType="list" ofType="ColumnElement">
 			<id column="columnElementsId" property="id"/>
 			<result column="column_id" property="columnId"/>
@@ -72,6 +74,7 @@
 			a.create_date,
 			a.update_user,
 			a.update_date,
+			a.column_key,
 			b.id AS columnElementsId,
 			b.column_id,
 			b.element_id,
@@ -175,6 +178,9 @@
 				<if test="columnName != null and columnName != ''">
 					AND column_name=#{columnName}
 				</if>
+				<if test="columnKey != null and columnKey != ''">
+					AND column_key=#{columnKey}
+				</if>
 				<if test="dataType != null and dataType != ''">
 					AND data_type=#{dataType}
 				</if>
@@ -224,6 +230,7 @@
 			table_id,
 			column_name,
 			column_type,
+			column_key,
 			data_type,
 			plugin,
 			properties_name,
@@ -243,6 +250,7 @@
 			#{tableId},
 			#{columnName},
 			#{columnType},
+			#{columnKey},
 			#{dataType},
 			#{plugin},
 			#{propertiesName},
@@ -273,6 +281,9 @@
 		</if>
 		<if test="columnType !=null and columnType !=''">
 		column_type=#{columnType},
+		</if>
+		<if test="columnKey !=null and columnKey !=''">
+		column_key=#{columnKey},
 		</if>
 		<if test="dataType !=null and dataType !=''">
 		data_type=#{dataType},

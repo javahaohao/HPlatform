@@ -9,6 +9,12 @@
     <uri></uri>
 
 	<function>
+        <description>获取代码生成器列的默认选中标签</description>
+        <name>defaultTag</name>
+        <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+        <function-signature>com.hplatform.core.entity.GenColumnVo defaultTag(java.lang.String))</function-signature>
+    </function>
+	<function>
         <description>获取平台中支持的JS控件标示</description>
         <name>getPlugins</name>
         <function-class>com.hplatform.core.web.taglib.Functions</function-class>

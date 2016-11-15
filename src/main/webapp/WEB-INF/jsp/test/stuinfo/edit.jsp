@@ -78,21 +78,7 @@
         $(function () {
 			//添加表单验证
 			formValidate($("#subForm"), 'help-block inline error', 'div',{
-				clsId:{
-					required:true
-				},
-				stuName:{
-					maxlength:5,
-					required:true
-				}
 			},{
-				clsId:{
-					required:'必填'
-				},
-				stuName:{
-					maxlength:'超长',
-					required:'必填'
-				}
 			});
         });
     </script>

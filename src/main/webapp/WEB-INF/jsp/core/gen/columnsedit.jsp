@@ -91,8 +91,11 @@
 										</thead>
 										<tbody>
 										<c:forEach items="${columnsList}" var="column" varStatus="stat">
+											<%--如果字段key类型为空并且遍历字段还是父表外键，则认为是外键类型--%>
+											<c:set var="columnKey" value="${((empty column.columnKey)&&(not empty table.parent)&&(table.parent.foreignKey eq column.columnName))?FK:column.columnKey}"></c:set>
+											<c:set var="genColumnVo" value="${elfn:defaultTag(columnKey)}"></c:set>
 											<c:set var="isdefault" value="false"></c:set>
-											<c:if test="${(not empty table.parent)&&(table.parent.foreignKey eq column.columnName)}">
+											<c:if test="${not empty genColumnVo}">
 												<c:set var="isdefault" value="true"></c:set>
 											</c:if>
 											<tr id="tr-${stat.index}" columnName="${column.columnName}">
@@ -102,6 +105,7 @@
 													<input type="hidden" name="columnList[${stat.index}].tableId" value="${table.id}">
 													<input type="hidden" name="columnList[${stat.index}].columnType" value="${column.columnType}">
 													<input type="hidden" name="columnList[${stat.index}].dataType" value="${column.dataType}">
+													<input type="hidden" name="columnList[${stat.index}].columnKey" value="${columnKey}">
 												</td>
 												<td>${column.dataType}</td>
 												<td class="disabled">${column.columnType}</td>
@@ -116,11 +120,11 @@
 												<td><input name="columnList[${stat.index}].comments" value="${column.comments}" class="width-100"></td>
 												<td>
 													<c:if test="${isdefault}">
-														<input type="hidden" value="${defaultMVCSelectTag}" name="columnList[${stat.index}].plugin">
+														<input type="hidden" value="${genColumnVo.pluginId}" name="columnList[${stat.index}].plugin">
 													</c:if>
 													<select name="columnList[${stat.index}].plugin" class="select2" ${isdefault?'disabled="disabled"':''} style="min-width: 110px;" statindex="${stat.index}" id="plugin${stat.index}">
 														<c:forEach items="${plugins}" var="plugin">
-															<option title="${plugin.remark}" value="${plugin.id}"<c:if test="${(column.plugin eq plugin.id)||(isdefault&&(plugin.id eq defaultMVCSelectTag))}">selected="selected"</c:if>>${plugin.tagName}</option>
+															<option title="${plugin.remark}" value="${plugin.id}"<c:if test="${(column.plugin eq plugin.id)||(isdefault&&(plugin.id eq genColumnVo.pluginId))}">selected="selected"</c:if>>${plugin.tagName}</option>
 														</c:forEach>
 													</select>
 												</td>
@@ -168,7 +172,7 @@
 															<tbody>
 															<%--展示默认列的属性值--%>
 															<c:if test="${isdefault&&(empty column.columnElements)}">
-																<c:forEach items="${defaultMVCSelectTagElements}" var="element" varStatus="statu">
+																<c:forEach items="${genColumnVo.elementList}" var="element" varStatus="statu">
 																	<tr>
 																		<td>
 																			<input type="hidden" name="columnList[${stat.index}].columnElements[${statu.index}].elementId" value="${element.id}"/>

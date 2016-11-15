@@ -2,13 +2,16 @@ package com.hplatform.core.web.taglib;
 
 import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.util.*;
+import com.hplatform.core.constants.ColumnsConstants;
 import com.hplatform.core.constants.Constants;
+import com.hplatform.core.constants.TagsConstants;
 import com.hplatform.core.entity.*;
 import com.hplatform.core.exception.CRUDException;
 import com.hplatform.core.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,6 +22,41 @@ import java.util.*;
 
 public class Functions {
 	private static final transient Log log = LogFactory.getLog(Functions.class);
+    private static Map<String,GenColumnVo> defaultColumTagMap = new HashMap<String, GenColumnVo>(){
+        {
+            final Element element = new Element();
+            element.setTagId(TagsConstants.DEFAULT_HIDDEN_TAGS_MVCHIDDEN);
+            try {
+                //主键默认标签配置
+                put(ColumnsConstants.COLUMN_KEYS_PRI
+                        ,new GenColumnVo(ColumnsConstants.COLUMN_KEYS_PRI
+                                ,TagsConstants.DEFAULT_HIDDEN_TAGS_MVCHIDDEN
+                                ,SpringUtils.getBean(ElementService.class).findAll(element))
+                );
+                element.setTagId(TagsConstants.DEFAULT_FOREIGNKEY_TAGS_MVCSELECT);
+                //外键默认标签配置
+                put(ColumnsConstants.COLUMN_KEYS_FK
+                        ,new GenColumnVo(ColumnsConstants.COLUMN_KEYS_FK
+                                ,TagsConstants.DEFAULT_FOREIGNKEY_TAGS_MVCSELECT
+                                ,SpringUtils.getBean(ElementService.class).findAll(element))
+                );
+            } catch (CRUDException e) {
+                log.error("默认字段标签初始化失败！",e);
+            }
+        }
+    };
+
+    /**
+     * 获取代码生成器列的默认选中标签
+     * @param columnKey
+     * @return
+     */
+    public static GenColumnVo defaultTag(String columnKey){
+        if(StringUtils.isNotBlank(columnKey)
+                && ObjectUtils.isNotEmpty(defaultColumTagMap.get(columnKey)))
+            return defaultColumTagMap.get(columnKey);
+        return null;
+    }
 	/**
 	 * 获取平台中支持的JS控件标示
 	 * @return

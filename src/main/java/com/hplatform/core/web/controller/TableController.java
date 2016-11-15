@@ -1,5 +1,6 @@
 package com.hplatform.core.web.controller;
 
+import com.hplatform.core.constants.ColumnsConstants;
 import com.hplatform.core.constants.TagsConstants;
 import com.hplatform.core.entity.Element;
 import com.hplatform.core.service.ElementService;
@@ -89,10 +90,8 @@ public class TableController extends BaseController {
     public String list(Columns columns,Model model) throws CRUDException {
 		model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
 		model.addAttribute("table",tableService.findOne(new Table(columns.getTableId())));
-		model.addAttribute("defaultMVCSelectTag", TagsConstants.MORE_TO_ONE_DEFAULT_TAGS_MVCSELECT);
-        Element element = new Element();
-        element.setTagId(TagsConstants.MORE_TO_ONE_DEFAULT_TAGS_MVCSELECT);
-        model.addAttribute("defaultMVCSelectTagElements", elementService.findAll(element));
+
+        model.addAttribute("FK", ColumnsConstants.COLUMN_KEYS_FK);
 		model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
         return TableConstants.COLUMN_EDIT;
     }
