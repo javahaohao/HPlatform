@@ -35,13 +35,15 @@ public class Table extends BaseEntity<Table>{
 	private RelationType relationType;
 	
 	public static enum RelationType{
-		one("单表","one"),one_2_one("一对一","one_2_one"),one_2_more("一对多","one_2_more"),more_2_one("多对一","more_2_one");
+		one("单表","one", true),one_2_one("一对一","one_2_one", true),one_2_more("一对多","one_2_more", true),more_2_one("多对一","more_2_one", false);
 		private final String info;
 		private final String value;
-        private RelationType(String info,String value) {
+		private final boolean show;
+        private RelationType(String info, String value, boolean show) {
             this.info = info;
             this.value = value;
-        }
+			this.show = show;
+		}
 
         public String getInfo() {
             return info;
@@ -49,6 +51,10 @@ public class Table extends BaseEntity<Table>{
 
 		public String getValue() {
 			return value;
+		}
+
+		public boolean isShow() {
+			return show;
 		}
 	}
 	

@@ -46,6 +46,10 @@ public class TableService extends BaseService<Table, TableMapper> {
 						//如果没有父表则按照单表生成策略生成
 						genOne(genTable);
 					}
+				}else if (Table.RelationType.one.equals(genTable.getRelationType())){
+					genOne(genTable);
+				}else if (Table.RelationType.one_2_one.equals(genTable.getRelationType())){
+					genOneToOne(genTable);
 				}
 			}
 
@@ -58,8 +62,19 @@ public class TableService extends BaseService<Table, TableMapper> {
 	 * @throws Exception
 	 */
 	public void genOne(Table genTable) throws Exception {
+		genTable = comTable(genTable);
 		genTable.setRelationType(Table.RelationType.one);
 		FreeMarkerUtil.genCode(genTable);
+	}
+
+	/**
+	 * 生成一对一的表结构代码
+	 * @param genTable
+	 * @throws Exception
+	 */
+	public void genOneToOne(Table genTable)throws Exception {
+		//主表采用一对一模板从表采用多对一模板
+		genOneToMore(genTable);
 	}
 	/**
 	 * 生成一对多代码
@@ -71,10 +86,11 @@ public class TableService extends BaseService<Table, TableMapper> {
 		FreeMarkerUtil.genCode(genTable);
 		genChildCode(genTable);
 	}
+
 	/**
-	 * 生成子表代码
+	 * 按照关系生成子表代码
 	 * @param parent
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public void genChildCode(Table parent) throws Exception{
 		for(Table child : parent.getChilds()){
@@ -111,6 +127,7 @@ public class TableService extends BaseService<Table, TableMapper> {
 		if(CollectionUtils.isNotEmpty(t.getChilds())){
 			for(Table child : t.getChilds()){
 				child.setParent(t);
+				child.setStep(TableConstants.GEN_STEP_ONE);
 				super.save(child);
 			}
 		}

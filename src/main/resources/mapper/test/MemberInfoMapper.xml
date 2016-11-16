@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hplatform.test.mapper.MemberInfoMapper" >
+	<sql id="columns">
+		mi.id AS "id",
+		mi.member_id AS "memberId",
+		mi.level AS "level",
+		mi.phone AS "phone",
+		mi.email AS "email",
+		mi.create_user AS "createUser",
+		mi.update_user AS "updateUser",
+		mi.create_date AS "createDate",
+		mi.update_date AS "updateDate",
+		m.id AS "member.id",
+		m.member_name AS "member.memberName",
+		m.age AS "member.age",
+		m.height AS "member.height",
+		m.sex AS "member.sex",
+		m.create_user AS "member.createUser",
+		m.update_user AS "member.updateUser",
+		m.create_date AS "member.createDate",
+		m.update_date AS "member.updateDate"
+	</sql>
+	<select id="findOne" parameterType="MemberInfo" resultType="MemberInfo">
+		SELECT 
+			<include refid="columns"/>
+		FROM tb_member_info mi
+		LEFT JOIN tb_member m ON m.id=mi.member_id
+		<where>
+			<if test="id != null and id != ''">
+				mi.id=#{id}
+			</if>
+		</where>
+	</select>
+	<select id="findAll" parameterType="MemberInfo" resultType="MemberInfo">
+		SELECT 
+			 <include refid="columns"/>
+		FROM tb_member_info mi
+		LEFT JOIN tb_member m ON m.id=mi.member_id
+		<where>
+				<if test="id != null and id != ''">
+					AND mi.id=#{id}
+				</if>
+				<if test="memberId != null and memberId != ''">
+					AND mi.member_id=#{memberId}
+				</if>
+				<if test="level != null and level != ''">
+					AND mi.level=#{level}
+				</if>
+				<if test="phone != null and phone != ''">
+					AND mi.phone=#{phone}
+				</if>
+				<if test="email != null and email != ''">
+					AND mi.email=#{email}
+				</if>
+				<if test="createUser != null and createUser != ''">
+					AND mi.create_user=#{createUser}
+				</if>
+				<if test="updateUser != null and updateUser != ''">
+					AND mi.update_user=#{updateUser}
+				</if>
+				<if test="createDate != null and createDate != ''">
+					AND mi.create_date=#{createDate}
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					AND mi.update_date=#{updateDate}
+				</if>
+		</where>
+	</select>
+	<insert id="addEntity" parameterType="MemberInfo">
+		insert into 
+		tb_member_info(
+			id,
+			member_id,
+			level,
+			phone,
+			email,
+			create_user,
+			update_user,
+			create_date,
+			update_date
+		) 
+		values(
+			#{id},
+			#{memberId},
+			#{level},
+			#{phone},
+			#{email},
+			#{createUser},
+			#{updateUser},
+			#{createDate},
+			#{updateDate}
+		)
+	</insert>
+	<update id="updateEntity" parameterType="MemberInfo">
+		update 
+			tb_member_info 
+		<set>
+		<if test="id !=null and id !=''">
+			id=#{id},
+		</if>
+		<if test="memberId !=null and memberId !=''">
+			member_id=#{memberId},
+		</if>
+		<if test="level !=null and level !=''">
+			level=#{level},
+		</if>
+		<if test="phone !=null and phone !=''">
+			phone=#{phone},
+		</if>
+		<if test="email !=null and email !=''">
+			email=#{email},
+		</if>
+		<if test="createUser !=null and createUser !=''">
+			create_user=#{createUser},
+		</if>
+		<if test="updateUser !=null and updateUser !=''">
+			update_user=#{updateUser},
+		</if>
+		<if test="createDate !=null and createDate !=''">
+			create_date=#{createDate},
+		</if>
+		<if test="updateDate !=null and updateDate !=''">
+			update_date=#{updateDate}
+		</if>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="deleteEntity" parameterType="MemberInfo">
+		delete from tb_member_info where id=#{id}
+	</delete>
+	<delete id="deleteBatchEntity" parameterType="MemberInfo">
+		delete from tb_member_info 
+		WHERE id IN 
+		<foreach item="idList" collection="idList"
+		open="(" separator="," close=")">
+		#{idList}
+		</foreach>
+	</delete>
+</mapper>

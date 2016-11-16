@@ -131,7 +131,13 @@
 							            <form:label path="relationType" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">关系:</form:label>
 							            <div class="col-xs-12 col-sm-7">
 							            	<span class="block input-icon input-icon-right">
-							            	<form:select path="relationType" itemLabel="info" itemValue="value" items="${relationTypes}" cssClass="select2 width-100 required input-xlarge" title="生成表关系"></form:select>
+												<select name="relationType" class="select2 width-100 required input-xlarge">
+													<c:forEach items="${relationTypes}" var="type">
+														<c:if test="${type.show}">
+															<option value="${type.value}" <c:if test="${type.value eq table.relationType}">selected="selected"</c:if>>${type.info}</option>
+														</c:if>
+													</c:forEach>
+												</select>
 											</span>
 										</div>
 							        </div>
@@ -280,11 +286,19 @@
 			if(childTables.length>0)
 				for(var i=0;i<childTables.length;i++)
 					addChild(childTables[i]);
+			$('[name="relationType"]').on('click',function(){
+				$('.relation-content').html('');
+			});
 		});
 		function addChild(data){
+			var relationType;
+			if($('[name="relationType"]').val()=='<%=Table.RelationType.one_2_more%>')
+				relationType='<%=Table.RelationType.more_2_one%>';
+			else if($('[name="relationType"]').val()=='<%=Table.RelationType.one_2_one%>')
+				relationType='<%=Table.RelationType.one_2_one%>';
 			data = $.extend(true,data,{
 				index:$('.childitem',$('.relation-content')).size(),
-				relationType:'<%=Table.RelationType.more_2_one%>'
+				relationType:relationType
 			});
 			var item = $(template('itemtemplate', data));
 			$(".select2",item).prepend('<option value="">--请选择--</option>').select2({allowClear:true});
