@@ -29,7 +29,7 @@
     </filter>
     <filter-mapping>
         <filter-name>monitoring</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/admin/monitoring</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
