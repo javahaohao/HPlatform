@@ -12,10 +12,11 @@
     <filter>
         <filter-name>monitoring</filter-name>
         <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+        <async-supported>true</async-supported>
         <init-param>
             <!--配置输出info级别日志-->
             <param-name>log</param-name>
-            <param-value>true</param-value>
+            <param-value>false</param-value>
         </init-param>
         <init-param>
             <!-- 配置不需要拦截的路径
@@ -24,12 +25,12 @@
             -->
             <!-- 配置登录用户名密码。shop端配置，man端不需要 -->
             <param-name>authorized-users</param-name>
-            <param-value>admin:123456</param-value>
+            <param-value>root:123456</param-value>
         </init-param>
     </filter>
     <filter-mapping>
         <filter-name>monitoring</filter-name>
-        <url-pattern>/admin/monitoring</url-pattern>
+        <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>ASYNC</dispatcher>
     </filter-mapping>
