@@ -22,18 +22,18 @@
 				<!-- PAGE CONTENT BEGINS -->
 				<p>
 					<shiro:hasPermission name="tags:create">
-						<button id="btnSave" type="submit" class="btn btn-info no-border">
+						<button id="btnSave" type="submit" class="btn btn-info no-border btn-sm">
 							<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
 							保存
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="tags:create">
-						<button id="btnAdd" type="button" class="btn btn-warning no-border">
+						<button id="btnAdd" type="button" class="btn btn-warning no-border btn-sm">
 							<i class="ace-icon fa fa-plus align-top bigger-125"></i>
 							加行
 						</button>
 					</shiro:hasPermission>
-					<button id="btnBack"class="btn btn-danger no-border" type="button" onclick="javascript:history.go(-1);">
+					<button id="btnBack"class="btn btn-danger no-border btn-sm" type="button" onclick="javascript:history.go(-1);">
 						<i class="ace-icon fa fa-undo align-top bigger-125"></i>
 						返回
 					</button>

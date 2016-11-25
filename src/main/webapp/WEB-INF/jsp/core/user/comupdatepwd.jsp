@@ -41,12 +41,12 @@
 			</button>
 			</shiro:hasPermission>
 			
-			<button class="btn" type="reset">
+			<button class="btn btn-sm" type="reset">
 				<i class="ace-icon fa fa-reply-all bigger-110"></i>
 				重置
 			</button>
 			
-			<button id="btnBack"class="btn btn-danger no-border" type="button" onclick="javascript:history.go(-1);">
+			<button id="btnBack"class="btn btn-danger no-border btn-sm" type="button" onclick="javascript:history.go(-1);">
 				<i class="ace-icon fa fa-undo align-top bigger-125"></i>
 				返回
 			</button>

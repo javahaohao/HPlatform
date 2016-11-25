@@ -33,19 +33,19 @@
 				<form action="${adminFullPath}/tags/updateSequence" method="post">
 				<p>
 					<shiro:hasPermission name="tags:create">
-						<button id="btnAdd" class="btn btn-info no-border" type="button">
+						<button id="btnAdd" class="btn btn-info no-border btn-sm" type="button">
 							<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
 							新增
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="tags:delete">
-						<button id="btnDeleBatch"class="btn btn-danger no-border" type="button">
+						<button id="btnDeleBatch"class="btn btn-danger no-border btn-sm" type="button">
 							<i class="ace-icon fa fa-trash-o align-top bigger-125"></i>
 							删除
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="tags:update">
-						<button class="btn btn-warning no-border" type="submit">
+						<button class="btn btn-warning no-border btn-sm" type="submit">
 							<i class="ace-icon fa fa-sort-numeric-asc align-top bigger-125"></i>
 							排序
 						</button>

@@ -10,7 +10,7 @@
 	<div class="container">
 	<form:form method="post" class="form-horizontal" modelAttribute="user" action="${adminFullPath}/user/register/resetPassword" id="subForm">
 		<p>
-			<button id="btnSave" type="submit" class="btn btn-info no-border">
+			<button id="btnSave" type="submit" class="btn btn-info no-border btn-sm">
 				<i class="ace-icon fa fa-edit align-top bigger-125"></i>
 				提交
 			</button>

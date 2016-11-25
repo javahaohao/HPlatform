@@ -53,19 +53,19 @@
 				</div>
 				<p>
 					<shiro:hasPermission name="table:create">
-						<button id="btnAdd" class="btn btn-info no-border">
+						<button id="btnAdd" class="btn btn-info no-border btn-sm">
 							<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
 							新增方案
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="table:delete">
-						<button id="btnDeleBatch"class="btn btn-danger no-border">
+						<button id="btnDeleBatch"class="btn btn-danger no-border btn-sm">
 							<i class="ace-icon fa fa-trash-o align-top bigger-125"></i>
 							批量删除
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="table:create">
-						<button id="btnGenCode"class="btn btn-success no-border">
+						<button id="btnGenCode"class="btn btn-success no-border btn-sm">
 							<i class="ace-icon fa fa-gavel align-top bigger-125"></i>
 							代码生成
 						</button>

@@ -22,12 +22,12 @@
 				<form:form method="post" commandName="${table.domainName?uncap_first}" id="subForm" class="form-horizontal">
 					<p>
 						<shiro:hasPermission name="${table.domainName?uncap_first}:create">
-							<button id="btnSave" type="submit" class="btn btn-info no-border">
+							<button id="btnSave" type="submit" class="btn btn-info no-border btn-sm">
 								<i class="ace-icon fa fa-edit align-top bigger-125"></i>
 								${"$"}{op}
 							</button>
 						</shiro:hasPermission>
-						<button id="btnBack"class="btn btn-danger no-border" type="button" onclick="javascript:history.go(-1);">
+						<button id="btnBack"class="btn btn-danger no-border btn-sm" type="button" onclick="javascript:history.go(-1);">
 							<i class="ace-icon fa fa-undo align-top bigger-125"></i>
 							返回
 						</button>

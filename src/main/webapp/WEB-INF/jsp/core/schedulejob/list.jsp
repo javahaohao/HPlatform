@@ -31,13 +31,13 @@
 				</c:if>
 				<p>
 					<shiro:hasPermission name="scheduleJob:create">
-						<button id="btnAdd" class="btn btn-info no-border">
+						<button id="btnAdd" class="btn btn-info no-border btn-sm">
 							<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
 							新增
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="scheduleJob:delete">
-						<button id="btnDeleBatch"class="btn btn-danger no-border">
+						<button id="btnDeleBatch"class="btn btn-danger no-border btn-sm">
 							<i class="ace-icon fa fa-trash-o align-top bigger-125"></i>
 							删除
 						</button>

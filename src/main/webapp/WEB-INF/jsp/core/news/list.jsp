@@ -35,26 +35,26 @@
 				</c:if>
 				<div class="btn-toolbar">
 					<shiro:hasPermission name="news:create">
-						<button id="btnAdd" class="btn btn-info no-border">
+						<button id="btnAdd" class="btn btn-info no-border btn-sm">
 							<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
 							新增新闻
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="news:update">
-						<button id="btnCheck" class="btn btn-purple no-border">
+						<button id="btnCheck" class="btn btn-purple no-border btn-sm">
 							<i class="ace-icon fa fa-eye align-top bigger-125"></i>
 							审核
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="news:delete">
-						<button id="btnDeleBatch"class="btn btn-danger no-border">
+						<button id="btnDeleBatch"class="btn btn-danger no-border btn-sm">
 							<i class="ace-icon fa fa-trash-o align-top bigger-125"></i>
 							批量删除
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="news:update">
 						<div class="btn-group">
-							<button data-toggle="dropdown" class="btn btn-lg btn-primary dropdown-toggle">
+							<button data-toggle="dropdown" class="btn btn-lg btn-primary dropdown-toggle btn-sm">
 								新闻类型
 								<span class="ace-icon fa fa-caret-down icon-on-right"></span>
 							</button>

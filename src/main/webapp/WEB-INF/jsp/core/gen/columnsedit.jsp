@@ -244,12 +244,12 @@
 							<div class="wizard-actions">
 								<!-- #section:plugins/fuelux.wizard.buttons -->
 								<shiro:hasPermission name="table:create">
-									<button id="btnSave" type="submit" class="btn btn-info no-border">
+									<button id="btnSave" type="submit" class="btn btn-info no-border btn-sm">
 										<i class="ace-icon fa fa-edit align-top bigger-125"></i>
 										保存
 									</button>
 								</shiro:hasPermission>
-								<button id="btnBack"class="btn btn-danger no-border" type="button" onclick="javascript:window.location.href='${adminFullPath}/table'">
+								<button id="btnBack"class="btn btn-danger no-border btn-sm" type="button" onclick="javascript:window.location.href='${adminFullPath}/table'">
 									<i class="ace-icon fa fa-undo align-top bigger-125"></i>
 									返回
 								</button>

@@ -32,13 +32,13 @@
 				
 				<p>
 					<shiro:hasPermission name="user:create">
-						<button id="btnAdd" class="btn btn-info no-border">
+						<button id="btnAdd" class="btn btn-info no-border btn-sm">
 							<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
 							新增用户
 						</button>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="user:delete">
-						<button id="btnDeleBatch"class="btn btn-danger no-border">
+						<button id="btnDeleBatch"class="btn btn-danger no-border btn-sm">
 							<i class="ace-icon fa fa-trash-o align-top bigger-125"></i>
 							批量删除
 						</button>
