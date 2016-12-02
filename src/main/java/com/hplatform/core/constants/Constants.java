@@ -125,6 +125,13 @@ public class Constants {
     public final String TALK_TYPE_USER="0";
     //group
     public final String TALK_TYPE_GROUP="1";
+
+	//one
+    public final String ONE="1";
+	//zero
+    public final String ZERO="0";
+
+
     
   //mysql映射java类型
     public final Map<String,String> mysqlDataTypeMap = new LinkedHashMap<String, String>();
@@ -273,5 +280,12 @@ public class Constants {
 	public String getTALK_TYPE_GROUP() {
 		return TALK_TYPE_GROUP;
 	}
-	
+
+	public String getONE() {
+		return ONE;
+	}
+
+	public String getZERO() {
+		return ZERO;
+	}
 }

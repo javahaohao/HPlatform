@@ -27,6 +27,8 @@ public class Table extends BaseEntity<Table>{
 	private List<Tags> tagList;
 
 	private Integer step;
+
+	private String genType;
 	
 	//父表
 	private Table parent;
@@ -172,6 +174,14 @@ public class Table extends BaseEntity<Table>{
 
 	public void setStep(Integer step) {
 		this.step = step;
+	}
+
+	public String getGenType() {
+		return genType;
+	}
+
+	public void setGenType(String genType) {
+		this.genType = genType;
 	}
 
 	/**

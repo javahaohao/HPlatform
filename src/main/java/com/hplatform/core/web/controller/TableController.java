@@ -38,13 +38,15 @@ public class TableController extends BaseController {
 	public Table get(@RequestParam(required=false) String id) throws CRUDException {
 		return new Table();
 	}
-	private void setCommonData(Model model) throws CRUDException{
-    	model.addAttribute("tableList", tableService.findAll(new Table()));
+	private void setCommonData(Model model,Table table) throws CRUDException{
+    	model.addAttribute("tableList", tableService.findAll(table));
     }
 	@RequiresPermissions("table:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) throws CRUDException {
-    	setCommonData(model);
+        Table table = new Table();
+        table.setGenType(ConstantsUtil.get().getONE());
+    	setCommonData(model,table);
         return TableConstants.LIST;
     }
 	@RequiresPermissions("table:create")
@@ -58,6 +60,7 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String create(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
         table.setStep(TableConstants.GEN_STEP_ONE);
+        table.setGenType(ConstantsUtil.get().getONE());
 		tableService.save(table);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
         return getAdminUrlPath("/table");
@@ -135,5 +138,47 @@ public class TableController extends BaseController {
         tableService.resetGenRules(table.getId());
         redirectAttributes.addFlashAttribute("msg", "规则重置成功");
         return getAdminUrlPath("/table/"+table.getId()+"/viewColumn");
+    }
+
+
+    /**
+     * 跳转自定义表单页面
+     * @param model
+     * @param table
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:create")
+    @RequestMapping(value = "/form", method = RequestMethod.GET)
+    public String form(Model model,Table table) throws CRUDException {
+        table.setGenType(ConstantsUtil.get().getZERO());
+        setCommonData(model,table);
+        return TableConstants.FORM_LIST;
+    }
+
+    /**
+     * 跳转form自定义表单维护界面
+     * @param model
+     * @param table
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:create")
+    @RequestMapping(value = "/form/create", method = RequestMethod.GET)
+    public String formCreate(Model model,Table table) throws CRUDException {
+        model.addAttribute("table", tableService.findOne(table));
+        return TableConstants.FORM;
+    }
+
+    /**
+     * 保存自定义表单
+     * @param table
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:create")
+    @RequestMapping(value = "/form/create", method = RequestMethod.POST)
+    public String saveForm(Table table) throws CRUDException {
+        return getAdminUrlPath("/table/form");
     }
 }

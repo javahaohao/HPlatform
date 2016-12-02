@@ -20,6 +20,7 @@
 		a.foreign_key AS foreign_key,
 		a.label_name AS label_name,
 		a.step AS step,
+		a.gen_type AS gen_type,
 		b.id AS pid,
 		b.fg_type AS pfg_type,
 		b.update_user AS pupdate_user,
@@ -37,6 +38,7 @@
 		b.table_alias AS ptable_alias,
 		b.foreign_key AS pforeign_key,
 		b.label_name AS plabel_name,
+		b.gen_type AS pgen_type,
 		b.step AS pstep,
 		c.id AS cid,
 		c.fg_type AS cfg_type,
@@ -55,7 +57,8 @@
 		c.table_alias AS ctable_alias,
 		c.label_name AS clabel_name,
 		c.foreign_key AS cforeign_key,
-		c.step AS cstep
+		c.step AS cstep,
+		c.gen_type AS cgen_type
 	</sql>
 	<sql id="leftjoin">
 		LEFT JOIN gen_table b ON a.parent_id=b.id
@@ -80,6 +83,7 @@
         <result column="foreign_key" property="foreignKey"/>
         <result column="label_name" property="labelName"/>
         <result column="step" property="step"/>
+        <result column="gen_type" property="genType"/>
         <association property="parent" column="parent_id" javaType="Table">
 	      	<id property="id" column="pid"></id>
 	        <result column="pfg_type" property="fgType"/>
@@ -99,6 +103,7 @@
 	        <result column="pforeign_key" property="foreignKey"/>
         	<result column="plabel_name" property="labelName"/>
         	<result column="pstep" property="step"/>
+			<result column="pgen_type" property="genType"/>
 	    </association>
         <collection property="childs" javaType="list" ofType="Table">
             <id property="id" column="cid"></id>
@@ -119,6 +124,7 @@
 	        <result column="cforeign_key" property="foreignKey"/>
         	<result column="clabel_name" property="labelName"/>
         	<result column="cstep" property="step"/>
+			<result column="cgen_type" property="genType"/>
         </collection>
 	</resultMap>
 	<select id="findOne" parameterType="Table" resultMap="tableResultMap">
@@ -189,6 +195,9 @@
 				<if test="step != null and step != ''">
 					AND a.step=#{step}
 				</if>
+				<if test="genType != null and genType != ''">
+					AND a.gen_type=#{genType}
+				</if>
 		</where>
 		order by a.create_date desc
 	</select>
@@ -213,7 +222,8 @@
 			foreign_key,
 			table_alias,
 			step,
-			label_name
+			label_name,
+			gen_type
 		) 
 		values(
 			#{id},
@@ -234,7 +244,8 @@
 			#{foreignKey},
 			#{tableAlias},
 			#{step},
-			#{labelName}
+			#{labelName},
+			#{genType}
 		)
 	</insert>
 	<update id="updateEntity" parameterType="Table">
@@ -291,6 +302,9 @@
 		</if>
 		<if test="step !=null and step !=''">
 		step=#{step},
+		</if>
+		<if test="genType !=null and genType !=''">
+		gen_type=#{genType},
 		</if>
 		<if test="genFlag !=''">
 		gen_flag=#{genFlag},
