@@ -8,10 +8,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hplatform.core.common.util.ConstantsUtil;
@@ -158,15 +155,13 @@ public class TableController extends BaseController {
 
     /**
      * 跳转form自定义表单维护界面
-     * @param model
      * @param table
      * @return
      * @throws CRUDException
      */
     @RequiresPermissions("table:create")
     @RequestMapping(value = "/form/create", method = RequestMethod.GET)
-    public String formCreate(Model model,Table table) throws CRUDException {
-        model.addAttribute("table", tableService.findOne(table));
+    public String formCreate(Table table) throws CRUDException {
         return TableConstants.FORM;
     }
 
@@ -178,6 +173,7 @@ public class TableController extends BaseController {
      */
     @RequiresPermissions("table:create")
     @RequestMapping(value = "/form/create", method = RequestMethod.POST)
+    @ResponseBody
     public String saveForm(Table table) throws CRUDException {
         return getAdminUrlPath("/table/form");
     }

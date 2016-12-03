@@ -121,7 +121,7 @@
 	<script type="text/javascript">
 		$(function(){
 			$('#btnAdd').on('click',function(){
-				window.location="${adminFullPath}/table/add";
+				window.location="${adminFullPath}/table/form/create";
 			});
 			$(".deleteBtn").click(function() {
 				var self = this;

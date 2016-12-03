@@ -375,6 +375,20 @@ public class Functions {
     	}
     	return javaTypeList;
     }
+
+    /**
+     * 获取预制jdbc类型
+     * @return
+     */
+    public static List<String> getJdbcTypeList(){
+        List<String> jdbcTypeList = new ArrayList<String>();
+        for(Map.Entry<String, String> entry:ConstantsUtil.get().mysqlDataTypeMap.entrySet()){
+            if(!jdbcTypeList.contains(entry.getKey())){
+                jdbcTypeList.add(entry.getKey());
+            }
+        }
+        return jdbcTypeList;
+    }
     /**
      * 获取可用组件
      * @return

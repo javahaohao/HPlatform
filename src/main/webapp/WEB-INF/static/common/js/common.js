@@ -42,7 +42,14 @@ $(document).ready(function(){
 				else title.text($title);
 			}
 		}));
-	
+	if('undefined'!==typeof template) {
+		template.helper('parseInt', function (param) {
+			return parseInt(param);
+		});
+		template.helper('length', function (param) {
+			return !!param?param.length:0;
+		});
+	}
 	$.fn.extend({
 		loading:function(options){
 			var opts = $.extend({}, $.fn.loading.defaults, options),

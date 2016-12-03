@@ -186,6 +186,13 @@
        <example>${elfn:getJavaTypeList()}</example>
     </function>
     <function>
+       <description>获取预制jdbc类型</description>
+       <name>getJdbcTypeList</name>
+       <function-class>com.hplatform.core.web.taglib.Functions</function-class>
+       <function-signature>java.util.List getJdbcTypeList()</function-signature>
+       <example>${elfn:getJdbcTypeList()}</example>
+    </function>
+    <function>
        <description>获取可用插件</description>
        <name>getPluginsList</name>
        <function-class>com.hplatform.core.web.taglib.Functions</function-class>

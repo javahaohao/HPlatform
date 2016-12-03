@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<tags:header inplugins="${plugins.jqui},${plugins.validate},${plugins.select2}" title="列定义"></tags:header>
+<tags:header inplugins="${plugins.jqui},${plugins.validate},${plugins.select2},${plugins.template}" title="列定义"></tags:header>
 </head>
 <body>
 	<c:set var="plugins" value="${elfn:getPluginsList()}"></c:set>
@@ -21,10 +21,9 @@
 	
 		<div class="row">
 			<div class="col-xs-12">
-				<form method="post" id="subForm" action="${adminFullPath}/table/editColumns">
 				<div class="widget-box">
 					<div class="widget-header widget-header-blue widget-header-flat">
-						<h4 class="widget-title lighter">表单名称：[“${table.tableName}”]</h4>
+						<h4 class="widget-title lighter">表单名称：[“${empty table.tableName?'表单名称':table.tableName}”]</h4>
 					</div>
 
 					<div class="widget-body">
@@ -38,12 +37,12 @@
 										<span class="title">定义表单</span>
 									</li>
 
-									<li data-target="#step1"${table.step==2?' class="active"':(table.step>2?' class="complete"':'')}>
+									<li data-target="#step2"${table.step==2?' class="active"':(table.step>2?' class="complete"':'')}>
 										<span class="step">2</span>
 										<span class="title">配置属性</span>
 									</li>
 
-									<li data-target="#step1"${table.step==3?' class="complete"':''}>
+									<li data-target="#step3"${table.step==3?' class="complete"':''}>
 										<span class="step">3</span>
 										<span class="title">生成表单</span>
 									</li>
@@ -57,39 +56,46 @@
 							<!-- #section:plugins/fuelux.wizard.container -->
 							<div class="step-content pos-rel" id="step-container">
 								<div class="step-pane active" id="step1">
-									<div class="form-group col-xs-12 col-sm-6">
-										<label name="tableName" class="control-label col-xs-12 col-sm-2 no-padding-right">表名:</label>
-										<div class="col-xs-12 col-sm-7">
-							            	<span class="block input-icon input-icon-right">
-								            	<input name="tableName" value="${table.tableName}" maxlength="50" class="width-100 required tableName" title="表名必填"/>
-												<i class="ace-icon fa fa-info-circle"></i>
-											</span>
+									<form method="post" id="tabForm" action="" class="form-horizontal">
+										<input type="hidden" name="id" value="${table.id}">
+										<input type="hidden" name="step" value="${table.step}">
+										<div class="form-group">
+											<label name="tableName" class="control-label col-xs-12 col-sm-2 no-padding-right">表名:</label>
+											<div class="col-xs-12 col-sm-7">
+												<span class="block input-icon input-icon-right">
+													<input name="tableName" value="${table.tableName}" maxlength="50" class="width-100 required tableName" title="表名必填"/>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
 										</div>
-									</div>
-									<div class="form-group col-xs-12 col-sm-6">
-										<label name="comments" class="control-label col-xs-12 col-sm-2 no-padding-right">描述:</label>
-										<div class="col-xs-12 col-sm-7">
-							            	<span class="block input-icon input-icon-right">
-								            	<textarea name="comments" class="width-100 input-xlarge">${table.comments}</textarea>
-												<i class="ace-icon fa fa-info-circle"></i>
-											</span>
+										<div class="form-group">
+											<label name="comments" class="control-label col-xs-12 col-sm-2 no-padding-right">描述:</label>
+											<div class="col-xs-12 col-sm-7">
+												<span class="block input-icon input-icon-right">
+													<textarea name="comments" class="width-100 required input-xlarge"title="描述必填">${table.comments}</textarea>
+													<i class="ace-icon fa fa-info-circle"></i>
+												</span>
+											</div>
 										</div>
-									</div>
+									</form>
 								</div>
 
 								<div class="step-pane" id="step2">
+									<form method="post" id="subForm" action="">
+									<p>
+										<shiro:hasPermission name="table:create">
+											<button id="addprop" class="btn btn-info no-border btn-sm" type="button">
+												<i class="ace-icon fa fa-pencil align-top bigger-125"></i>
+												增加属性
+											</button>
+										</shiro:hasPermission>
+									</p>
 									<!-- PAGE CONTENT BEGINS -->
-									<input type="hidden" name="id" value="${table.id}">
-									<input type="hidden" name="step" value="${table.step}">
-									<table class="table table-striped table-bordered table-hover">
+									<table class="table table-striped table-bordered table-hover" id="proptable">
 										<thead>
 										<tr>
-											<th>列名称</th>
+											<th>名称</th>
 											<th>数据类型</th>
-											<th class="disabled">列类型</th>
-											<th>属性名称</th>
-											<th>属性类型</th>
-											<th>备注</th>
 											<th>控件类型</th>
 											<th>控件设置</th>
 											<th>验证设置</th>
@@ -100,126 +106,10 @@
 										</tr>
 										</thead>
 										<tbody>
-										<c:forEach items="${columnsList}" var="column" varStatus="stat">
-											<tr id="tr-${stat.index}" columnName="${column.columnName}">
-												<td>${column.columnName}
-													<input type="hidden" name="columnList[${stat.index}].id" value="${column.id}">
-													<input type="hidden" name="columnList[${stat.index}].columnName" value="${column.columnName}">
-													<input type="hidden" name="columnList[${stat.index}].tableId" value="${table.id}">
-													<input type="hidden" name="columnList[${stat.index}].columnType" value="${column.columnType}">
-													<input type="hidden" name="columnList[${stat.index}].dataType" value="${column.dataType}">
-													<input type="hidden" name="columnList[${stat.index}].columnKey" value="${columnKey}">
-												</td>
-												<td>${column.dataType}</td>
-												<td class="disabled">${column.columnType}</td>
-												<td><input name="columnList[${stat.index}].propertiesName" value="${column.propertiesName}" class="width-100" id="dvalue"></td>
-												<td>
-													<select name="columnList[${stat.index}].propertiesType" class="select2" style="min-width: 110px;">
-														<c:forEach items="${elfn:getJavaTypeList()}" var="javaType">
-															<option value="${javaType}"<c:if test="${constants.mysqlDataTypeMap[fn:toUpperCase(column.dataType)] eq javaType}">selected="selected"</c:if>>${javaType}</option>
-														</c:forEach>
-													</select>
-												</td>
-												<td><input name="columnList[${stat.index}].comments" value="${column.comments}" class="width-100"></td>
-												<td>
-													<select name="columnList[${stat.index}].plugin" class="select2" style="min-width: 110px;" statindex="${stat.index}" id="plugin${stat.index}">
-														<c:forEach items="${plugins}" var="plugin">
-															<option title="${plugin.remark}" value="${plugin.id}"<c:if test="${(column.plugin eq plugin.id)}">selected="selected"</c:if>>${plugin.tagName}</option>
-														</c:forEach>
-													</select>
-												</td>
-												<td class="center">
-													<a class="${fn:length(column.columnElements)<=0?'grey':'green'}" href="#" title="标签元素设置">
-														<i class="ace-icon fa fa-plug bigger-125 cursor" setting="plugin${stat.index}" statindex="${stat.index}"></i>
-													</a>
-												</td>
-												<td class="center">
-													<a class="${fn:length(column.columnValidates)<=0?'grey':'green'}" href="#" title="验证类型设置">
-														<i class="ace-icon fa fa-filter bigger-125 cursor" setting="validate${stat.index}" statindex="${stat.index}"></i>
-													</a>
-												</td>
-												<td class="center">
-													<label class="position-relative">
-														<input type="checkbox" class="ace" name="columnList[${stat.index}].genFlag" <c:if test="${column.genFlag||empty column.id}">checked="checked"</c:if>>
-														<span class="lbl"></span>
-													</label>
-												</td>
-												<td class="center">
-													<label class="position-relative">
-														<input type="checkbox" class="ace" name="columnList[${stat.index}].hideFlag" <c:if test="${column.hideFlag||(!column.hideFlag&&column.pk)}">checked="checked"</c:if>>
-														<span class="lbl"></span>
-													</label>
-												</td>
-												<td class="center">
-													<label class="position-relative">
-														<input type="checkbox" class="ace" name="columnList[${stat.index}].sortFlag" <c:if test="${column.sortFlag||(empty column.id&&!column.pk)}">checked="checked"</c:if>>
-														<span class="lbl"></span>
-													</label>
-												</td>
-												<td class="center"><input type="text" class="width-100" name="columnList[${stat.index}].sequence" value="${column.sequence==0?stat.index*10:column.sequence}"></td>
-												<td class="disabled" id="columnTag-${stat.index}">
-													<div id="elements"></div>
-													<div id="validates"></div>
-													<div id="dialog-setting-${stat.index}" class="hide">
-														<table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-															<thead>
-															<tr>
-																<th>元素名称</th>
-																<th>元素值</th>
-																<th>元素举例</th>
-															</tr>
-															</thead>
-															<tbody>
-															<c:forEach items="${column.columnElements}" var="columnElement" varStatus="statu">
-																<tr>
-																	<td>
-																		<input type="hidden" name="columnList[${stat.index}].columnElements[${statu.index}].elementId" value="${columnElement.element.id}"/>
-																			${columnElement.element.required eq constants.DICT_YES_PARENT_ID?'<font color="red">*</font>':''}${columnElement.element.elementName}
-																	</td>
-																	<td>
-																		<input type="text" name="columnList[${stat.index}].columnElements[${statu.index}].elementValue" value="${empty columnElement.elementValue?columnElement.element.defaultVal:columnElement.elementValue}" mustrequired="${columnElement.element.required}" statindex="${stat.index}" class="width-100">
-																	</td>
-																	<td>${empty columnElement.element.description?'暂无':columnElement.element.description}</td>
-																</tr>
-															</c:forEach>
-															</tbody>
-														</table>
-													</div><!-- #elements-dialog-confirm -->
-													<div id="dialog-validate-${stat.index}" class="hide">
-														<table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
-															<thead>
-															<tr>
-																<th>验证类型</th>
-																<th>类型值</th>
-																<th>验证信息</th>
-																<th>验证举例</th>
-															</tr>
-															</thead>
-															<tbody>
-															<c:forEach items="${validateList}" var="validate" varStatus="statu">
-																<tr>
-																	<td>
-																		<input submit-input="true" type="hidden" value="${validate.id}" name="columnList[${stat.index}].columnValidates[${statu.index}].validateId"/>
-																			${validate.name}
-																	</td>
-																	<td>
-																		<input submit-input="true" type="text" name="columnList[${stat.index}].columnValidates[${statu.index}].validateVal" value="${elfn:getObjFromList(column.columnValidates,'validateId',validate.id).validateVal}" placeholder="${validate.value}" class="width-100">
-																	</td>
-																	<td>
-																		<input submit-input="true" type="text" name="columnList[${stat.index}].columnValidates[${statu.index}].validateMessage" value="${elfn:getObjFromList(column.columnValidates,'validateId',validate.id).validateMessage}" class="width-100">
-																	</td>
-																	<td>${empty validate.means?'暂无':validate.means}</td>
-																</tr>
-															</c:forEach>
-															</tbody>
-														</table>
-													</div><!-- #validates-dialog-confirm -->
-												</td>
-											</tr>
-										</c:forEach>
 										</tbody>
 									</table>
 									<!-- PAGE CONTENT ENDS -->
+									</form>
 								</div>
 
 								<div class="step-pane" id="step3">
@@ -233,12 +123,12 @@
 							<hr />
 							<div class="wizard-actions">
 								<!-- #section:plugins/fuelux.wizard.buttons -->
-								<button class="btn btn-prev">
+								<button class="btn btn-prev btn-sm" type="button">
 									<i class="ace-icon fa fa-arrow-left"></i>
 									上一步
 								</button>
 
-								<button class="btn btn-success btn-next" data-last="Finish">
+								<button class="btn btn-success btn-next btn-sm" data-last="Finish" type="button">
 									下一步
 									<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 								</button>
@@ -250,25 +140,143 @@
 						</div><!-- /.widget-main -->
 					</div><!-- /.widget-body -->
 				</div>
-				</form>
 			</div><!-- /.col -->
 		</div><!-- /.row -->
 	</div><!-- /.page-content-area -->
+	<script id="trhtml" type="text/html">
+		{{length(column.columnValidates)}}
+		<tr id="tr-{{index}}" columnName="{{column.columnName||'属性'}}">
+			<td><input name="columnList[{{index}}].comments" value="{{column.comments}}" class="width-100 required comments">
+				<input type="hidden" name="columnList[{{index}}].id" value="{{column.id}}">
+			</td>
+			<td>
+				<select name="columnList[{{index}}].columnType" class="select2" style="min-width: 110px;">
+					<c:forEach items="${elfn:getJdbcTypeList()}" var="jdbcType">
+						<option value="${jdbcType}"{{if column.dataType=='${jdbcType}'}}selected="selected"{{/if}}>${jdbcType}</option>
+					</c:forEach>
+				</select>
+			</td>
+			<td>
+				<select name="columnList[{{index}}].plugin" class="select2" style="min-width: 110px;" statindex="{{index}}" id="plugin{{index}}">
+					<c:forEach items="${plugins}" var="plugin">
+						<option title="${plugin.remark}" value="${plugin.id}"{{if column.plugin=='${plugin.id}'}}selected="selected"{{/if}}>${plugin.tagName}</option>
+					</c:forEach>
+				</select>
+			</td>
+			<td class="center">
+				<a class="{{if length(column.columnElements)<=0}}grey{{else if length(column.columnElements)>0}}green{{else}}{{/if}}" href="#" title="标签元素设置">
+					<i class="ace-icon fa fa-plug bigger-125 cursor" setting="plugin{{index}}" statindex="{{index}}"></i>
+				</a>
+			</td>
+			<td class="center">
+				<a class="{{if length(column.columnValidates)<=0}}grey{{else if length(column.columnValidates)>0}}green{{else}}{{/if}}" href="#" title="验证类型设置">
+					<i class="ace-icon fa fa-filter bigger-125 cursor" setting="validate{{index}}" statindex="{{index}}"></i>
+				</a>
+			</td>
+			<td class="center">
+				<label class="position-relative">
+					<input type="checkbox" class="ace" name="columnList[{{index}}].genFlag" {{if column.genFlag||!!!column.id}}checked="checked"{{/if}}/>
+					<span class="lbl"></span>
+				</label>
+			</td>
+			<td class="center">
+				<label class="position-relative">
+					<input type="checkbox" class="ace" name="columnList[{{index}}].hideFlag" {{if column.hideFlag||(!column.hideFlag&&column.pk)}}checked="checked"{{/if}}/>
+					<span class="lbl"></span>
+				</label>
+			</td>
+			<td class="center">
+				<label class="position-relative">
+					<input type="checkbox" class="ace" name="columnList[{{index}}].sortFlag" {{if column.sortFlag||(!!!column.id&&!column.pk)}}checked="checked"{{/if}}/>
+					<span class="lbl"></span>
+				</label>
+			</td>
+			<td class="center"><input type="text" class="width-100" name="columnList[{{index}}].sequence" value="{{(!!!column.sequence||column.sequence==0)?index*10:column.sequence}}"></td>
+			<td class="disabled" id="columnTag-{{index}}">
+				<div id="elements"></div>
+				<div id="validates"></div>
+				<div id="dialog-setting-{{index}}" class="hide">
+					<table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+						<thead>
+						<tr>
+							<th>元素名称</th>
+							<th>元素值</th>
+							<th>元素举例</th>
+						</tr>
+						</thead>
+						<tbody>
+						{{each column.columnElements as value i}}
+							<tr>
+								<td>
+									<input type="hidden" name="columnList[{{index}}].columnElements[{{i}}].elementId" value="{{value.element.id}}"/>
+									{{if value.element.required == '${constants.DICT_YES_PARENT_ID}'}}<font color="red">*</font>{{/if}}{{value.element.elementName}}
+								</td>
+								<td>
+									<input type="text" name="columnList[{{index}}].columnElements[{{i}}].elementValue" value="{{if !!value.elementValue}}{{value.elementValue}}{{else if !!!value.elementValue}}{{value.element.defaultVal}}{{else}}{{/if}}" mustrequired="{{value.element.required}}" statindex="{{index}}" class="width-100">
+								</td>
+								<td>{{if !!value.element.description}}{{value.element.description}}{{else if !!!value.element.description}}暂无{{else}}{{/if}}</td>
+							</tr>
+						{{/each}}
+						</tbody>
+					</table>
+				</div><!-- #elements-dialog-confirm -->
+				<div id="dialog-validate-{{index}}" class="hide">
+					<table class="table table-striped table-bordered table-hover no-margin-bottom no-border-top">
+						<thead>
+						<tr>
+							<th>验证类型</th>
+							<th>类型值</th>
+							<th>验证信息</th>
+							<th>验证举例</th>
+						</tr>
+						</thead>
+						<tbody>
+						<c:forEach items="${validateList}" var="validate" varStatus="statu">
+							<tr>
+								<td>
+									<input submit-input="true" type="hidden" value="${validate.id}" name="columnList[{{index}}].columnValidates[${statu.index}].validateId"/>
+										${validate.name}
+								</td>
+								<td>
+									<input submit-input="true" type="text" name="columnList[{{index}}].columnValidates[${statu.index}].validateVal" value="{{(column.columnValidates|getValidate:'${validate.id}').validateVal}}" placeholder="${validate.value}" class="width-100">
+								</td>
+								<td>
+									<input submit-input="true" type="text" name="columnList[{{index}}].columnValidates[${statu.index}].validateMessage" value="{{(column.columnValidates|getValidate:'${validate.id}').validateMessage}}" class="width-100">
+								</td>
+								<td>${empty validate.means?'暂无':validate.means}</td>
+							</tr>
+						</c:forEach>
+						</tbody>
+					</table>
+				</div><!-- #validates-dialog-confirm -->
+			</td>
+		</tr>
+	</script>
 	<script type="text/javascript">
+		template.helper('getValidate', function (param,id) {
+			if(!!param)
+				for(var i=0;i<param.length;i++)
+					if(param[i].validateId==id)
+						return param[i];
+		});
 		$(function(){
-			$('i[setting^="plugin"]').on('click',function(){
+			//添加表单验证
+			formValidate($("#tabForm"), 'help-block inline error', 'div');
+			formValidate($("#subForm"), 'help-block inline error', 'div');
+
+			$(document).on('click','i[setting^="plugin"]',function(){
 				var statindex = $(this).attr('statindex');
 				if($.trim($('tbody',$('#dialog-setting-'+statindex)).html())==='')
 					loadElements($('#'+$(this).attr('setting')).val(),statindex);
 				showSettingElementDialog(statindex);
 			});
-			$('[id^=plugin]').on('change',function(){
+			$(document).on('change','[id^=plugin]',function(){
 				var statindex = $(this).attr('statindex');
 				loadElements($(this).val(),statindex);
 				showSettingElementDialog(statindex);
 			});
 			
-			$('i[setting^="validate"]').on('click',function(){
+			$(document).on('click','i[setting^="validate"]',function(){
 				var statindex = $(this).attr('statindex');
 				platform.showContentDialog({
 					title:'"'+$('#tr-'+statindex).attr('columnName')+'"验证设置',
@@ -285,35 +293,49 @@
 					}
 				});
 			});
-			$("#subForm").submit(function(){
-				var flag = true;
-				$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
-					if(""===$(this).val()){
-						flag=false;
-						showSettingElementDialog($(this).attr('statindex'));
-						return flag;
-					}
-				});
-				return flag;
-			});
-			$('#isdefault').on('click', function(){
-				var self = $(this);
-				if(this.checked) {
-					platform.showContentDialog({
-						title: '确认？',
-						content: $('<div>重置“${table.tableName}”方案生成规则？</div>'),
-						option: {width: "300"},
-						selectedHandler: function (dialog) {
-							self.attr('checked', true);
-							window.location.href='${adminFullPath}/table/${table.id}/reset'
-						},
-						cancleHandler: function (dialog) {
+
+			$('#fuelux-wizard')
+			.ace_wizard({
+				//step: 2 //optional argument. wizard will jump to step "2" at first
+			})
+			.on('change' , function(e, info){
+				if(info.step == 1) {
+					if(!$('#tabForm').valid()) return false;
+				}
+				if(info.step == 2) {
+					if(!$('#subForm').valid()) return false;
+					$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
+						if(""===$(this).val()){
+							showSettingElementDialog($(this).attr('statindex'));
+							return false;
 						}
 					});
-					return false;
 				}
 			})
+			.on('finished', function(e) {
+
+			}).on('stepclick', function(e){
+				//e.preventDefault();//this will prevent clicking and selecting steps
+			});
+
+			//增加一个新属性
+			$('#addprop').on('click',function(){
+				$('#proptable tbody').append(template('trhtml', {column:{},index:$('tr[columnName]').size()}));
+			});
+
+			//绑定输入框改变事件
+			$(document).on('input propertychange','.comments',function(){
+				$(this).closest('tr').attr('columnName',$(this).val());
+			});
+			init();
 		});
+		function init(){
+			var columns = eval('${elfn:toJSON(table.columnList)}')||[],htmlArray=[];
+			for(var i=0;i<columns.length;i++)
+				htmlArray.push(template('trhtml', {column:columns[i],index:i}));
+			//初始化属性定义
+			$('#proptable tbody').html(htmlArray.join(''));
+		}
 		function showSettingElementDialog(statindex){
 			platform.showContentDialog({
 				title:'"'+$('#tr-'+statindex).attr('columnName')+'"标签元素设置',
