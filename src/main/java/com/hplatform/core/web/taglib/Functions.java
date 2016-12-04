@@ -40,6 +40,13 @@ public class Functions {
                                 ,TagsConstants.DEFAULT_FOREIGNKEY_TAGS_MVCSELECT
                                 ,SpringUtils.getBean(ElementService.class).findAll(element))
                 );
+                element.setTagId(TagsConstants.DEFAULT_INPUT_TAGS);
+                //input默认标签配置
+                put(ColumnsConstants.TAG_TYPE_INPUT
+                        ,new GenColumnVo(ColumnsConstants.TAG_TYPE_INPUT
+                                ,TagsConstants.DEFAULT_INPUT_TAGS
+                                ,SpringUtils.getBean(ElementService.class).findAll(element))
+                );
             } catch (CRUDException e) {
                 log.error("默认字段标签初始化失败！",e);
             }

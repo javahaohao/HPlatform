@@ -13,4 +13,6 @@ public class ColumnsConstants {
 	public static final String COLUMN_KEYS_MUL="MUL";
 	//外键
 	public static final String COLUMN_KEYS_FK="FK";
+	//input类型
+	public static final String TAG_TYPE_INPUT="input";
 }

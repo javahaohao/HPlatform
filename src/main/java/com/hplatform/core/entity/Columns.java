@@ -18,6 +18,7 @@ public class Columns extends BaseEntity<Columns>{
 	private String tableName;
 	private String columnName;
 	private String columnType;
+	private Integer columnLength;
 	private String columnKey;
 	private String dataType;
 	private String plugin;
@@ -128,6 +129,14 @@ public class Columns extends BaseEntity<Columns>{
 
 	public void setColumnKey(String columnKey) {
 		this.columnKey = columnKey;
+	}
+
+	public Integer getColumnLength() {
+		return columnLength;
+	}
+
+	public void setColumnLength(Integer columnLength) {
+		this.columnLength = columnLength;
 	}
 
 	/**

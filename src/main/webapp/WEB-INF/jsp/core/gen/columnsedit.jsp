@@ -104,6 +104,7 @@
 													<input type="hidden" name="columnList[${stat.index}].columnName" value="${column.columnName}">
 													<input type="hidden" name="columnList[${stat.index}].tableId" value="${table.id}">
 													<input type="hidden" name="columnList[${stat.index}].columnType" value="${column.columnType}">
+													<input type="hidden" name="columnList[${stat.index}].columnLength" value="${column.columnLength}">
 													<input type="hidden" name="columnList[${stat.index}].dataType" value="${column.dataType}">
 													<input type="hidden" name="columnList[${stat.index}].columnKey" value="${columnKey}">
 												</td>
@@ -176,7 +177,7 @@
 																	<tr>
 																		<td>
 																			<input type="hidden" name="columnList[${stat.index}].columnElements[${statu.index}].elementId" value="${element.id}"/>
-																				${columnElement.element.required eq constants.DICT_YES_PARENT_ID?'<font color="red">*</font>':''}${element.elementName}
+																				${element.required eq constants.DICT_YES_PARENT_ID?'<font color="red">*</font>':''}${element.elementName}
 																		</td>
 																		<td>
 																			<input type="text" name="columnList[${stat.index}].columnElements[${statu.index}].elementValue" value="${element.defaultVal}" mustrequired="${element.required}" statindex="${stat.index}" class="width-100">

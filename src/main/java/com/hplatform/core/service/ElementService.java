@@ -7,9 +7,9 @@ import com.hplatform.core.entity.Element;
 import com.hplatform.core.entity.Tags;
 import com.hplatform.core.exception.CRUDException;
 import com.hplatform.core.mapper.ElementMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class ElementService extends BaseService<Element, ElementMapper> {
 	 */
 	public void saveTagElements(Columns columns) throws CRUDException {
 		m.deleteColumnElements(columns.getId());
-		if(org.apache.commons.collections.CollectionUtils.isNotEmpty(columns.getColumnElements()))
+		if(CollectionUtils.isNotEmpty(columns.getColumnElements()))
 			for(ColumnElement columnElement : columns.getColumnElements()){
 				columnElement.preInsert();
 				columnElement.setColumnId(columns.getId());
@@ -60,4 +60,5 @@ public class ElementService extends BaseService<Element, ElementMapper> {
 			}
 		}
 	}
+
 }

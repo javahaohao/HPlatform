@@ -161,7 +161,9 @@ public class TableController extends BaseController {
      */
     @RequiresPermissions("table:create")
     @RequestMapping(value = "/form/create", method = RequestMethod.GET)
-    public String formCreate(Table table) throws CRUDException {
+    public String formCreate(Model model,Table table) throws CRUDException {
+        model.addAttribute("input",ColumnsConstants.TAG_TYPE_INPUT);
+        model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
         return TableConstants.FORM;
     }
 
@@ -175,6 +177,7 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/form/create", method = RequestMethod.POST)
     @ResponseBody
     public String saveForm(Table table) throws CRUDException {
+        tableService.saveFormProgramme(table);
         return getAdminUrlPath("/table/form");
     }
 }

@@ -3,6 +3,7 @@ package com.hplatform.core.service;
 import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.util.ConstantsUtil;
 import com.hplatform.core.common.util.FreeMarkerUtil;
+import com.hplatform.core.common.util.PingYinUtil;
 import com.hplatform.core.constants.TableConstants;
 import com.hplatform.core.entity.Columns;
 import com.hplatform.core.entity.Table;
@@ -21,6 +22,8 @@ import java.util.List;
 public class TableService extends BaseService<Table, TableMapper> {
 	@Autowired
 	private ColumnsService columnsService;
+	@Autowired
+	private ElementService elementService;
 	/**
 	 * 批量代码生成
 	 * @param table
@@ -176,4 +179,86 @@ public class TableService extends BaseService<Table, TableMapper> {
 			throw new CRUDException(e);
 		}
 	}
+
+	/**********自定义表单start*************/
+	/**
+	 * 保存自定义表单方案
+	 * @param table
+	 */
+	public void saveFormProgramme(Table table) throws CRUDException {
+		saveFormTable(table);
+		saveFormColumns(table);
+	}
+
+	/**
+	 * 保存自定义表单表定义方案
+	 * @param table
+	 */
+	public void saveFormTable(Table table)throws CRUDException{
+		try {
+			String comments = PingYinUtil.getFirstSpell(table.getComments());
+			table.setRelationType(Table.RelationType.one);
+			table.setTableName(comments.toUpperCase());
+			table.setTableAlias(comments.toLowerCase());
+			table.setDomainName(com.hplatform.core.common.util.StringUtils.getFirstUperHumStr(comments));
+			table.setBumodel("form");
+			table.setPkg("com.hplatform");
+			table.setStatu(ConstantsUtil.get().getDICT_NO_PARENT_ID());
+			table.setStep(2);
+			table.setGenFlag(true);
+			table.setGenType(ConstantsUtil.get().getZERO());
+			super.save(table);
+		} catch (CRUDException e) {
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
+
+	/**
+	 * 保存自定义表单定义的列方案
+	 * @param table
+	 * @throws CRUDException
+	 */
+	public void saveFormColumns(Table table) throws CRUDException {
+		try {
+			List<Columns> columns = table.getColumnList();
+			if(CollectionUtils.isNotEmpty(columns)){
+				String comments = null;
+				for(Columns c : columns){
+					comments =PingYinUtil.getFirstSpell(c.getComments());
+					c.setTableId(table.getId());
+					c.setColumnName(comments);
+					if(c.getColumnLength()!=null)
+						c.setColumnType(String.format("%s(%s)",c.getDataType(),c.getColumnLength()));
+					else
+						c.setColumnType(c.getDataType());
+					c.setPropertiesName(com.hplatform.core.common.util.StringUtils.getHumpStr(c.getColumnName()));
+					c.setPropertiesType(ConstantsUtil.get().getMysqlDataType(c.getDataType()));
+				}
+				columnsService.editColumns(columns);
+				saveFormColumnsElements(columns);
+			}
+		} catch (CRUDException e) {
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
+
+	/**
+	 * 保存自定义表单标签属性配置以及校验配置
+	 * @param columnsList
+	 * @throws CRUDException
+	 */
+	public void saveFormColumnsElements(List<Columns> columnsList) throws CRUDException {
+		try {
+			for(Columns columns : columnsList){
+				elementService.saveTagElements(columns);
+				columnsService.saveColumnValidates(columns);
+			}
+		} catch (CRUDException e) {
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
+	/**********自定义表单end*************/
 }

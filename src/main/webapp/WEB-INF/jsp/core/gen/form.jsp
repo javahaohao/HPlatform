@@ -60,12 +60,11 @@
 										<input type="hidden" name="id" value="${table.id}">
 										<input type="hidden" name="step" value="${table.step}">
 										<div class="form-group">
-											<label name="tableName" class="control-label col-xs-12 col-sm-2 no-padding-right">表名:</label>
+											<form:label path="pkg" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">风格:</form:label>
 											<div class="col-xs-12 col-sm-7">
-												<span class="block input-icon input-icon-right">
-													<input name="tableName" value="${table.tableName}" maxlength="50" class="width-100 required tableName" title="表名必填"/>
-													<i class="ace-icon fa fa-info-circle"></i>
-												</span>
+							            	<span class="block input-icon input-icon-right">
+							            		<form:select path="fgType" itemLabel="name" itemValue="id" items="${elfn:getChildDictById(constants.DICT_FG_PARENT_ID)}" cssClass="select2 width-100 required input-xlarge" title="生成风格"></form:select>
+											</span>
 											</div>
 										</div>
 										<div class="form-group">
@@ -96,6 +95,7 @@
 										<tr>
 											<th>名称</th>
 											<th>数据类型</th>
+											<th>长度</th>
 											<th>控件类型</th>
 											<th>控件设置</th>
 											<th>验证设置</th>
@@ -145,16 +145,18 @@
 	</div><!-- /.page-content-area -->
 	<script id="trhtml" type="text/html">
 		{{length(column.columnValidates)}}
-		<tr id="tr-{{index}}" columnName="{{column.columnName||'属性'}}">
+		<tr id="tr-{{index}}" columnName="{{column.columnName||'属性'}}" class="proptr">
 			<td><input name="columnList[{{index}}].comments" value="{{column.comments}}" class="width-100 required comments">
 				<input type="hidden" name="columnList[{{index}}].id" value="{{column.id}}">
 			</td>
 			<td>
-				<select name="columnList[{{index}}].columnType" class="select2" style="min-width: 110px;">
+				<select name="columnList[{{index}}].dataType" class="select2" style="min-width: 110px;">
 					<c:forEach items="${elfn:getJdbcTypeList()}" var="jdbcType">
 						<option value="${jdbcType}"{{if column.dataType=='${jdbcType}'}}selected="selected"{{/if}}>${jdbcType}</option>
 					</c:forEach>
 				</select>
+			</td>
+			<td><input name="columnList[{{index}}].columnLength" value="{{column.columnLength}}" class="width-100 required">
 			</td>
 			<td>
 				<select name="columnList[{{index}}].plugin" class="select2" style="min-width: 110px;" statindex="{{index}}" id="plugin{{index}}">
@@ -205,6 +207,21 @@
 						</tr>
 						</thead>
 						<tbody>
+						{{if !!!column.columnElements}}
+						<c:set var="genColumnVo" value="${elfn:defaultTag(input)}"></c:set>
+						<c:forEach items="${genColumnVo.elementList}" var="element" varStatus="statu">
+							<tr>
+								<td>
+									<input type="hidden" name="columnList[{{index}}].columnElements[${statu.index}].elementId" value="${element.id}"/>
+										${element.required eq constants.DICT_YES_PARENT_ID?'<font color="red">*</font>':''}${element.elementName}
+								</td>
+								<td>
+									<input type="text" name="columnList[{{index}}].columnElements[${statu.index}].elementValue" value="${element.defaultVal}" mustrequired="${element.required}" statindex="{{index}}" class="width-100">
+								</td>
+								<td>${empty element.description?'暂无':element.description}</td>
+							</tr>
+						</c:forEach>
+						{{/if}}
 						{{each column.columnElements as value i}}
 							<tr>
 								<td>
@@ -238,10 +255,10 @@
 										${validate.name}
 								</td>
 								<td>
-									<input submit-input="true" type="text" name="columnList[{{index}}].columnValidates[${statu.index}].validateVal" value="{{(column.columnValidates|getValidate:'${validate.id}').validateVal}}" placeholder="${validate.value}" class="width-100">
+									<input submit-input="true" type="text" name="columnList[{{index}}].columnValidates[${statu.index}].validateVal" value="{{getValidate(column.columnValidates,'${validate.id}','validateVal')}}" placeholder="${validate.value}" class="width-100">
 								</td>
 								<td>
-									<input submit-input="true" type="text" name="columnList[{{index}}].columnValidates[${statu.index}].validateMessage" value="{{(column.columnValidates|getValidate:'${validate.id}').validateMessage}}" class="width-100">
+									<input submit-input="true" type="text" name="columnList[{{index}}].columnValidates[${statu.index}].validateMessage" value="{{getValidate(column.columnValidates,'${validate.id}','validateMessage')}}" class="width-100">
 								</td>
 								<td>${empty validate.means?'暂无':validate.means}</td>
 							</tr>
@@ -253,11 +270,11 @@
 		</tr>
 	</script>
 	<script type="text/javascript">
-		template.helper('getValidate', function (param,id) {
+		template.helper('getValidate', function (param,id,prop) {
 			if(!!param)
 				for(var i=0;i<param.length;i++)
 					if(param[i].validateId==id)
-						return param[i];
+						return param[i][prop];
 		});
 		$(function(){
 			//添加表单验证
@@ -313,14 +330,20 @@
 				}
 			})
 			.on('finished', function(e) {
-
+				$.ajax({
+					type: "POST",
+					url: "${adminFullPath}/table/form/create",
+					data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
+					success: function(data){
+					}
+				});
 			}).on('stepclick', function(e){
 				//e.preventDefault();//this will prevent clicking and selecting steps
 			});
 
 			//增加一个新属性
 			$('#addprop').on('click',function(){
-				$('#proptable tbody').append(template('trhtml', {column:{},index:$('tr[columnName]').size()}));
+				$('#proptable > tbody').append(template('trhtml', {column:{},index:$('tr.proptr',$('#proptable')).size()}));
 			});
 
 			//绑定输入框改变事件
@@ -334,7 +357,7 @@
 			for(var i=0;i<columns.length;i++)
 				htmlArray.push(template('trhtml', {column:columns[i],index:i}));
 			//初始化属性定义
-			$('#proptable tbody').html(htmlArray.join(''));
+			$('#proptable > tbody').html(htmlArray.join(''));
 		}
 		function showSettingElementDialog(statindex){
 			platform.showContentDialog({

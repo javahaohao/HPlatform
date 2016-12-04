@@ -2,6 +2,14 @@ package com.hplatform.core.common.util;
 
 public class StringUtils {
 	/**
+	 * 获取首字母大写的驼峰写法
+	 * @param str
+	 * @return
+	 */
+	public static String getFirstUperHumStr(String str){
+		return uperFirst(getHumpStr(str));
+	}
+	/**
 	 * 获取str的驼峰写法
 	 * @param str
 	 * @return

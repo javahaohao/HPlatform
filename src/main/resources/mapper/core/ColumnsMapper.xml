@@ -6,6 +6,7 @@
 		table_id AS "tableId",
 		column_name AS "columnName",
 		column_type AS "columnType",
+		column_length AS "columnLength",
 		column_key AS "columnKey",
 		data_type AS "dataType",
 		plugin AS "plugin",
@@ -29,6 +30,7 @@
 		<result column="table_id" property="tableId"/>
 		<result column="column_name" property="columnName"/>
 		<result column="column_type" property="columnType"/>
+		<result column="column_length" property="columnLength"/>
 		<result column="data_type" property="dataType"/>
 		<result column="plugin" property="plugin"/>
 		<result column="properties_name" property="propertiesName"/>
@@ -61,6 +63,7 @@
 			a.table_id,
 			a.column_name,
 			a.column_type,
+			a.column_length,
 			a.data_type,
 			a.plugin,
 			a.properties_name,
@@ -230,6 +233,7 @@
 			table_id,
 			column_name,
 			column_type,
+			column_length,
 			column_key,
 			data_type,
 			plugin,
@@ -250,6 +254,7 @@
 			#{tableId},
 			#{columnName},
 			#{columnType},
+			#{columnLength},
 			#{columnKey},
 			#{dataType},
 			#{plugin},
@@ -281,6 +286,9 @@
 		</if>
 		<if test="columnType !=null and columnType !=''">
 		column_type=#{columnType},
+		</if>
+		<if test="columnLength !=null and columnLength !=''">
+			column_length=#{columnLength},
 		</if>
 		<if test="columnKey !=null and columnKey !=''">
 		column_key=#{columnKey},
@@ -352,8 +360,9 @@
 			c.COLUMN_TYPE as "columnType",
 			c.DATA_TYPE as "dataType",
 			c.COLUMN_COMMENT as "comments",
-			c.COLUMN_KEY as "columnKey"
-		from information_schema.COLUMNS c 
+			c.COLUMN_KEY as "columnKey",
+			c.CHARACTER_MAXIMUM_LENGTH as "columnLength"
+		from information_schema.COLUMNS c
 		where c.TABLE_SCHEMA='hp' and c.TABLE_NAME=#{tableName}
 	</select>
 	<insert id="saveColumnValidates" parameterType="ColumnValidate">

@@ -9,4 +9,6 @@ public class TagsConstants {
 	public static final String DEFAULT_FOREIGNKEY_TAGS_MVCSELECT="1db4e28fa5264429a4c9693fdad3eaa1";
 	//代码生成器配置表主键对应隐藏标签id
 	public static final String DEFAULT_HIDDEN_TAGS_MVCHIDDEN="8b4c8d499e324d8aa096eb21b6a9c552";
+	//默认input标签id
+	public static final String DEFAULT_INPUT_TAGS="6093dbcf5e59462294a135e973c5e055";
 }
