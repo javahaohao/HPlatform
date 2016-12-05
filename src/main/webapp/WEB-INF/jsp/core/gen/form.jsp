@@ -55,7 +55,7 @@
 
 							<!-- #section:plugins/fuelux.wizard.container -->
 							<div class="step-content pos-rel" id="step-container">
-								<div class="step-pane active" id="step1">
+								<div class="step-pane ${table.step==1?'active':''}" id="step1">
 									<form:form method="post" commandName="table" id="tabForm" action="" cssClass="form-horizontal">
 										<input type="hidden" name="id" value="${table.id}">
 										<input type="hidden" name="step" value="${table.step}">
@@ -71,7 +71,7 @@
 											<label name="comments" class="control-label col-xs-12 col-sm-2 no-padding-right">描述:</label>
 											<div class="col-xs-12 col-sm-7">
 												<span class="block input-icon input-icon-right">
-                                                    <input name="comments" value="${table.comments}" class="width-100 required tablecomments">
+                                                    <input name="comments" value="${table.comments}" class="width-100 required tablecomments" title="表单描述必填">
 													<i class="ace-icon fa fa-info-circle"></i>
 												</span>
 											</div>
@@ -79,7 +79,7 @@
 									</form:form>
 								</div>
 
-								<div class="step-pane" id="step2">
+								<div class="step-pane ${table.step==2?'active':''}" id="step2">
 									<form method="post" id="subForm" action="">
 									<p>
 										<shiro:hasPermission name="table:create">
@@ -113,7 +113,7 @@
 									</form>
 								</div>
 
-								<div class="step-pane" id="step3">
+								<div class="step-pane ${table.step==3?'active':''}" id="step3">
 									<div class="center">
 										<h3 class="blue lighter">This is step 3</h3>
 									</div>
@@ -128,15 +128,15 @@
 									<i class="ace-icon fa fa-arrow-left"></i>
 									上一步
 								</button>
-								<button class="btn btn-success btn-next btn-sm" data-last="完成" type="button" id="nextbtn">
+								<button class="btn btn-success btn-next btn-sm  ${table.step==2?'hide':''}" data-last="完成" type="button" id="nextbtn">
 									下一步
 									<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 								</button>
-                                <button class="btn btn-success btn-next btn-sm hide" type="button" id="savebtn">
+                                <button class="btn btn-success btn-next btn-sm ${table.step!=2?'hide':''}" type="button" id="savebtn">
                                     保存
                                     <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
                                 </button>
-                                <button class="btn btn-success btn-next btn-sm hide" type="button" id="saveandgenbtn">
+                                <button class="btn btn-success btn-next btn-sm  ${table.step!=2?'hide':''}" type="button" id="saveandgenbtn">
                                     保存并生成
                                     <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
                                 </button>
@@ -163,7 +163,7 @@
 					</c:forEach>
 				</select>
 			</td>
-			<td><input name="columnList[{{index}}].columnLength" value="{{column.columnLength}}" class="width-100 required"></td>
+			<td><input name="columnList[{{index}}].columnLength" value="{{column.columnLength}}" class="required"></td>
 			<td>
                 <select name="columnList[{{index}}].nullAble" class="select2">
                     <option value="YES" {{if column.nullAble=='${constants.YES}'}} checked="checked"{{/if}}>是</option>
@@ -323,13 +323,8 @@
 				});
 			});
             $('#savebtn').on('click',function(){
-                $.ajax({
-                    type: "POST",
-                    url: "${adminFullPath}/table/form/create",
-                    data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
-                    success: function(data){
-                        window.location='${adminFullPath}/table/form'
-                    }
+                sub("${adminFullPath}/table/form/create",function(){
+                    window.location='${adminFullPath}/table/form'
                 });
             });
             $('#saveandgenbtn').on('click',function(){
@@ -339,19 +334,16 @@
                 wizard.setState();
                 $('#savebtn,#saveandgenbtn').hide();
                 $('#nextbtn').show();
+                sub("${adminFullPath}/table/form/creategen",function(){
+                    alert('生成成功');
+                });
 
             });
             $('#fuelux-wizard')
 			.ace_wizard({
-				//step: 2 //optional argument. wizard will jump to step "2" at first
+				step: '${table.step}'||1 //optional argument. wizard will jump to step "2" at first
 			})
 			.on('change' , function(e, info){
-                $('#savebtn,#saveandgenbtn').hide();
-                $('#nextbtn').show();
-                if(info.step == 1||info.step == 3){
-                    $('#nextbtn').hide();
-                    $('#savebtn,#saveandgenbtn').removeClass('hide').show();
-                }
 				if(info.step == 1) {
 					if(!$('#tabForm').valid()) return false;
 				}
@@ -364,6 +356,13 @@
 						}
 					});
 				}
+
+                $('#savebtn,#saveandgenbtn').hide();
+                $('#nextbtn').removeClass('hide').show();
+                if(info.step == 1||info.step == 3){
+                    $('#nextbtn').hide();
+                    $('#savebtn,#saveandgenbtn').removeClass('hide').show();
+                }
 			})
 			.on('finished', function(e) {
 
@@ -385,8 +384,19 @@
 			});
 			init();
 		});
+        function sub(url,fun){
+            if($('#tabForm').valid()&&$('#subForm').valid())
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
+                    success: function(data){
+                        if(!!fun)fun.call(this,this);
+                    }
+                });
+        }
 		function init(){
-			var columns = eval('${elfn:toJSON(table.columnList)}')||[],htmlArray=[];
+			var columns = eval((${elfn:toJSON(columnsList)}))||[],htmlArray=[];
 			for(var i=0;i<columns.length;i++)
 				htmlArray.push(template('trhtml', {column:columns[i],index:i}));
 			//初始化属性定义

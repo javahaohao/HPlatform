@@ -207,7 +207,10 @@ public class TableService extends BaseService<Table, TableMapper> {
 			table.setStep(2);
 			table.setGenFlag(true);
 			table.setGenType(ConstantsUtil.get().getZERO());
-			super.save(table);
+            if(org.apache.commons.lang.StringUtils.isNotBlank(table.getId()))
+                super.update(table);
+            else
+			    super.save(table);
 		} catch (CRUDException e) {
 			log.error(e);
 			throw new CRUDException(e);
@@ -249,6 +252,9 @@ public class TableService extends BaseService<Table, TableMapper> {
      */
 	public void genForm(Table table) throws CRUDException {
         try {
+            saveFormProgramme(table);
+			//删除表
+			dropTable(table);
             //创建表
             createTable(table);
             //生成代码
@@ -267,6 +273,20 @@ public class TableService extends BaseService<Table, TableMapper> {
     public void createTable(Table table) throws CRUDException {
         try {
             m.createTable(table);
+        } catch (Exception e) {
+            log.error(e);
+            throw new CRUDException(e);
+        }
+    }
+
+	/**
+	 * 删除表
+	 * @param table
+	 * @throws CRUDException
+	 */
+    public void dropTable(Table table) throws CRUDException {
+        try {
+            m.dropTable(table);
         } catch (Exception e) {
             log.error(e);
             throw new CRUDException(e);

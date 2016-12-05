@@ -162,8 +162,21 @@ public class TableController extends BaseController {
     @RequiresPermissions("table:create")
     @RequestMapping(value = "/form/create", method = RequestMethod.GET)
     public String formCreate(Model model,Table table) throws CRUDException {
+        formcommon(model,table);
+        return TableConstants.FORM;
+    }
+    private void formcommon(Model model,Table table){
         model.addAttribute("input",ColumnsConstants.TAG_TYPE_INPUT);
         model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
+    }
+    @RequiresPermissions("table:view")
+    @RequestMapping(value = "/{tableId}/viewform",method = RequestMethod.GET)
+    public String formview(Columns columns,Model model) throws CRUDException {
+        Table table = null;
+        model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
+        model.addAttribute("table",table=tableService.findOne(new Table(columns.getTableId())));
+
+        formcommon(model,table);
         return TableConstants.FORM;
     }
 
@@ -190,7 +203,7 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/form/creategen", method = RequestMethod.POST)
     @ResponseBody
     public String creatGen(Table table)throws CRUDException{
-        tableService.saveFormProgramme(table);
+        tableService.genForm(table);
         return "";
     }
 }

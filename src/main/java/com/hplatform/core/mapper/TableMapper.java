@@ -10,4 +10,10 @@ public interface TableMapper extends BaseMapper<Table>{
      * @param table
      */
     public void createTable(Table table);
+
+    /**
+     * 删除表
+     * @param table
+     */
+    public void dropTable(Table table);
 }

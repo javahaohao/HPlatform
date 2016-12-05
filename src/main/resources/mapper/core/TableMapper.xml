@@ -326,20 +326,23 @@
 		#{idList}
 		</foreach>
 	</delete>
+    <!--删除表-->
+    <update id="dropTable" parameterType="Table">
+        DROP TABLE IF EXISTS `${tableName}`
+    </update>
 	<!--创建表-->
 	<update id="createTable" parameterType="Table">
-		DROP TABLE IF EXISTS `#{tableName}`;
-		CREATE TABLE `#{tableName}` (
+		CREATE TABLE `${tableName}` (
 			`id` char(32) NOT NULL,
-			<foreach item="columnList" collection="columnList"
+			<foreach item="item" index="key" collection="columnList"
 					 open="" separator="" close="">
-			`#{columnList.columnName}` #{columnList.columnType} <if test="columnList.nullAble=='YES'">DEFAULT NULL</if><if test="columnList.nullAble=='NO'">NOT NULL</if> COMMENT '#{columnList.comments}',
+                `${item.columnName}` ${item.columnType} <if test="item.nullAble=='YES'">DEFAULT NULL</if><if test="item.nullAble=='NO'">NOT NULL</if> COMMENT '${item.comments}',
 			</foreach>
 			`create_user` char(32) DEFAULT NULL,
 			`create_date` datetime DEFAULT NULL,
 			`update_user` char(32) DEFAULT NULL,
 			`update_date` datetime DEFAULT NULL,
 			PRIMARY KEY (`id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 	</update>
 </mapper>

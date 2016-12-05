@@ -98,7 +98,7 @@
 					                <td>
 					                	<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
 											<shiro:hasPermission name="table:update">
-												<a class="green" href="${adminFullPath}/table/${table.id}/update" title="修改">
+												<a class="green" href="${adminFullPath}/table/${table.id}/viewform" title="修改">
 													<i class="ace-icon fa fa-pencil bigger-130"></i>
 												</a>
 						                    </shiro:hasPermission>
