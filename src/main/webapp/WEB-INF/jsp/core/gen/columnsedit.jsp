@@ -106,7 +106,8 @@
 													<input type="hidden" name="columnList[${stat.index}].columnType" value="${column.columnType}">
 													<input type="hidden" name="columnList[${stat.index}].columnLength" value="${column.columnLength}">
 													<input type="hidden" name="columnList[${stat.index}].dataType" value="${column.dataType}">
-													<input type="hidden" name="columnList[${stat.index}].columnKey" value="${columnKey}">
+                                                    <input type="hidden" name="columnList[${stat.index}].nullAble" value="${column.nullAble}">
+                                                    <input type="hidden" name="columnList[${stat.index}].columnKey" value="${columnKey}">
 												</td>
 												<td>${column.dataType}</td>
 												<td class="disabled">${column.columnType}</td>

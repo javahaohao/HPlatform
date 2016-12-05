@@ -178,6 +178,19 @@ public class TableController extends BaseController {
     @ResponseBody
     public String saveForm(Table table) throws CRUDException {
         tableService.saveFormProgramme(table);
-        return getAdminUrlPath("/table/form");
+        return "";
+    }
+
+    /**
+     * 保存自定义表单并且生成表单
+     * @param table
+     * @return
+     */
+    @RequiresPermissions("table:create")
+    @RequestMapping(value = "/form/creategen", method = RequestMethod.POST)
+    @ResponseBody
+    public String creatGen(Table table)throws CRUDException{
+        tableService.saveFormProgramme(table);
+        return "";
     }
 }

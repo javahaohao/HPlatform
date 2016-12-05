@@ -130,6 +130,10 @@ public class Constants {
     public final String ONE="1";
 	//zero
     public final String ZERO="0";
+	//YES
+	public final String YES="YES";
+	//NO
+	public final String NO="NO";
 
 
     
@@ -280,12 +284,16 @@ public class Constants {
 	public String getTALK_TYPE_GROUP() {
 		return TALK_TYPE_GROUP;
 	}
-
 	public String getONE() {
 		return ONE;
 	}
-
 	public String getZERO() {
 		return ZERO;
+	}
+	public String getYES() {
+		return YES;
+	}
+	public String getNO() {
+		return NO;
 	}
 }

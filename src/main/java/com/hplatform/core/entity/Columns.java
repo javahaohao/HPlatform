@@ -25,6 +25,7 @@ public class Columns extends BaseEntity<Columns>{
 	private String propertiesName;
 	private String propertiesType;
 	private String comments;
+	private String nullAble;
 	private boolean genFlag;
 	private boolean hideFlag;
 	private boolean sortFlag;
@@ -122,21 +123,23 @@ public class Columns extends BaseEntity<Columns>{
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-
 	public String getColumnKey() {
 		return columnKey;
 	}
-
 	public void setColumnKey(String columnKey) {
 		this.columnKey = columnKey;
 	}
-
 	public Integer getColumnLength() {
 		return columnLength;
 	}
-
 	public void setColumnLength(Integer columnLength) {
 		this.columnLength = columnLength;
+	}
+	public String getNullAble() {
+		return nullAble;
+	}
+	public void setNullAble(String nullAble) {
+		this.nullAble = nullAble;
 	}
 
 	/**

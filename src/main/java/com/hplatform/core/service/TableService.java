@@ -236,7 +236,6 @@ public class TableService extends BaseService<Table, TableMapper> {
 					c.setPropertiesType(ConstantsUtil.get().getMysqlDataType(c.getDataType()));
 				}
 				columnsService.editColumns(columns);
-				saveFormColumnsElements(columns);
 			}
 		} catch (CRUDException e) {
 			log.error(e);
@@ -244,21 +243,34 @@ public class TableService extends BaseService<Table, TableMapper> {
 		}
 	}
 
-	/**
-	 * 保存自定义表单标签属性配置以及校验配置
-	 * @param columnsList
-	 * @throws CRUDException
-	 */
-	public void saveFormColumnsElements(List<Columns> columnsList) throws CRUDException {
-		try {
-			for(Columns columns : columnsList){
-				elementService.saveTagElements(columns);
-				columnsService.saveColumnValidates(columns);
-			}
-		} catch (CRUDException e) {
-			log.error(e);
-			throw new CRUDException(e);
-		}
-	}
+    /**
+     * 生成自定义表单代码
+     * @param table
+     */
+	public void genForm(Table table) throws CRUDException {
+        try {
+            //创建表
+            createTable(table);
+            //生成代码
+            genCodeBatch(table);
+        } catch (Exception e) {
+            log.error(e);
+            throw new CRUDException(e);
+        }
+    }
+
+    /**
+     *  创建表
+     * @param table
+     * @throws CRUDException
+     */
+    public void createTable(Table table) throws CRUDException {
+        try {
+            m.createTable(table);
+        } catch (Exception e) {
+            log.error(e);
+            throw new CRUDException(e);
+        }
+    }
 	/**********自定义表单end*************/
 }

@@ -5,4 +5,9 @@ import com.hplatform.core.entity.Table;
 
 @MyBatisMapper
 public interface TableMapper extends BaseMapper<Table>{
+    /**
+     * 创建表
+     * @param table
+     */
+    public void createTable(Table table);
 }

@@ -9,6 +9,7 @@
 		column_length AS "columnLength",
 		column_key AS "columnKey",
 		data_type AS "dataType",
+		null_able AS "nullAble",
 		plugin AS "plugin",
 		properties_name AS "propertiesName",
 		properties_type AS "propertiesType",
@@ -32,6 +33,7 @@
 		<result column="column_type" property="columnType"/>
 		<result column="column_length" property="columnLength"/>
 		<result column="data_type" property="dataType"/>
+		<result column="null_able" property="nullAble"/>
 		<result column="plugin" property="plugin"/>
 		<result column="properties_name" property="propertiesName"/>
 		<result column="properties_type" property="propertiesType"/>
@@ -65,6 +67,7 @@
 			a.column_type,
 			a.column_length,
 			a.data_type,
+			a.null_able,
 			a.plugin,
 			a.properties_name,
 			a.properties_type,
@@ -236,6 +239,7 @@
 			column_length,
 			column_key,
 			data_type,
+			null_able,
 			plugin,
 			properties_name,
 			properties_type,
@@ -257,6 +261,7 @@
 			#{columnLength},
 			#{columnKey},
 			#{dataType},
+			#{nullAble},
 			#{plugin},
 			#{propertiesName},
 			#{propertiesType},
@@ -295,6 +300,9 @@
 		</if>
 		<if test="dataType !=null and dataType !=''">
 		data_type=#{dataType},
+		</if>
+		<if test="nullAble !=null and nullAble !=''">
+		null_able=#{nullAble},
 		</if>
 		<if test="plugin !=null and plugin !=''">
 		plugin=#{plugin},
@@ -361,6 +369,7 @@
 			c.DATA_TYPE as "dataType",
 			c.COLUMN_COMMENT as "comments",
 			c.COLUMN_KEY as "columnKey",
+			c.IS_NULLABLE as "nullAble",
 			c.CHARACTER_MAXIMUM_LENGTH as "columnLength"
 		from information_schema.COLUMNS c
 		where c.TABLE_SCHEMA='hp' and c.TABLE_NAME=#{tableName}

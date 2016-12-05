@@ -23,7 +23,7 @@
 			<div class="col-xs-12">
 				<div class="widget-box">
 					<div class="widget-header widget-header-blue widget-header-flat">
-						<h4 class="widget-title lighter">表单名称：[“${empty table.tableName?'表单名称':table.tableName}”]</h4>
+						<h4 class="widget-title lighter">表单名称：[“<span id="tabletext">${empty table.tableName?'表单名称':table.tableName}</span>”]</h4>
 					</div>
 
 					<div class="widget-body">
@@ -56,7 +56,7 @@
 							<!-- #section:plugins/fuelux.wizard.container -->
 							<div class="step-content pos-rel" id="step-container">
 								<div class="step-pane active" id="step1">
-									<form method="post" id="tabForm" action="" class="form-horizontal">
+									<form:form method="post" commandName="table" id="tabForm" action="" cssClass="form-horizontal">
 										<input type="hidden" name="id" value="${table.id}">
 										<input type="hidden" name="step" value="${table.step}">
 										<div class="form-group">
@@ -71,12 +71,12 @@
 											<label name="comments" class="control-label col-xs-12 col-sm-2 no-padding-right">描述:</label>
 											<div class="col-xs-12 col-sm-7">
 												<span class="block input-icon input-icon-right">
-													<textarea name="comments" class="width-100 required input-xlarge"title="描述必填">${table.comments}</textarea>
+                                                    <input name="comments" value="${table.comments}" class="width-100 required tablecomments">
 													<i class="ace-icon fa fa-info-circle"></i>
 												</span>
 											</div>
 										</div>
-									</form>
+									</form:form>
 								</div>
 
 								<div class="step-pane" id="step2">
@@ -96,6 +96,7 @@
 											<th>名称</th>
 											<th>数据类型</th>
 											<th>长度</th>
+											<th>可否为空</th>
 											<th>控件类型</th>
 											<th>控件设置</th>
 											<th>验证设置</th>
@@ -127,12 +128,18 @@
 									<i class="ace-icon fa fa-arrow-left"></i>
 									上一步
 								</button>
-
-								<button class="btn btn-success btn-next btn-sm" data-last="Finish" type="button">
+								<button class="btn btn-success btn-next btn-sm" data-last="完成" type="button" id="nextbtn">
 									下一步
 									<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 								</button>
-
+                                <button class="btn btn-success btn-next btn-sm hide" type="button" id="savebtn">
+                                    保存
+                                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                </button>
+                                <button class="btn btn-success btn-next btn-sm hide" type="button" id="saveandgenbtn">
+                                    保存并生成
+                                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                </button>
 								<!-- /section:plugins/fuelux.wizard.buttons -->
 							</div>
 
@@ -156,7 +163,12 @@
 					</c:forEach>
 				</select>
 			</td>
-			<td><input name="columnList[{{index}}].columnLength" value="{{column.columnLength}}" class="width-100 required">
+			<td><input name="columnList[{{index}}].columnLength" value="{{column.columnLength}}" class="width-100 required"></td>
+			<td>
+                <select name="columnList[{{index}}].nullAble" class="select2">
+                    <option value="YES" {{if column.nullAble=='${constants.YES}'}} checked="checked"{{/if}}>是</option>
+                    <option value="NO" {{if column.nullAble=='${constants.NO}'}} checked="checked"{{/if}}>否</option>
+                </select>
 			</td>
 			<td>
 				<select name="columnList[{{index}}].plugin" class="select2" style="min-width: 110px;" statindex="{{index}}" id="plugin{{index}}">
@@ -310,12 +322,36 @@
 					}
 				});
 			});
+            $('#savebtn').on('click',function(){
+                $.ajax({
+                    type: "POST",
+                    url: "${adminFullPath}/table/form/create",
+                    data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
+                    success: function(data){
+                        window.location='${adminFullPath}/table/form'
+                    }
+                });
+            });
+            $('#saveandgenbtn').on('click',function(){
+                var wizard = $('#fuelux-wizard').data('wizard');
+                //move to step 3
+                wizard.currentStep = 3;
+                wizard.setState();
+                $('#savebtn,#saveandgenbtn').hide();
+                $('#nextbtn').show();
 
-			$('#fuelux-wizard')
+            });
+            $('#fuelux-wizard')
 			.ace_wizard({
 				//step: 2 //optional argument. wizard will jump to step "2" at first
 			})
 			.on('change' , function(e, info){
+                $('#savebtn,#saveandgenbtn').hide();
+                $('#nextbtn').show();
+                if(info.step == 1||info.step == 3){
+                    $('#nextbtn').hide();
+                    $('#savebtn,#saveandgenbtn').removeClass('hide').show();
+                }
 				if(info.step == 1) {
 					if(!$('#tabForm').valid()) return false;
 				}
@@ -330,13 +366,7 @@
 				}
 			})
 			.on('finished', function(e) {
-				$.ajax({
-					type: "POST",
-					url: "${adminFullPath}/table/form/create",
-					data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
-					success: function(data){
-					}
-				});
+
 			}).on('stepclick', function(e){
 				//e.preventDefault();//this will prevent clicking and selecting steps
 			});
@@ -347,6 +377,9 @@
 			});
 
 			//绑定输入框改变事件
+            $(document).on('input propertychange','.tablecomments',function(){
+                $('#tabletext').text($(this).val());
+            });
 			$(document).on('input propertychange','.comments',function(){
 				$(this).closest('tr').attr('columnName',$(this).val());
 			});
