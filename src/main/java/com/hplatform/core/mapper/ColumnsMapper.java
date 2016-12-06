@@ -14,4 +14,5 @@ public interface ColumnsMapper extends BaseMapper<Columns>{
 	public void deleteColumnValidates(Columns columns);
 	public void deleteColumnElements(Columns columns);
 	public void saveColumnValidates(ColumnValidate columnValidate);
+	public void deleteColumnsByTable(Columns columns);
 }

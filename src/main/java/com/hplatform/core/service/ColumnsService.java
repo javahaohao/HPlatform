@@ -84,6 +84,19 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 			throw new CRUDException(e);
 		}
 	}
+
+	/**
+	 * 按照tableid删除列
+	 * @param columns
+	 */
+	public void deleteColumnsByTable(Columns columns) throws CRUDException {
+		try{
+			m.deleteColumnsByTable(columns);
+		}catch(Exception e){
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
 	/**
 	 * 修改生成列规则
 	 * @param columnList

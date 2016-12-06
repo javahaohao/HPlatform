@@ -68,7 +68,6 @@
 					        	<th class="center"><input type="checkbox" id="checkAll" class="ace"/><span class="lbl"></span></th>
 					        	<th>#</th>
 								<th>表名</th>
-								<th>父表名</th>
 					            <th>实体类名</th>
 					            <th>包路径</th>
 					            <th>备注</th>
@@ -83,7 +82,6 @@
 					            	<td class="center"><input name="idList" type="checkbox" class="ace" value="${table.id}" table-step="${table.step}" table-name="${table.tableName}" relation="$${table.relationType}"/><span class="lbl"></span></td>
 					            	<td>${stat.index+1}</td>
 					                <td>${table.tableName}</td>
-					                <td>${table.parent.tableName}</td>
 					                <td>${table.domainName}</td>
 					                <td>${table.pkg}</td>
 									<td>${table.comments}</td>
@@ -155,13 +153,13 @@
 				}
 				if(skipTable.length>0)
 					$.jBox.tip('亲！['+skipTable.join(',')+']不符合生成规则，系统自动跳过！', 'info');
-				window.location="${adminFullPath}/table/genCodeBatch?id="+result;
+				window.location="${adminFullPath}/table/form/"+result+"/genform";
 			});
 			//添加表格排序事件
 			$('#sortable').dataTable({
 				"aoColumns": [
 			      { "bSortable": false },
-			      { "bSortable": false }, null, null,null, null,{ "bSortable": false },null,null,
+			      { "bSortable": false }, null,null, null,{ "bSortable": false },null,null,
 				  { "bSortable": false }
 				],"aaSorting": []});
 			//添加表格全选事件

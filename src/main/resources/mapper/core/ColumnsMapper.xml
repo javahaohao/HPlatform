@@ -346,6 +346,9 @@
 	<delete id="deleteEntity" parameterType="Columns">
 		delete from gen_columns where id=#{id}
 	</delete>
+	<delete id="deleteColumnsByTable" parameterType="Columns">
+		delete from gen_columns where table_id=#{tableId}
+	</delete>
 	<delete id="deleteColumnValidates" parameterType="Columns">
 		delete from gen_column_validate where column_id=#{id}
 	</delete>

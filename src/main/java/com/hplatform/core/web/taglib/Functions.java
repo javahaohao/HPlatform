@@ -483,7 +483,7 @@ public class Functions {
 		}else if(ObjectUtils.isNotEmpty(object))
 			return JSONObject.fromObject(object,jsonconfig).toString();
 		else
-			return null;
+			return "{}";
 	}
 	
 	/**

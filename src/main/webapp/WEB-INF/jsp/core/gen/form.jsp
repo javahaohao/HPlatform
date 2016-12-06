@@ -104,6 +104,7 @@
 											<th>是否隐藏</th>
 											<th>是否排序</th>
 											<th>排序</th>
+											<th>操作</th>
 										</tr>
 										</thead>
 										<tbody>
@@ -152,9 +153,8 @@
 	</div><!-- /.page-content-area -->
 	<script id="trhtml" type="text/html">
 		{{length(column.columnValidates)}}
-		<tr id="tr-{{index}}" columnName="{{column.columnName||'属性'}}" class="proptr">
+		<tr id="tr-{{index}}" columnName="{{column.columnName||'属性'}}" class="proptr" json="{{json}}">
 			<td><input name="columnList[{{index}}].comments" value="{{column.comments}}" class="width-100 required comments">
-				<input type="hidden" name="columnList[{{index}}].id" value="{{column.id}}">
 			</td>
 			<td>
 				<select name="columnList[{{index}}].dataType" class="select2" style="min-width: 110px;">
@@ -206,6 +206,13 @@
 				</label>
 			</td>
 			<td class="center"><input type="text" class="width-100" name="columnList[{{index}}].sequence" value="{{(!!!column.sequence||column.sequence==0)?index*10:column.sequence}}"></td>
+			<td>
+				<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+					<a class="deleteBtn red" href="javascript:void(0)" title="删除">
+						<i class="ace-icon fa fa-minus bigger-130"></i>
+					</a>
+				</div>
+			</td>
 			<td class="disabled" id="columnTag-{{index}}">
 				<div id="elements"></div>
 				<div id="validates"></div>
@@ -328,14 +335,14 @@
                 });
             });
             $('#saveandgenbtn').on('click',function(){
-                var wizard = $('#fuelux-wizard').data('wizard');
-                //move to step 3
-                wizard.currentStep = 3;
-                wizard.setState();
-                $('#savebtn,#saveandgenbtn').hide();
-                $('#nextbtn').show();
                 sub("${adminFullPath}/table/form/creategen",function(){
-                    alert('生成成功');
+					var wizard = $('#fuelux-wizard').data('wizard');
+					//move to step 3
+					wizard.currentStep = 3;
+					wizard.setState();
+					$('#savebtn,#saveandgenbtn').hide();
+					$('#nextbtn').show();
+					alert('生成成功');
                 });
 
             });
@@ -382,24 +389,41 @@
 			$(document).on('input propertychange','.comments',function(){
 				$(this).closest('tr').attr('columnName',$(this).val());
 			});
+			//删除行
+			$(document).on('click','.deleteBtn',function(){
+				$(this).closest('tr').remove();
+				repairedSubIndex();
+			});
 			init();
 		});
         function sub(url,fun){
-            if($('#tabForm').valid()&&$('#subForm').valid())
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
-                    success: function(data){
-                        if(!!fun)fun.call(this,this);
-                    }
-                });
+            if(!$('#tabForm').valid()||!$('#subForm').valid())return false;
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: $("#tabForm").serialize()+'&'+$("#subForm").serialize(),
+				success: function(data){
+					if(!!fun)fun.call(this,this);
+				}
+			});
         }
+        //初始化数据
 		function init(){
-			var columns = eval((${elfn:toJSON(columnsList)}))||[],htmlArray=[];
-			for(var i=0;i<columns.length;i++)
-				htmlArray.push(template('trhtml', {column:columns[i],index:i}));
+			var columns = eval((${elfn:toJSON(columnsList)}))||[],htmlArray=[],dcs=eval((${elfn:toJSON(dcs)}))||[],count=0;
+			for(var i=0;i<columns.length;i++) {
+				if($.inArray(columns[i]['columnName'],dcs)<0)
+					htmlArray.push(template('trhtml', {column: columns[i], index: count++, json: JSON.stringify(columns[i])}));
+			}
 			//初始化属性定义
+			$('#proptable > tbody').html(htmlArray.join(''));
+		}
+		//修复需要提交的数据索引
+		function repairedSubIndex(){
+			var htmlArray = [];
+			$('#proptable > tbody > tr').each(function(i){
+				var self = $(this),json = $(this).attr('json');
+				htmlArray.push(template('trhtml', {column:JSON.parse(json),index:i,json:json}));
+			});
 			$('#proptable > tbody').html(htmlArray.join(''));
 		}
 		function showSettingElementDialog(statindex){

@@ -175,6 +175,7 @@ public class TableController extends BaseController {
         Table table = null;
         model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
         model.addAttribute("table",table=tableService.findOne(new Table(columns.getTableId())));
+        model.addAttribute("dcs",ColumnsConstants.dcs);
 
         formcommon(model,table);
         return TableConstants.FORM;
@@ -195,6 +196,24 @@ public class TableController extends BaseController {
     }
 
     /**
+     * 生成表单
+     * @param table
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:create")
+    @RequestMapping(value = "/form/{id}/genform", method = RequestMethod.GET)
+    public String genform(Table table)throws CRUDException{
+        String[] idarray = table.getId().split(",");
+        for(String id : idarray){
+            table.setId(id);
+            table.setGenType(ConstantsUtil.get().getZERO());
+            table = tableService.findOne(table);
+            tableService.genForm(table);
+        }
+        return getAdminUrlPath("/table/form");
+    }
+    /**
      * 保存自定义表单并且生成表单
      * @param table
      * @return
@@ -203,6 +222,7 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/form/creategen", method = RequestMethod.POST)
     @ResponseBody
     public String creatGen(Table table)throws CRUDException{
+        tableService.saveFormProgramme(table);
         tableService.genForm(table);
         return "";
     }

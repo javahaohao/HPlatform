@@ -16,6 +16,20 @@ import java.util.List;
 @Service
 public class ElementService extends BaseService<Element, ElementMapper> {
 	/**
+	 * 查询所有标签元素
+	 * @param element
+	 * @return
+	 * @throws CRUDException
+	 */
+	public List<Element> findAll(Element element) throws CRUDException {
+		try {
+			return m.findAll(element);
+		}catch (Exception e){
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
+	/**
 	 * 定义标签元素
 	 * @param tags
 	 * @throws CRUDException 

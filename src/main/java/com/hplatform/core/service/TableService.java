@@ -4,6 +4,7 @@ import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.util.ConstantsUtil;
 import com.hplatform.core.common.util.FreeMarkerUtil;
 import com.hplatform.core.common.util.PingYinUtil;
+import com.hplatform.core.constants.ColumnsConstants;
 import com.hplatform.core.constants.TableConstants;
 import com.hplatform.core.entity.Columns;
 import com.hplatform.core.entity.Table;
@@ -226,17 +227,25 @@ public class TableService extends BaseService<Table, TableMapper> {
 		try {
 			List<Columns> columns = table.getColumnList();
 			if(CollectionUtils.isNotEmpty(columns)){
+				columns.addAll(ColumnsConstants.defaultsColumns);
 				String comments = null;
 				for(Columns c : columns){
 					comments =PingYinUtil.getFirstSpell(c.getComments());
 					c.setTableId(table.getId());
-					c.setColumnName(comments);
+					if(StringUtils.isEmpty(c.getColumnName()))
+						c.setColumnName(comments);
 					if(c.getColumnLength()!=null)
 						c.setColumnType(String.format("%s(%s)",c.getDataType(),c.getColumnLength()));
 					else
 						c.setColumnType(c.getDataType());
 					c.setPropertiesName(com.hplatform.core.common.util.StringUtils.getHumpStr(c.getColumnName()));
 					c.setPropertiesType(ConstantsUtil.get().getMysqlDataType(c.getDataType()));
+				}
+				//全删全增维护列，方便前台维护
+				if(StringUtils.isNotBlank(table.getId())){
+					Columns delete = new Columns();
+					delete.setTableId(table.getId());
+					columnsService.deleteColumnsByTable(delete);
 				}
 				columnsService.editColumns(columns);
 			}
@@ -252,7 +261,6 @@ public class TableService extends BaseService<Table, TableMapper> {
      */
 	public void genForm(Table table) throws CRUDException {
         try {
-            saveFormProgramme(table);
 			//删除表
 			dropTable(table);
             //创建表
