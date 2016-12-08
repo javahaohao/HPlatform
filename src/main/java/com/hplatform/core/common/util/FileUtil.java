@@ -121,6 +121,25 @@ public class FileUtil {
         writer.write(value);
         writer.close();
 	}
+
+	/**
+	 * 遍历指定文件夹下的文件名并用关键字连接起来
+	 * @param path
+	 * @param join
+	 * @return
+	 */
+	public static String joinFilName(String path,String join){
+		StringBuffer sb = new StringBuffer();
+		File files = new File(path);
+		String[] filess = files.list();
+		//遍历要导入引入的包
+		for (int i = 0; i < filess.length; i++) {
+			sb.append(path);
+			sb.append(filess[i]);
+			sb.append(join);
+		}
+		return sb.toString();
+	}
 	/**
      * 获取工程路径
      * @return
@@ -148,6 +167,19 @@ public class FileUtil {
 		}
 		return projectPath;
     }
+
+	/**
+	 * 获取项目的编译路径
+	 * @return
+	 */
+	public static String getProjectClassPath(){
+		try {
+			return new DefaultResourceLoader().getResource("").getFile().getPath();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	/**
 	 * 删除指定路径下面所有文件
@@ -236,10 +268,10 @@ public class FileUtil {
 	public static final String CLASSPATH="classpath";
 	/**
 	 * 读取properties文件
-	 * @param path读取路径
-	 * @param readType读取方式：NETWORK是通过http://..方式读取，LOCAL是通过本地读取
-	 * @param readKey要获得指定key对应的值
-	 * @param defaultValue如果key对应的值不存在获取的默认值
+	 * @param path 读取路径
+	 * @param readType 读取方式：NETWORK是通过http://..方式读取，LOCAL是通过本地读取
+	 * @param readKey 要获得指定key对应的值
+	 * @param defaultValue 如果key对应的值不存在获取的默认值
 	 * @return
 	 */
 	public static String readProperties(String path,String readType,String readKey,String defaultValue){
@@ -292,7 +324,7 @@ public class FileUtil {
 	}
 	/**
 	 * 根据输入输出流进行输出
-	 * @param in
+	 * @param attachment
 	 * @param out
 	 */
 	public static void directOutput(Attachment attachment, OutputStream out){
@@ -435,7 +467,7 @@ public class FileUtil {
 	}
 	/**
 	 * 按照文件的完整路径进行文件下载
-	 * @param path
+	 * @param attachment
 	 * @return
 	 * @throws Exception
 	 */
@@ -498,7 +530,7 @@ public class FileUtil {
 	/**
 	 * 下载文件
 	 * @param path
-	 * @param multipartFile
+	 * @param name
 	 * @return
 	 * @throws Exception
 	 */
@@ -650,9 +682,7 @@ public class FileUtil {
 	}
 	/**
 	 * 生成attachment对象
-	 * @param originalFileName
-	 * @param size
-	 * @param type
+	 * @param param
 	 * String originalFileName,long size,String type,String md5
 	 * @return
 	 */
@@ -694,7 +724,8 @@ public class FileUtil {
 		return upload(inputName, datePathUtil().toString());
 	}
 	/**此方法在此系统未测试成功
-	 * @param request
+	 * @param inputName
+	 * @param fileuploadPath
 	 * @throws IOException
 	 * 上传文件
 	 * Author:pangwx
@@ -723,7 +754,8 @@ public class FileUtil {
 	}
 	/**
 	 * 按照MultipartFile上传文件
-	 * @param file
+	 * @param attachment
+	 * @param multipartFile
 	 * @return
 	 * @throws CRUDException
 	 */
@@ -740,7 +772,6 @@ public class FileUtil {
 	}
 	/**
 	 * 按照时间获取上传文件路径
-	 * @param pathBuffer
 	 */
 	public static StringBuffer datePathUtil(){
 		//拼成完整的文件保存路径加文件    
@@ -793,8 +824,7 @@ public class FileUtil {
     	/**
          * 分片验证
          * 验证对应分片文件是否存在，大小是否吻合
-         * @param file  分片文件的路径
-         * @param size  分片文件的大小
+         * @param attachment
          * @return
          */
         public boolean chunkCheck(Attachment attachment){
@@ -813,11 +843,13 @@ public class FileUtil {
          *  > 合并: NIO
          *  > 并发锁: 避免多线程同时触发合并操作
          *  > 清理: 合并清理不再需要的分片文件、文件夹、tmp文件
-         * @param folder    分片文件所在的文件夹名称
-         * @param ext       合并后的文件后缀名
-         * @param chunks    分片总数
-         * @param md5       文件签名
-         * @param path      合并后的文件所存储的位置
+         * @param attachment:{
+		 *     folder    分片文件所在的文件夹名称
+		 * 		ext       合并后的文件后缀名
+		 * 		chunks    分片总数
+		 * 		md5       文件签名
+		 * 		path      合并后的文件所存储的位置
+		 * }
          * String folder, String ext, int chunks, String md5,String type, String path
          * @return
          */

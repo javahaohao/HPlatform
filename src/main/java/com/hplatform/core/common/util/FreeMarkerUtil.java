@@ -17,10 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FreeMarkerUtil {
     private final transient Log log = LogFactory.getLog(FreeMarkerUtil.class);
@@ -142,27 +139,36 @@ public class FreeMarkerUtil {
                 add("createUser");
                 add("updateUser");
             }});
-			Map<String, String> tmpMap = new HashMap<String, String>();
-			tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", table.getBumodel(), table.getDomainName())
-					, String.format("%smappersql.ftl", genTypeMaps.get(table.getRelationType())));
+			Map<String, String> tmpMap = new LinkedHashMap<String, String>();
+			tmpMap.put(String.format("src/main/java/%s/%s/entity/%s.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, String.format("%sdomain.ftl", genTypeMaps.get(table.getRelationType())));
 			tmpMap.put(String.format("src/main/java/%s/%s/mapper/%sMapper.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
 					, "mapper.ftl");
 			tmpMap.put(String.format("src/main/java/%s/%s/service/%sService.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
 					, "service.ftl");
-			tmpMap.put(String.format("src/main/java/%s/%s/web/controller/%sController.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
-					, String.format("%scontroller%s.ftl", genTypeMaps.get(table.getRelationType()), fgTypeMaps.get(table.getFgType())));
-			tmpMap.put(String.format("src/main/java/%s/%s/entity/%s.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
-					, String.format("%sdomain.ftl", genTypeMaps.get(table.getRelationType())));
 			tmpMap.put(String.format("src/main/java/%s/%s/constants/%sConstants.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
 					, "constants.ftl");
+			tmpMap.put(String.format("src/main/java/%s/%s/web/controller/%sController.java", table.getSplitPkg(), table.getBumodel(), table.getDomainName())
+					, String.format("%scontroller%s.ftl", genTypeMaps.get(table.getRelationType()), fgTypeMaps.get(table.getFgType())));
+			tmpMap.put(String.format("src/main/resources/mapper/%s/%sMapper.xml", table.getBumodel(), table.getDomainName())
+					, String.format("%smappersql.ftl", genTypeMaps.get(table.getRelationType())));
 			tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/list.jsp", table.getBumodel(), StringUtils.lowerCase(table.getDomainName()))
 					, String.format("%slist%s.ftl", genTypeMaps.get(table.getRelationType()), fgTypeMaps.get(table.getFgType())));
 			tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/edit.jsp", table.getBumodel(), StringUtils.lowerCase(table.getDomainName()))
 					, String.format("%sedit.ftl", genTypeMaps.get(table.getRelationType())));
+
+			List<File> sourceJava = new LinkedList<File>();
+			String fileName = null;
 			for (String tmp : tmpMap.keySet()) {
-				FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+				FileUtil.printTxtToFile(fileName=StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 //			FileUtil.printTxtToFile(StringUtils.join("f:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+
+				if(tmp.indexOf(".java")>0){
+					sourceJava.add(new File(fileName));
+				}
 			}
+			//生成java编译类
+			DynamicCompileUtil.compileJavaCode(sourceJava.toArray(new File[]{}));
 			//更新表为已经生成代码状态
 			SpringUtils.getBean(TableService.class).updateGenComplete(table.getId());
 		}
