@@ -30,7 +30,7 @@ public class DynamicCompileUtil {
                         "-encoding","UTF-8",
                         "-classpath",catalinaJars+classpathJars,
                         "-sourcepath", FileUtil.getProjectPath()+"\\src\\main\\java",
-                        "-d","G:\\compile"), null, it);
+                        "-d",FileUtil.getProjectClassPath()), null, it);
         //执行编译
         task.call();
         try {
