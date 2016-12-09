@@ -478,7 +478,7 @@ public class Functions {
 	public static String toJSON(Object object){
 		JsonConfig jsonconfig = new JsonConfig();
 		jsonconfig.setExcludes(new String[]{"file"});//除去file属性
-		if(ObjectUtils.isNotEmpty(object)&&object instanceof Collection){
+    		if(ObjectUtils.isNotEmpty(object)&&object instanceof Collection){
 			return JSONArray.fromObject(object,jsonconfig).toString();
 		}else if(ObjectUtils.isNotEmpty(object))
 			return JSONObject.fromObject(object,jsonconfig).toString();

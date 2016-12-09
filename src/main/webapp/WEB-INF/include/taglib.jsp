@@ -4,11 +4,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="elfn" uri="/WEB-INF/tld/eltags.tld" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags/"%>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
-<c:set var="adminFullPath" value="${contextPath}${elfn:getAdminPath()}"></c:set>
-<c:set var="siteFullPath" value="${contextPath}${elfn:getSitePath()}"></c:set>
-<c:set var="plugins" value="${elfn:getPlugins()}"></c:set>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="adminFullPath" value="${contextPath}${elfn:getAdminPath()}"/>
+<c:set var="siteFullPath" value="${contextPath}${elfn:getSitePath()}"/>
+<c:set var="plugins" value="${elfn:getPlugins()}"/>
 <%
 	request.setAttribute("constants", com.hplatform.core.common.util.ConstantsUtil.get());
 %>

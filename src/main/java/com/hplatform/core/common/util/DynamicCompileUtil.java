@@ -19,16 +19,18 @@ public class DynamicCompileUtil {
         StandardJavaFileManager javaFileManager=javaCompiler.getStandardFileManager(null, null, null);
         //3.文件管理器根与文件连接起来
         Iterable it=javaFileManager.getJavaFileObjects(sourceFiles);
-        String dependsJars = FileUtil.joinFilName(new File(FileUtil.getProjectClassPath()).getParent()+"\\lib\\",";");
-        System.out.println(dependsJars);
-        System.out.println(FileUtil.getProjectPath());
+//        String dependsJars = FileUtil.joinFilName(new File(FileUtil.getProjectClassPath()).getParent()+"\\lib\\",";");
+        String catalinaJars = FileUtil.joinFilName(System.getProperty("catalina.home")+"\\lib\\",";");
+        String classpathJars = FileUtil.joinFilName(new File(FileUtil.getProjectClassPath()).getParent()+"\\lib\\",";");
+        System.out.println(catalinaJars);
+        System.out.println(classpathJars);
         //4.创建编译的任务
         JavaCompiler.CompilationTask task=javaCompiler.getTask(null,
                 javaFileManager,null, Arrays.asList(
                         "-encoding","UTF-8",
-                        "-classpath",dependsJars,
+                        "-classpath",catalinaJars+classpathJars,
                         "-sourcepath", FileUtil.getProjectPath()+"\\src\\main\\java",
-                        "-d",FileUtil.getProjectClassPath()), null, it);
+                        "-d","G:\\compile"), null, it);
         //执行编译
         task.call();
         try {

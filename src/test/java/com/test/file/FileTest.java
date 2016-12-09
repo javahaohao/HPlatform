@@ -17,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class FileTest {
     @Test
     public void test(){
-        DynamicCompileUtil.compileJavaCode(null);
+//        DynamicCompileUtil.compileJavaCode(null);
+        System.out.println(System.getProperty("java.class.path"));
     }
 }
