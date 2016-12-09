@@ -28,8 +28,7 @@ public class DynamicCompileUtil {
         JavaCompiler.CompilationTask task=javaCompiler.getTask(null,
                 javaFileManager,null, Arrays.asList(
                         "-encoding","UTF-8",
-                        "-classpath",catalinaJars+classpathJars,
-                        "-sourcepath", FileUtil.getProjectPath()+"\\src\\main\\java",
+                        "-classpath",catalinaJars+classpathJars+FileUtil.getProjectPath()+"\\src\\main\\java",
                         "-d",FileUtil.getProjectClassPath()), null, it);
         //执行编译
         task.call();

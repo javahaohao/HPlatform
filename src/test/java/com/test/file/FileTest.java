@@ -8,6 +8,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.File;
+
 /**
  * Created by Administrator on 2016/12/8.
  */
@@ -17,7 +19,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class FileTest {
     @Test
     public void test(){
-//        DynamicCompileUtil.compileJavaCode(null);
-        System.out.println(System.getProperty("java.class.path"));
+        File[] files = new File[]{new File("F:\\platform\\HPlatform\\src\\test\\java\\com\\test\\file\\CompileHello.java")};
+        DynamicCompileUtil.compileJavaCode(files);
+//        System.out.println(System.getProperty("java.class.path"));
     }
 }
