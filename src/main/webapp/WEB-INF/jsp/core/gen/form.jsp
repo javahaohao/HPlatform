@@ -237,7 +237,7 @@
 								<td>
 									<input type="text" name="columnList[{{index}}].columnElements[${statu.index}].elementValue" value="${element.defaultVal}" mustrequired="${element.required}" statindex="{{index}}" class="width-100">
 								</td>
-								<td>${empty element.description?'暂无':element.description}</td>
+								<td>{{!!!element.description?'暂无':element.description}}</td>
 							</tr>
 						</c:forEach>
 						{{/if}}

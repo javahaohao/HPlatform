@@ -1,6 +1,7 @@
 package com.hplatform.core.web.taglib;
 
 import cn.org.rapid_framework.util.ObjectUtils;
+import com.hplatform.core.common.spring.SpringUtils;
 import com.hplatform.core.common.util.*;
 import com.hplatform.core.constants.ColumnsConstants;
 import com.hplatform.core.constants.Constants;
@@ -11,7 +12,6 @@ import com.hplatform.core.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +31,7 @@ public class Functions {
                 put(ColumnsConstants.COLUMN_KEYS_PRI
                         ,new GenColumnVo(ColumnsConstants.COLUMN_KEYS_PRI
                                 ,TagsConstants.DEFAULT_HIDDEN_TAGS_MVCHIDDEN
-                                ,SpringUtils.getBean(ElementService.class).findAll(element))
+                                , SpringUtils.getBean(ElementService.class).findAll(element))
                 );
                 element.setTagId(TagsConstants.DEFAULT_FOREIGNKEY_TAGS_MVCSELECT);
                 //外键默认标签配置
@@ -53,6 +53,13 @@ public class Functions {
         }
     };
 
+    /**
+     * 获取所有默认标签映射
+     * @return
+     */
+    public static Map<String,GenColumnVo> getDefaultColumTagMap(){
+        return defaultColumTagMap;
+    }
     /**
      * 获取代码生成器列的默认选中标签
      * @param columnKey

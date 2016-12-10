@@ -14,6 +14,7 @@ package com.hplatform.core.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hplatform.core.common.spring.SpringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.CronTrigger;

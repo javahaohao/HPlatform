@@ -1,6 +1,7 @@
 package com.hplatform.core.common.util;
 
 
+import com.hplatform.core.common.spring.SpringUtils;
 import org.apache.shiro.cache.Cache;
 
 import com.hplatform.core.common.cache.SpringCacheManagerWrapper;

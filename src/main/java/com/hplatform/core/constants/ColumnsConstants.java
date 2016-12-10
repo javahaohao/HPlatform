@@ -1,7 +1,7 @@
 package com.hplatform.core.constants;
 
 import com.hplatform.core.common.util.ConstantsUtil;
-import com.hplatform.core.common.util.SpringUtils;
+import com.hplatform.core.common.spring.SpringUtils;
 import com.hplatform.core.common.util.StringUtils;
 import com.hplatform.core.entity.ColumnElement;
 import com.hplatform.core.entity.Columns;

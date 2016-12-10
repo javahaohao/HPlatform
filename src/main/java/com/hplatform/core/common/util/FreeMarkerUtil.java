@@ -3,7 +3,7 @@ package com.hplatform.core.common.util;
 import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.freemarkertmp.IsELFun;
 import com.hplatform.core.common.freemarkertmp.TrimELFun;
-import com.hplatform.core.constants.TableConstants;
+import com.hplatform.core.common.spring.SpringUtils;
 import com.hplatform.core.entity.Table;
 import com.hplatform.core.service.TableService;
 import freemarker.template.Configuration;
@@ -157,18 +157,18 @@ public class FreeMarkerUtil {
 			tmpMap.put(String.format("src/main/webapp/WEB-INF/jsp/%s/%s/edit.jsp", table.getBumodel(), StringUtils.lowerCase(table.getDomainName()))
 					, String.format("%sedit.ftl", genTypeMaps.get(table.getRelationType())));
 
-			List<File> sourceJava = new LinkedList<File>();
-			String fileName = null;
+//			List<File> sourceJava = new LinkedList<File>();
+//			String fileName = null;
 			for (String tmp : tmpMap.keySet()) {
-				FileUtil.printTxtToFile(fileName=StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
+				FileUtil.printTxtToFile(StringUtils.join(FileUtil.getProjectPath(), File.separator, tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 //			FileUtil.printTxtToFile(StringUtils.join("f:/gen",File.separator,tmp), FreeMarkerUtil.getInstance().getHtmlString(tmpMap.get(tmp), map));
 
-				if(tmp.indexOf(".java")>0){
-					sourceJava.add(new File(fileName));
-				}
+//				if(tmp.indexOf(".java")>0){
+//					sourceJava.add(new File(fileName));
+//				}
 			}
 			//生成java编译类
-			DynamicCompileUtil.compileJavaCode(sourceJava.toArray(new File[]{}));
+//			DynamicCompileUtil.compileJavaCode(sourceJava.toArray(new File[]{}));
 			//更新表为已经生成代码状态
 			SpringUtils.getBean(TableService.class).updateGenComplete(table.getId());
 		}

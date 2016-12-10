@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.hplatform.core.common.cache.SpringCacheManagerWrapper;
 import com.hplatform.core.common.captcha.CaptchaException;
 import com.hplatform.core.common.util.ConstantsUtil;
-import com.hplatform.core.common.util.SpringUtils;
+import com.hplatform.core.common.spring.SpringUtils;
 import com.hplatform.core.common.util.UserUtil;
 import com.hplatform.core.constants.Constants;
 import com.hplatform.core.exception.ActivationAccountException;

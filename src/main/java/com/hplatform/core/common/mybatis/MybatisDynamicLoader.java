@@ -1,4 +1,4 @@
-package com.hplatform.core.common.util;
+package com.hplatform.core.common.mybatis;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -11,10 +11,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.hplatform.core.entity.BaseEntity;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.TypeAliasRegistry;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -27,9 +29,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.StringUtils;
 
-import com.hplatform.core.common.mybatis.BasePackageMapperScannerConfigurer;
-
-public class MybatisMapperDynamicLoader implements DisposableBean, InitializingBean, ApplicationContextAware {
+public class MybatisDynamicLoader implements DisposableBean, InitializingBean, ApplicationContextAware {
 
 	private ConfigurableApplicationContext context = null;
 	private transient String basePackage = null;
@@ -37,7 +37,19 @@ public class MybatisMapperDynamicLoader implements DisposableBean, InitializingB
 	private Scanner scanner = null;
 	private ScheduledExecutorService service = null;
     private final List<String> changeMapers = new ArrayList<String>();
+	private Configuration configuration;
+	private SqlSessionFactory sqlSessionFactory;
 
+	public Configuration getConfiguration(){
+		if(null==configuration)
+			configuration = getSqlSessionFactory().getConfiguration();
+		return configuration;
+	}
+	public SqlSessionFactory getSqlSessionFactory(){
+		if(null==sqlSessionFactory)
+			sqlSessionFactory = context.getBean(SqlSessionFactory.class);
+		return sqlSessionFactory;
+	}
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.context = (ConfigurableApplicationContext) applicationContext;
@@ -85,7 +97,7 @@ public class MybatisMapperDynamicLoader implements DisposableBean, InitializingB
 		private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 		public Scanner() {
-			basePackages = StringUtils.tokenizeToStringArray(MybatisMapperDynamicLoader.this.basePackage,
+			basePackages = StringUtils.tokenizeToStringArray(MybatisDynamicLoader.this.basePackage,
 					ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
 		}
 
@@ -98,10 +110,8 @@ public class MybatisMapperDynamicLoader implements DisposableBean, InitializingB
 		}
 
 		public void reloadXML() throws Exception {
-			SqlSessionFactory factory = context.getBean(SqlSessionFactory.class);
-			Configuration configuration = factory.getConfiguration();
 			// 移除加载项
-			removeConfig(configuration);
+			removeConfig(getConfiguration());
 			// 重新扫描加载
 			for (String basePackage : basePackages) {
 				Resource[] resources = getResource(basePackage, XML_RESOURCE_PATTERN);
@@ -112,7 +122,7 @@ public class MybatisMapperDynamicLoader implements DisposableBean, InitializingB
 						}
 						try {
 							XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(resources[i].getInputStream(),
-									configuration, resources[i].toString(), configuration.getSqlFragments());
+									getConfiguration(), resources[i].toString(), getConfiguration().getSqlFragments());
 							xmlMapperBuilder.parse();
 						} catch (Exception e) {
 							throw new NestedIOException("Failed to parse mapping resource: '" + resources[i] + "'", e);
@@ -200,5 +210,23 @@ public class MybatisMapperDynamicLoader implements DisposableBean, InitializingB
 		if (service != null) {
 			service.shutdownNow();
 		}
+	}
+
+	/**
+	 * 按照扫描路径注册实体类别名
+	 * @param packageToScan
+	 */
+	public void registTypeAliases(String packageToScan){
+		TypeAliasRegistry aliasRegistry = getConfiguration().getTypeAliasRegistry();
+		aliasRegistry.registerAlias(packageToScan, BaseEntity.class);
+	}
+
+	/**
+	 * 按照类型注册实体类名(该种方式注册的别名是小写的别名，这也许是mybatis的bug)
+	 * @param type
+	 */
+	public void registTypeAliases(Class<?> type){
+		TypeAliasRegistry aliasRegistry = getConfiguration().getTypeAliasRegistry();
+		aliasRegistry.registerAlias(type.getSimpleName(),type);
 	}
 }

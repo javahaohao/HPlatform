@@ -4,6 +4,8 @@ import com.hplatform.core.constants.ColumnsConstants;
 import com.hplatform.core.constants.TagsConstants;
 import com.hplatform.core.entity.Element;
 import com.hplatform.core.service.ElementService;
+import com.hplatform.core.web.taglib.Functions;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -91,21 +93,41 @@ public class TableController extends BaseController {
 		model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
 		model.addAttribute("table",tableService.findOne(new Table(columns.getTableId())));
 
-        model.addAttribute("FK", ColumnsConstants.COLUMN_KEYS_FK);
+        model.addAttribute("defaultColumTagMap", Functions.getDefaultColumTagMap());
 		model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
         return TableConstants.COLUMN_EDIT;
     }
 	@RequiresPermissions("table:create")
     @RequestMapping(value = "/editColumns", method = RequestMethod.POST)
+    @ResponseBody
     public String editColumns(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
         if(TableConstants.GEN_STEP_TWO!=table.getStep()){
             table.setStep(TableConstants.GEN_STEP_TWO);
             table.setGenFlag(true);
-            tableService.update(table);
+        }
+        if(StringUtils.isNotBlank(table.getId())){
+            update(table,redirectAttributes);
+        }else{
+            create(table,redirectAttributes);
         }
 		columnsService.editColumns(table.getColumnList());
-        redirectAttributes.addFlashAttribute("msg", "规则保存成功！");
-        return getAdminUrlPath("/table");
+        return "规则保存成功！";
+    }
+
+    /**
+     * 保存并生成
+     * @param table
+     * @param redirectAttributes
+     * @return
+     * @throws Exception
+     */
+    @RequiresPermissions("table:create")
+    @RequestMapping(value = "/saveAndGen", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveAndGen(Table table, RedirectAttributes redirectAttributes) throws Exception {
+        editColumns(table,redirectAttributes);
+        genCodeBatch(table,redirectAttributes);
+        return "规则保存成功！";
     }
 	/**
 	 * 批量代码生成

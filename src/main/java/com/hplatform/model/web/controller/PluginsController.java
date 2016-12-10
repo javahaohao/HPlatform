@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.hplatform.core.common.util.SpringUtils;
+import com.hplatform.core.common.spring.SpringUtils;
 import com.hplatform.core.entity.Attachment;
 import com.hplatform.core.service.AttachmentService;
 import com.hplatform.core.web.controller.BaseController;

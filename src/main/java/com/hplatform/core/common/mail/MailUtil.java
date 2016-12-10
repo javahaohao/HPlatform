@@ -36,7 +36,7 @@ import cn.org.rapid_framework.util.ObjectUtils;
 import com.hplatform.core.common.util.ConstantsUtil;
 import com.hplatform.core.common.util.FileUtil;
 import com.hplatform.core.common.util.IDUtil;
-import com.hplatform.core.common.util.SpringUtils;
+import com.hplatform.core.common.spring.SpringUtils;
 import com.hplatform.core.common.util.UserUtil;
 import com.hplatform.core.entity.Attachment;
 import com.hplatform.core.entity.Mail;

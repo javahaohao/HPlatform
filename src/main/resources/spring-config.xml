@@ -105,7 +105,7 @@
 	</aop:config>
 
 	<!-- scan  mappers and let them be autowired -->
-	<bean class="com.hplatform.core.common.mybatis.BasePackageMapperScannerConfigurer">      
+	<bean class="com.hplatform.core.common.mybatis.BasePackageMapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>   
 		<property name="basePackage" value="com.hplatform.**.mapper" />
 		<property name="annotationClass" value="com.hplatform.core.common.annotation.MyBatisMapper"/>
@@ -135,10 +135,10 @@
         <aop:advisor id="txAdvisor" advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config> -->
 
-    <bean class="com.hplatform.core.common.util.SpringUtils"/>
+    <bean class="com.hplatform.core.common.spring.SpringUtils"/>
 
     <!-- <import resource="classpath:spring-config-cache.xml"/>
     <import resource="classpath:spring-config-shiro.xml"/>
     <import resource="classpath:spring-config-quartz.xml"/> -->
-    <bean class="com.hplatform.core.common.util.MybatisMapperDynamicLoader"></bean>
+    <bean class="com.hplatform.core.common.mybatis.MybatisDynamicLoader"></bean>
 </beans>
