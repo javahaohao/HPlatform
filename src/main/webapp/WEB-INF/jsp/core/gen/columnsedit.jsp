@@ -226,7 +226,7 @@
 
 								<div class="step-pane ${table.step==3?'active':''}" id="step3">
 									<div class="center">
-										<h3 class="blue lighter">代码生成成功！</h3>
+										<h3 class="blue lighter">方案配置成功！</h3>
 									</div>
 								</div>
 							</div>
