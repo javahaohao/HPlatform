@@ -110,12 +110,7 @@
 									</td>
 					                <td>
 					                	<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-											<shiro:hasPermission name="table:update">
-												<a class="green" href="${adminFullPath}/table/${table.id}/update" title="修改">
-													<i class="ace-icon fa fa-pencil bigger-130"></i>
-												</a>
-						                    </shiro:hasPermission>
-						                    <shiro:hasPermission name="table:view">
+						                    <shiro:hasPermission name="table:update">
 												<a class="blue" href="${adminFullPath}/table/${table.id}/viewColumn" title="定义">
 													<i class="ace-icon fa fa-fire bigger-130"></i>
 												</a>
@@ -139,7 +134,7 @@
 	<script type="text/javascript">
 		$(function(){
 			$('#btnAdd').on('click',function(){
-				window.location="${adminFullPath}/table/add";
+				window.location="${adminFullPath}/table/create/viewColumn";
 			});
 			$(".deleteBtn").click(function() {
 				var self = this;

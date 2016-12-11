@@ -180,6 +180,18 @@ public class TableService extends BaseService<Table, TableMapper> {
 			throw new CRUDException(e);
 		}
 	}
+	/**
+	 * 获取当前数据库所有表
+	 * @return
+	 */
+	public List<Table> getDbTable() throws CRUDException {
+		try{
+			return m.getDbTable();
+		}catch(Exception e){
+			log.error(e);
+			throw new CRUDException(e);
+		}
+	}
 
 	/**********自定义表单start*************/
 	/**

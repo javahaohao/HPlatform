@@ -22,6 +22,8 @@ import com.hplatform.core.service.ColumnsService;
 import com.hplatform.core.service.DictService;
 import com.hplatform.core.service.TableService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("${adminPath}/table")
 public class TableController extends BaseController {
@@ -86,12 +88,30 @@ public class TableController extends BaseController {
         redirectAttributes.addFlashAttribute("msg", "删除成功");
         return getAdminUrlPath("/table");
     }
-	
+
+    /**
+     * 获取表字段
+     * @param columns
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:view")
+    @RequestMapping(value = "/columns",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Columns> getTableColumns(Columns columns)throws CRUDException{
+        return columnsService.findAllByRelation(columns);
+    }
+
 	@RequiresPermissions("table:view")
-    @RequestMapping(value = "/{tableId}/viewColumn",method = RequestMethod.GET)
-    public String list(Columns columns,Model model) throws CRUDException {
-		model.addAttribute("columnsList", columnsService.findAllByRelation(columns));
-		model.addAttribute("table",tableService.findOne(new Table(columns.getTableId())));
+    @RequestMapping(value = "/{id}/viewColumn",method = RequestMethod.GET)
+    public String list(Table table,Model model) throws CRUDException {
+        if(!"create".equals(table.getId()))
+            table=tableService.findOne(table);
+        else
+            table = new Table();
+		model.addAttribute("table",table);
+		model.addAttribute("gentables",tableService.getDbTable());
+        model.addAttribute("relationTypes", Table.RelationType.values());
 
         model.addAttribute("defaultColumTagMap", Functions.getDefaultColumTagMap());
 		model.addAttribute("validateList",dictService.findChildDictById(ConstantsUtil.get().DICT_VALIDATE_PARENT_ID));
@@ -101,7 +121,7 @@ public class TableController extends BaseController {
     @RequestMapping(value = "/editColumns", method = RequestMethod.POST)
     @ResponseBody
     public String editColumns(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
-        if(TableConstants.GEN_STEP_TWO!=table.getStep()){
+        if(null==table.getStep()||TableConstants.GEN_STEP_TWO!=table.getStep()){
             table.setStep(TableConstants.GEN_STEP_TWO);
             table.setGenFlag(true);
         }

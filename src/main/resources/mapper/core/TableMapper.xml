@@ -345,4 +345,11 @@
 			PRIMARY KEY (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 	</update>
+
+	<select id="getDbTable" resultType="Table">
+		select
+			c.TABLE_NAME as "tableName"
+		from information_schema.TABLES c
+		where c.TABLE_SCHEMA='hp'
+	</select>
 </mapper>

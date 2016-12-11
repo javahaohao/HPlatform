@@ -6,7 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<tags:header inplugins="${plugins.jqui},${plugins.validate},${plugins.select2},${plugins.template}" title="列定义"></tags:header>
+<tags:header inplugins="${plugins.jqui},${plugins.validate},${plugins.select2},${plugins.template},${plugins.jbox}" title="列定义"></tags:header>
 </head>
 <body>
 	<c:set var="plugins" value="${elfn:getPluginsList()}"></c:set>
@@ -47,17 +47,17 @@
 							<div id="fuelux-wizard" data-target="#step-container">
 								<!-- #section:plugins/fuelux.wizard.steps -->
 								<ul class="wizard-steps">
-									<li data-target="#step1"${table.step==1?' class="active"':' class="complete"'}>
+									<li data-target="#step1">
 										<span class="step">1</span>
 										<span class="title">定义方案</span>
 									</li>
 
-									<li data-target="#step2"${table.step==2?' class="active"':(table.step>2?' class="complete"':'')}>
+									<li data-target="#step2">
 										<span class="step">2</span>
 										<span class="title">配置细则</span>
 									</li>
 
-									<li data-target="#step3"${table.step==3?' class="complete"':''}>
+									<li data-target="#step3">
 										<span class="step">3</span>
 										<span class="title">代码生成</span>
 									</li>
@@ -70,7 +70,7 @@
 
 							<!-- #section:plugins/fuelux.wizard.container -->
 							<div class="step-content pos-rel" id="step-container">
-								<div class="step-pane ${table.step==1?'active':''}" id="step1">
+								<div class="step-pane" id="step1">
 									<form:form method="post" commandName="table" id="tabForm" class="form-horizontal container">
 										<p>
 											<shiro:hasPermission name="table:create">
@@ -80,14 +80,14 @@
 												</button>
 											</shiro:hasPermission>
 										</p>
-										<form:hidden path="id"/>
-										<form:hidden path="step"/>
-										<div class="row table">
+										<div class="row table maintable">
+											<form:hidden path="id"/>
+											<form:hidden path="step"/>
 											<div class="form-group col-xs-12 col-sm-6">
 												<form:label path="tableName" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">表名:</form:label>
 												<div class="col-xs-12 col-sm-7">
 													<span class="block input-icon input-icon-right">
-														<form:input path="tableName" maxlength="50" cssClass="width-100 required tableName" title="表名必填"/>
+														<form:select path="tableName" items="${gentables}" disabled="${not empty table.id}" itemLabel="tableName" itemValue="tableName" title="表名必选" cssClass="select2 width-100 required input-xlarge tableName"></form:select>
 														<i class="ace-icon fa fa-info-circle"></i>
 													</span>
 												</div>
@@ -158,7 +158,7 @@
 												<form:label path="relationType" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">关系:</form:label>
 												<div class="col-xs-12 col-sm-7">
 													<span class="block input-icon input-icon-right">
-														<select name="relationType" class="select2 width-100 required input-xlarge">
+														<select name="relationType" class="select2 width-100 required input-xlarge" title="表关系必填">
 															<c:forEach items="${relationTypes}" var="type">
 																<c:if test="${type.show}">
 																	<option value="${type.value}" <c:if test="${type.value eq table.relationType}">selected="selected"</c:if>>${type.info}</option>
@@ -172,7 +172,10 @@
 												<form:label path="genFlag" cssClass="control-label col-xs-12 col-sm-2 no-padding-right">是否生成:</form:label>
 												<div class="col-xs-12 col-sm-7">
 													<span class="block input-icon input-icon-right">
-														<input name="genFlag" type="checkbox" ${table.genFlag?'checked':''} class="ace ace-switch ace-switch-7" title="是否生成">
+														<label>
+															<input name="genFlag" type="checkbox" ${table.genFlag?'checked':''} class="ace ace-switch ace-switch-7" title="是否生成">
+															<span class="lbl middle"></span>
+														</label>
 													</span>
 												</div>
 											</div>
@@ -195,9 +198,9 @@
 									</form:form>
 								</div>
 
-								<div class="step-pane ${table.step==2?'active':''}" id="step2">
+								<div class="step-pane" id="step2">
 									<form id="columnform">
-									<table class="table table-striped table-bordered table-hover">
+									<table class="table table-striped table-bordered table-hover" id="proptable">
 										<thead>
 										<tr>
 											<th>列名称</th>
@@ -223,7 +226,7 @@
 
 								<div class="step-pane ${table.step==3?'active':''}" id="step3">
 									<div class="center">
-										<h3 class="blue lighter">This is step 3</h3>
+										<h3 class="blue lighter">代码生成成功！</h3>
 									</div>
 								</div>
 							</div>
@@ -236,20 +239,10 @@
 									<i class="ace-icon fa fa-arrow-left"></i>
 									上一步
 								</button>
-								<button class="btn btn-success btn-next btn-sm  ${table.step==2?'hide':''}" data-last="完成" type="button" id="nextbtn">
+								<button class="btn btn-success btn-next btn-sm" data-last="完成" type="button" id="nextbtn">
 									下一步
 									<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 								</button>
-								<shiro:hasPermission name="table:create">
-								<button class="btn btn-success btn-next btn-sm ${table.step!=2?'hide':''}" type="button" id="savebtn">
-									保存
-									<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-								</button>
-								<button class="btn btn-success btn-next btn-sm  ${table.step!=2?'hide':''}" type="button" id="saveandgenbtn">
-									保存并生成
-									<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-								</button>
-								</shiro:hasPermission>
 								<button id="btnBack"class="btn btn-danger no-border btn-sm" type="button" onclick="javascript:window.location.href='${adminFullPath}/table'">
 									<i class="ace-icon fa fa-undo align-top bigger-125"></i>
 									返回
@@ -290,7 +283,11 @@
 							<label path="tableName" class="control-label col-xs-12 col-sm-3">表名:</label>
 							<div class="col-xs-12 col-sm-9">
 								<span class="block input-icon input-icon-right">
-									<input name="childs[{{index}}].tableName" value="{{tableName}}" maxlength="50" class="width-100 required tableName" title="表名必填"/>
+									<select name="childs[{{index}}].tableName" title="表名必选" class="select2 width-100 required input-xlarge tableName">
+										<c:forEach items="${gentables}" var="t">
+											<option value="${t.tableName}" {{if tableName=='${t.tableName}'}}selected="selected"{{/if}}>${t.tableName}</option>
+										</c:forEach>
+									</select>
 									<i class="ace-icon fa fa-info-circle"></i>
 								</span>
 							</div>
@@ -363,7 +360,7 @@
 			<td>{{column.columnName}}
 				<input type="hidden" name="columnList[{{index}}].id" value="{{column.id}}">
 				<input type="hidden" name="columnList[{{index}}].columnName" value="{{column.columnName}}">
-				<input type="hidden" name="columnList[{{index}}].tableId" value="{{table.id}}">
+				<input type="hidden" name="columnList[{{index}}].tableId" value="${table.id}">
 				<input type="hidden" name="columnList[{{index}}].columnType" value="{{column.columnType}}">
 				<input type="hidden" name="columnList[{{index}}].columnLength" value="{{column.columnLength}}">
 				<input type="hidden" name="columnList[{{index}}].dataType" value="{{column.dataType}}">
@@ -392,12 +389,12 @@
 				</select>
 			</td>
 			<td class="center">
-				<a class="{{if length(column.columnElements)<=0}}grey{{else if length(column.columnElements)>0}}green{{else}}{{/if}}" href="#" title="标签元素设置">
+				<a class="{{if length(column.columnElements)<=0}}grey{{else if length(column.columnElements)>0}}green{{else}}{{/if}}" href="javascript:void(0)" title="标签元素设置">
 					<i class="ace-icon fa fa-plug bigger-125 cursor" {{if !!!isdefault}}setting="plugin{{index}}"{{/if}} statindex="{{index}}"></i>
 				</a>
 			</td>
 			<td class="center">
-				<a class="{{if length(column.columnValidates)<=0}}grey{{else if length(column.columnValidates)>0}}green{{else}}{{/if}}" href="#" title="验证类型设置">
+				<a class="{{if length(column.columnValidates)<=0}}grey{{else if length(column.columnValidates)>0}}green{{else}}{{/if}}" href="javascript:void(0)" title="验证类型设置">
 					<i class="ace-icon fa fa-filter bigger-125 cursor" setting="validate{{index}}" statindex="{{index}}"></i>
 				</a>
 			</td>
@@ -500,7 +497,7 @@
 	<script type="text/javascript">
 		template.helper('getJavaType', function (prop) {
 			var typeMaps = eval((${elfn:toJSON(constants.mysqlDataTypeMap)}))||[];
-			return typeMaps[prop.tolocaleUpperCase()];
+			return typeMaps[prop.toLocaleUpperCase()];
 		});
 		template.helper('getValidate', function (param,id,prop) {
 			if(!!param)
@@ -538,19 +535,21 @@
 				$('.relation-content').html('');
 			});
 			//---------------------------------------------------//
-			$('i[setting^="plugin"]').on('click',function(){
+			$(document).on('click','i[setting^="plugin"]',function(){
 				var statindex = $(this).attr('statindex');
-				if($.trim($('tbody',$('#dialog-setting-'+statindex)).html())==='')
-					loadElements($('#'+$(this).attr('setting')).val(),statindex);
-				showSettingElementDialog(statindex);
+				loadElements($('#'+$(this).attr('setting')).val(),statindex,function(){
+					showSettingElementDialog(statindex);
+				});
 			});
-			$('[id^=plugin]').on('change',function(){
+			$(document).on('change','[id^=plugin]',function(){
 				var statindex = $(this).attr('statindex');
-				loadElements($(this).val(),statindex);
-				showSettingElementDialog(statindex);
+				$('tbody',$('#dialog-setting-'+statindex)).html('');
+				loadElements($(this).val(),statindex,function(){
+					showSettingElementDialog(statindex);
+				});
 			});
 			
-			$('i[setting^="validate"]').on('click',function(){
+			$(document).on('click','i[setting^="validate"]',function(){
 				var statindex = $(this).attr('statindex');
 				platform.showContentDialog({
 					title:'"'+$('#tr-'+statindex).attr('columnName')+'"验证设置',
@@ -560,27 +559,20 @@
 						$('[setting="validate'+statindex+'"]').closest('a').attr('class','green');
 					},
 					cancleHandler:function(dialog){
+						$('#validates',$('#columnTag-'+statindex)).html('');
 						$('[setting="validate'+statindex+'"]').closest('a').attr('class','grey');
 					},
 					option:{
-						width:400
+						width:400,
+						open:function(event, ui){
+							$('#validates',$('#columnTag-'+statindex)).html($('input[submit-input]',$(this)).clone());
+						}
 					}
 				});
-			});
-			$("#subForm").submit(function(){
-				var flag = true;
-				$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
-					if(""===$(this).val()){
-						flag=false;
-						showSettingElementDialog($(this).attr('statindex'));
-						return flag;
-					}
-				});
-				return flag;
 			});
 			$('#isdefault').on('click', function(){
 				var self = $(this);
-				if(this.checked) {
+				if(this.checked&&!!'${table.id}') {
 					platform.showContentDialog({
 						title: '确认？',
 						content: $('<div>重置“${table.tableName}”方案生成规则？</div>'),
@@ -593,20 +585,21 @@
 						}
 					});
 					return false;
-				}
+				}else
+					return false;
 			});
 
 			$('#fuelux-wizard')
 			.ace_wizard({
-				step: '${table.step}'||1 //optional argument. wizard will jump to step "2" at first
+				step: 1 //optional argument. wizard will jump to step "2" at first
 			})
 			.on('change' , function(e, info){
 				if(info.step == 1) {
 					if(!$('#tabForm').valid()) return false;
-
+					init();
 				}
 				if(info.step == 2) {
-					if(!$('#subForm').valid()) return false;
+					if(!$('#tabForm').valid()) return false;
 					$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
 						if(""===$(this).val()){
 							showSettingElementDialog($(this).attr('statindex'));
@@ -614,72 +607,74 @@
 						}
 					});
 				}
-
-				$('#savebtn,#saveandgenbtn').hide();
-				$('#nextbtn').removeClass('hide').show();
 				if(info.step == 1||info.step == 3){
-					$('#nextbtn').hide();
-					$('#savebtn,#saveandgenbtn').removeClass('hide').show();
+					init();
 				}
 			})
 			.on('finished', function(e) {
-
+				sub("${adminFullPath}/table/editColumns",function(data){
+					window.location='${adminFullPath}/table'
+				});
 			}).on('stepclick', function(e){
 			//e.preventDefault();//this will prevent clicking and selecting steps
 			});
-
-			$('#savebtn').on('click',function(){
-				sub("${adminFullPath}/table/editColumns",function(data){
-					alert(data);
-					window.location='${adminFullPath}/table'
-				});
-			});
-			$('#saveandgenbtn').on('click',function(){
-				sub("${adminFullPath}/table/saveAndGen",function(data){
-					alert(data);
-					var wizard = $('#fuelux-wizard').data('wizard');
-					//move to step 3
-					wizard.currentStep = 3;
-					wizard.setState();
-					$('#savebtn,#saveandgenbtn').hide();
-					$('#nextbtn').show();
-				});
-
-			});
-
-			init();
 		});
 		function sub(url,fun){
 			if(!$('#tabForm').valid()||!$('#columnform').valid())return false;
-			$.ajax({
-				type: "POST",
-				url: url,
-				data: $("#tabForm").serialize()+'&'+$("#columnform").serialize(),
-				success: function(data){
-					if(!!fun)fun.call(this,data);
+			var flag = true;
+			$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
+				if(""===$(this).val()){
+					flag=false;
+					showSettingElementDialog($(this).attr('statindex'));
+					return flag;
 				}
 			});
+			if(flag)
+				$.ajax({
+					type: "POST",
+					url: url,
+					data: $("#tabForm").serialize()+'&'+$("#columnform").serialize(),
+					success: function(data){
+						if(!!fun)fun.call(this,data);
+					}
+				});
 		}
 		//初始化数据
 		function init(){
-			var columns = eval((${elfn:toJSON(columnsList)}))||[],htmlArray=[],columnKey,genColumnVo;
-			for(var i=0;i<columns.length;i++) {
-				//如果字段key类型为空并且遍历字段还是父表外键，则认为是外键类型
-				if(!!!columns[i].columnKey&&!!eval(('${table.parent}'||{}))&&('${table.parent.foreignKey}'==columns[i].columnName))
-					columnKey='<%=ColumnsConstants.COLUMN_KEYS_FK%>';
-				else
-					columnKey=columns[i].columnKey;
-				genColumnVo=eval((${elfn:toJSON(defaultColumTagMap)})[columnKey])
-				htmlArray.push(template('trtemplate', {
-					column: columns[i],
-					index: i,
-					columnKey:columnKey,
-					genColumnVo:genColumnVo,
-					isdefault:!!genColumnVo
-				}));
-			}
-			//初始化属性定义
-			$('#proptable > tbody').html(htmlArray.join(''));
+			if($('#proptable > tbody tr').size()>0)
+				return false;
+			var data;
+			if(!!'${table.id}')
+				data='tableId='+$('.maintable #id').val();
+			else
+				data='tableName='+$('.maintable #tableName').val();
+			$.ajax({
+				async:false,
+				type: "POST",
+				url: "${adminFullPath}/table/columns",
+				data: data,
+				success: function(columns){
+					columns = columns||[];
+					var htmlArray=[],columnKey,genColumnVo;
+					for(var i=0;i<columns.length;i++) {
+						//如果字段key类型为空并且遍历字段还是父表外键，则认为是外键类型
+						if(!!!columns[i].columnKey&&!!eval(('${table.parent}'||{}))&&('${table.parent.foreignKey}'==columns[i].columnName))
+							columnKey='<%=ColumnsConstants.COLUMN_KEYS_FK%>';
+						else
+							columnKey=columns[i].columnKey;
+						genColumnVo=eval((${elfn:toJSON(defaultColumTagMap)})[columnKey])
+						htmlArray.push(template('trtemplate', {
+							column: columns[i],
+							index: i,
+							columnKey:columnKey,
+							genColumnVo:genColumnVo,
+							isdefault:!!genColumnVo
+						}));
+					}
+					//初始化属性定义
+					$('#proptable > tbody').html(htmlArray.join(''));
+				}
+			});
 		}
 		function addChild(data){
 			var relationType;
@@ -699,34 +694,42 @@
 			platform.showContentDialog({
 				title:'"'+$('#tr-'+statindex).attr('columnName')+'"标签元素设置',
 				content:'#dialog-setting-'+statindex,
-				option:{width:"500"},
+				option:{
+					width:"500",
+					open:function(event, ui){
+						$('#elements',$('#columnTag-'+statindex)).html($('input',$(this)).clone());
+					}
+				},
 				selectedHandler:function(dialog){
 					$('#elements',$('#columnTag-'+statindex)).html($('input',dialog).clone());
 					$('[setting="plugin'+statindex+'"]').closest('a').attr('class','green');
 				},
 				cancleHandler:function(dialog){
+					$('#elements',$('#columnTag-'+statindex)).html('');
 					$('[setting="plugin'+statindex+'"]').closest('a').attr('class','grey');
 				}
 			});
 		}
-		function loadElements(tagId,statindex){
-			$.ajax({
-				async:false,
-			   type: "POST",
-			   url: "${adminFullPath}/tags/loadElements",
-			   data: 'tagId='+tagId,
-			   success: function(data){
-				   var tbody = $('tbody',$('#dialog-setting-'+statindex));
-				   tbody.html('');
-				   for(var index in data){
-				   		if(!isNaN(index)){
-						   tbody.append('<tr><td><input type="hidden" name="columnList['+statindex+'].columnElements['+index+'].elementId" value="'+data[index].id+'">'+(data[index].required==='${constants.DICT_YES_PARENT_ID}'?'<font color="red">*</font>':'')+data[index].elementName+
-								   '</td><td><input type="text" value="'+((data[index].defaultVal||''))+'" name="columnList['+statindex+'].columnElements['+index+'].elementValue" mustrequired="'+data[index].required+'" statindex="'+statindex+'" class="width-100"></td><td>'+(data[index].description||'暂无')+'</td></tr>');
-						   $('#elements',$('#columnTag-'+statindex)).html($('input',tbody).clone());
-						}
-				   }
-			   }
-			});
+		function loadElements(tagId,statindex,fun){
+			if($.trim($('tbody',$('#dialog-setting-'+statindex)).html())==='')
+				$.ajax({
+					async:false,
+				   type: "POST",
+				   url: "${adminFullPath}/tags/loadElements",
+				   data: 'tagId='+tagId,
+				   success: function(data){
+					   var tbody = $('tbody',$('#dialog-setting-'+statindex));
+					   tbody.html('');
+					   for(var index in data){
+							if(!isNaN(index)){
+							   tbody.append('<tr><td><input type="hidden" name="columnList['+statindex+'].columnElements['+index+'].elementId" value="'+data[index].id+'">'+(data[index].required==='${constants.DICT_YES_PARENT_ID}'?'<font color="red">*</font>':'')+data[index].elementName+
+									   '</td><td><input type="text" value="'+((data[index].defaultVal||''))+'" name="columnList['+statindex+'].columnElements['+index+'].elementValue" mustrequired="'+data[index].required+'" statindex="'+statindex+'" class="width-100"></td><td>'+(data[index].description||'暂无')+'</td></tr>');
+							   $('#elements',$('#columnTag-'+statindex)).html($('input',tbody).clone());
+							}
+					   }
+				   },
+				});
+			if(!!fun)fun.call(this);
 		}
 	</script>
 </body>

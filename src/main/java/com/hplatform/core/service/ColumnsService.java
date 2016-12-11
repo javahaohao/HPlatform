@@ -45,7 +45,14 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 	 */
 	public List<Columns> findAllByRelation(Columns columns) throws CRUDException{
 		try{
-			List<Columns> columnList = findByRelation(columns);
+			List<Columns> columnList = null;
+			if(org.apache.commons.lang3.StringUtils.isNotBlank(columns.getTableId())) {
+				columnList = findByRelation(columns);
+				if(CollectionUtils.isEmpty(columnList)){
+					Table table = tableMapper.findOne(new Table(columns.getTableId()));
+					columns.setTableName(table.getTableName());
+				}
+			}
 			if(CollectionUtils.isEmpty(columnList)){
 				columnList = findTableDefaultColumns(columns);
 			}
@@ -61,8 +68,6 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 	 * @return
 	 */
 	public List<Columns> findTableDefaultColumns(Columns columns){
-		Table table = tableMapper.findOne(new Table(columns.getTableId()));
-		columns.setTableName(table.getTableName());
 		List<Columns> columnsList = m.findTableDefaultColumns(columns);
 		for(Columns column : columnsList){
 			column.setPropertiesName(StringUtils.getHumpStr(column.getColumnName()));

@@ -66,12 +66,16 @@ $(document).ready(function(){
 	$(document).ajaxSend(function(evt, request, settings){
 		if(!!settings.loading){
 			(settings.loading.container||$(document.body)).loading(settings.loading);
+		}else if(!!$.jBox){
+			$.jBox.tip("正在请求数据......", 'loading');
 		}
 	});
 	//重载ajax发送请求之后方法
 	$(document).ajaxComplete(function(evt, request, settings){
 		if(!!settings.loading)
 			settings.loading.container.data('load').remove();
+		else if(!!$.jBox)
+			$.jBox.tip('请求完成。', 'success');
 	});
 	//初始化平台的一些组件
 	platform = new Platform();
