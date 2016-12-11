@@ -382,7 +382,7 @@
 				{{if isdefault}}
 					<input type="hidden" value="{{genColumnVo.pluginId}}" name="columnList[{{index}}].plugin">
 				{{/if}}
-				<select name="columnList[{{index}}].plugin" class="select2" {{if isdefault}}disabled="disabled"{{/if}} style="min-width: 110px;" statindex="{{index}}" id="plugin{{index}}">
+				<select name="columnList[{{index}}].plugin" class="select2" {{if isdefault}}disabled="disabled"{{/if}} style="min-width: 110px;" statindex="{{index}}" id="plugin{{index}}" pluginid="{{column.plugin}}">
 					<c:forEach items="${plugins}" var="plugin">
 						<option title="${plugin.remark}" value="${plugin.id}"{{if (column.plugin=='${plugin.id}')||(isdefault&&('${plugin.id}'==genColumnVo.pluginId))}} selected="selected"{{/if}}>${plugin.tagName}</option>
 					</c:forEach>
@@ -542,10 +542,12 @@
 				});
 			});
 			$(document).on('change','[id^=plugin]',function(){
-				var statindex = $(this).attr('statindex');
+				var statindex = $(this).attr('statindex'),self=$(this);
 				$('tbody',$('#dialog-setting-'+statindex)).html('');
 				loadElements($(this).val(),statindex,function(){
-					showSettingElementDialog(statindex);
+					showSettingElementDialog(statindex,function(){
+						self.val(self.attr('pluginid'));
+					});
 				});
 			});
 			
@@ -690,7 +692,7 @@
 			$(".select2",item).prepend('<option value="">--请选择--</option>').select2({allowClear:true});
 			$('.relation-content').append(item);
 		}
-		function showSettingElementDialog(statindex){
+		function showSettingElementDialog(statindex,canclefun){
 			platform.showContentDialog({
 				title:'"'+$('#tr-'+statindex).attr('columnName')+'"标签元素设置',
 				content:'#dialog-setting-'+statindex,
@@ -707,6 +709,7 @@
 				cancleHandler:function(dialog){
 					$('#elements',$('#columnTag-'+statindex)).html('');
 					$('[setting="plugin'+statindex+'"]').closest('a').attr('class','grey');
+					if(!!canclefun)canclefun.call(this);
 				}
 			});
 		}
