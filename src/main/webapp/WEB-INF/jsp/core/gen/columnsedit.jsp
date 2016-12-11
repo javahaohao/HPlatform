@@ -601,13 +601,17 @@
 					init();
 				}
 				if(info.step == 2) {
-					if(!$('#tabForm').valid()) return false;
+					var stepvalidate=true;
+					if(!$('#tabForm').valid()) stepvalidate=false;
 					$('input[mustrequired="${constants.DICT_YES_PARENT_ID}"]').each(function(){
 						if(""===$(this).val()){
 							showSettingElementDialog($(this).attr('statindex'));
+							stepvalidate=false;
 							return false;
 						}
 					});
+					if(!stepvalidate)
+						return false;
 				}
 				if(info.step == 1||info.step == 3){
 					init();
