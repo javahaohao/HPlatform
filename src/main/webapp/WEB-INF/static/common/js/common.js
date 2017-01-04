@@ -358,6 +358,8 @@ function getTableChecked(single,filterfun){
 		$checked.each(function(){
 			if(!!filterfun&&filterfun($(this).val()))
 				checkArray.push($(this).val());
+			else
+				checkArray.push($(this).val());
 		});
 	}else{
 		if($checked.size()>1){

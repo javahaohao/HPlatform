@@ -130,6 +130,7 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                ${adminPath}/**/favicon.ico = anon
                 /${sitePath}/** = anon
                 /static/** = anon
                 ${adminPath}/user/register/** = anon

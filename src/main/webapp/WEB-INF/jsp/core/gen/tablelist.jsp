@@ -140,7 +140,7 @@
 				var self = this;
 				platform.showDeleteDialog({
 					beforDeleteHandler:function(dialog){
-						window.location="${adminFullPath}/table/delete?id="+$(self).attr("data-id");
+						window.location='${adminFullPath}/table/'+$(self).attr("data-id")+'/delete';
 					}
 				});
 	        });
@@ -166,8 +166,10 @@
 					$.jBox.tip('亲！请选择配置好方案生成规则的数据进行操作！', 'warn');
 					return false;
 				}
-				if(skipTable.length>0)
-					$.jBox.tip('亲！['+skipTable.join(',')+']不符合生成规则，系统自动跳过！', 'info');
+				if(skipTable.length>0) {
+					$.jBox.tip('亲！[' + skipTable.join(',') + ']不符合生成规则，系统自动跳过！', 'info');
+					return false;
+				}
 				window.location="${adminFullPath}/table/genCodeBatch?id="+result;
 			});
 			//添加表格排序事件

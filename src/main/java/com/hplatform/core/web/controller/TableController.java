@@ -60,7 +60,6 @@ public class TableController extends BaseController {
 	@RequiresPermissions("table:create")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String create(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
-        table.setStep(TableConstants.GEN_STEP_ONE);
         table.setGenType(ConstantsUtil.get().getONE());
 		tableService.save(table);
         redirectAttributes.addFlashAttribute("msg", "新增成功");
@@ -89,6 +88,24 @@ public class TableController extends BaseController {
         return getAdminUrlPath("/table");
     }
 
+    /**
+     * 批量删除
+     * @param table
+     * @param redirectAttributes
+     * @return
+     * @throws CRUDException
+     */
+    @RequiresPermissions("table:delete")
+    @RequestMapping(value = "/deleteBatch", method = RequestMethod.GET)
+    public String deleteBatch(Table table, RedirectAttributes redirectAttributes) throws CRUDException {
+        String[] idArray = table.getId().split(",");
+        for(String id : idArray){
+            table.setId(id);
+            tableService.delete(table);
+        }
+        redirectAttributes.addFlashAttribute("msg", "删除成功");
+        return getAdminUrlPath("/table");
+    }
     /**
      * 获取表字段
      * @param columns
