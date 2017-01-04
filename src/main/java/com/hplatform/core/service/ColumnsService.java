@@ -107,8 +107,9 @@ public class ColumnsService extends BaseService<Columns, ColumnsMapper> {
 	 * @param columnList
 	 * @throws CRUDException
 	 */
-	public void editColumns(List<Columns> columnList) throws CRUDException{
+	public void editColumns(List<Columns> columnList,Table table) throws CRUDException{
 		for(Columns columns : columnList){
+			columns.setTableId(table.getId());
 			if(org.apache.commons.lang3.StringUtils.isBlank(columns.getId()))
 				save(columns);
 			else

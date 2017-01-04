@@ -259,7 +259,7 @@ public class TableService extends BaseService<Table, TableMapper> {
 					delete.setTableId(table.getId());
 					columnsService.deleteColumnsByTable(delete);
 				}
-				columnsService.editColumns(columns);
+				columnsService.editColumns(columns,table);
 			}
 		} catch (CRUDException e) {
 			log.error(e);

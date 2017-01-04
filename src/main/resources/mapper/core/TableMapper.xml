@@ -294,7 +294,7 @@
 		<if test="foreignKey !=null and foreignKey !=''">
 		foreign_key=#{foreignKey},
 		</if>
-		<if test="tableAlias !=null and tableAlias !=''">
+		<if test="tableAlias !=null">
 		table_alias=#{tableAlias},
 		</if>
 		<if test="labelName !=null and labelName !=''">

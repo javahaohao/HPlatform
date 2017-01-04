@@ -147,7 +147,7 @@ public class TableController extends BaseController {
         }else{
             create(table,redirectAttributes);
         }
-		columnsService.editColumns(table.getColumnList());
+		columnsService.editColumns(table.getColumnList(),table);
         return "规则保存成功！";
     }
 

@@ -24,7 +24,7 @@
 		<bean class="com.hplatform.core.web.interceptor.AuthorityInterceptor" />  
 	</mvc:interceptors>
 
-    <mvc:annotation-driven>
+    <mvc:annotation-driven >
         <mvc:argument-resolvers>
             <bean class="com.hplatform.core.common.method.CurrentUserMethodArgumentResolver"/>
         </mvc:argument-resolvers>
